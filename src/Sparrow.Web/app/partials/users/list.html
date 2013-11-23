@@ -1,0 +1,33 @@
+﻿<h1>Users</h1>
+
+<table class="table table-striped table-condensed table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>E-mail</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-ng-repeat="user in users">
+            <td>{{user.name}}</td>
+            <td>{{user.role}}</td>
+            <td>{{user.email}}</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <td colspan="3">
+                <ul class="pagination pull-right">
+                    <li data-ng-class="{disabled: currentPage===0}">
+                        <a href data-ng-click="prevPage()">Prev</a>
+                    </li>
+                    <li data-ng-repeat="page in range(totalPages)" data-ng-class="{active: currentPage===page}" data-ng-click="setPage()">
+                        <a href>{{page + 1}}</a>
+                    </li>
+                    <li data-ng-class="{disabled: currentPage===totalPages - 1}">
+                        <a href data-ng-click="nextPage()">Next</a>
+                    </li>
+                </ul>
+        </td>
+    </tfoot>
+</table>

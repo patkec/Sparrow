@@ -1,17 +1,21 @@
 module sparrow {
     'use strict';
 
-    interface IIndexScope extends ng.IScope {
-        hello: string;
-    }
-
-    angular.module('sparrow', ['ngRoute'])
-        .config(['$routeProvider', function ($routeProvider: ng.route.IRouteProvider) {
-            $routeProvider
-                .when('/', { templateUrl: '/app/partials/index.html', controller: 'IndexController' })
-                .otherwise({ redirectTo: '/' });
-        }])
-        .controller('IndexController', ['$scope', function ($scope: IIndexScope) {
-            $scope.hello = 'Hello, world!';
-        }]);
+    angular.module('sparrow', [
+        'ngRoute',
+        'sparrow.filters',
+        'sparrow.services',
+        'sparrow.directives',
+        'sparrow.controllers'
+    ])
+    .config(['$routeProvider', '$locationProvider', function ($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider) {
+        $routeProvider
+            .when('/offers', { templateUrl: '/app/partials/offers/overview.html', controller: 'OffersCtrl' })
+            .when('/customers', { templateUrl: 'app/partials/customers/list.html', controller: 'CustomersCtrl' })
+            .when('/users', { templateUrl: 'app/partials/users/list.html', controller: 'UsersCtrl' })
+            .when('/products', { templateUrl: 'app/partials/products/list.html', controller: 'ProductsCtrl' })
+            .otherwise({ redirectTo: '/offers' });
+        // Enable pretty URLs (without #)
+        $locationProvider.html5Mode(true);
+    }]);
 }

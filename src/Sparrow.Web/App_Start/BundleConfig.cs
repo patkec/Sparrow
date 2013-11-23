@@ -22,10 +22,12 @@ namespace Sparrow.Web
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                       "~/Scripts/angular.js",
+                      "~/Scripts/angular-resource.js",
                       "~/Scripts/angular-route.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
-                      "~/app/app.js"));
+                      "~/app/controllers/*.js",
+                      "~/app/*.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
