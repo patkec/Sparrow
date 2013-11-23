@@ -29,14 +29,11 @@ namespace Sparrow.Web.Controllers
             {
                 PageSize = 20
             };
-            // Limit page size between 1 and 100.
-            requestModel.Page = Math.Max(requestModel.Page - 1, 0);
-            requestModel.PageSize = Math.Max(Math.Min(requestModel.PageSize, 100), 1);
-            var usersToSkip = requestModel.Page*requestModel.PageSize;
+            var usersToSkip = (requestModel.Page - 1)*requestModel.PageSize;
 
             return new UserPagedListModel
             {
-                Page = requestModel.Page + 1,
+                Page = requestModel.Page,
                 PageSize = requestModel.PageSize,
                 TotalItems = _users.Count,
                 TotalPages = (int)Math.Ceiling(_users.Count / (double)requestModel.PageSize),
