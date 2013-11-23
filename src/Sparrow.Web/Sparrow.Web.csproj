@@ -437,6 +437,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\ui-bootstrap-tpls-0.7.0.min.js">
+      <DependentUpon>ui-bootstrap-tpls-0.7.0.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -449,6 +452,10 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-2.0.3.min.map" />
+    <Content Include="Scripts\ui-bootstrap-tpls-0.7.0.js" />
+    <Content Include="Scripts\ui-bootstrap-tpls-0.7.0.min.js.map">
+      <DependentUpon>ui-bootstrap-tpls-0.7.0.js</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

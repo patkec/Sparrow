@@ -17,17 +17,9 @@
     </tbody>
     <tfoot>
         <td colspan="3">
-                <ul class="pagination pull-right">
-                    <li data-ng-class="{disabled: currentPage===0}">
-                        <a href data-ng-click="prevPage()">Prev</a>
-                    </li>
-                    <li data-ng-repeat="page in range(totalPages)" data-ng-class="{active: currentPage===page}" data-ng-click="setPage()">
-                        <a href>{{page + 1}}</a>
-                    </li>
-                    <li data-ng-class="{disabled: currentPage===totalPages - 1}">
-                        <a href data-ng-click="nextPage()">Next</a>
-                    </li>
-                </ul>
+            <pagination boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" class="pull-right"
+                        total-items="totalItems" page="currentPage" items-per-page="pageSize" on-select-page="setPage()">
+            </pagination>
         </td>
     </tfoot>
 </table>

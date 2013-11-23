@@ -3,6 +3,7 @@ module sparrow {
 
     angular.module('sparrow', [
         'ngRoute',
+        'ui.bootstrap',
         'sparrow.filters',
         'sparrow.services',
         'sparrow.directives',
