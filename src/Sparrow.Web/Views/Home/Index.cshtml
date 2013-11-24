@@ -23,6 +23,7 @@
             </div>
             <div class="collapse navbar-collapse" data-ng-controller="MenuCtrl">
                 <ul class="nav navbar-nav">
+                    <li ng-class="{active : activeViewPath==='/overview'}"><a href="/overview">Overview</a></li>
                     <li ng-class="{active : activeViewPath==='/offers'}"><a href="/offers">Offers</a></li>
                     <li ng-class="{active : activeViewPath==='/products'}"><a href='/products'>Products</a></li>
                     <li ng-class="{active : activeViewPath==='/customers'}"><a href="/customers">Customers</a></li>

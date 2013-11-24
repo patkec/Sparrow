@@ -2,7 +2,7 @@
 
 namespace Sparrow.Web.Hubs
 {
-    public class AdminHub: Hub
+    public class OffersHub : Hub
     {
     }
 }

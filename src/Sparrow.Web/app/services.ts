@@ -26,6 +26,11 @@ module sparrow.services {
             };
         })
         // RESOURCES
+        .factory('Offers', ['$resource', function ($resource: ng.resource.IResourceService) {
+            return $resource('/api/offers/:offerId', {}, {
+                update: { method: 'PUT' }
+            });
+        }])
         .factory('Customers', ['$resource', function ($resource: ng.resource.IResourceService) {
             return $resource('/api/customers/:userId', {}, {
                 update: { method: 'PUT' }

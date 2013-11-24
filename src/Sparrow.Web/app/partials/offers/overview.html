@@ -1,1 +1,33 @@
-﻿Offers - overview
+﻿<h1>Offers</h1>
+
+<div>
+    <h3>Latest offers</h3>
+    
+    <table class="table table-condensed table-striped">
+        <tr>
+            <th>Title</th>
+            <th>Created On</th>
+        </tr>
+        <tr ng-repeat="offer in latestOffers">
+            <td>{{offer.title}}</td>
+            <td>{{offer.createdOn}}</td>
+        </tr>
+    </table>
+</div>
+
+<div>
+    <h3>These offers will expire soon</h3>
+    
+    <table class="table table-condensed table-striped">
+        <tr>
+            <th>Title</th>
+            <th>Created On</th>
+            <th>Expires On</th>
+        </tr>
+        <tr ng-repeat="offer in offersToExpire">
+            <td>{{offer.title}}</td>
+            <td>{{offer.createdOn}}</td>
+            <td>{{offer.expiresOn}}</td>
+        </tr>
+    </table>
+</div>

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Sparrow.Domain.Models;
 using Sparrow.Web.Models.Customers;
+using Sparrow.Web.Models.Offers;
 using Sparrow.Web.Models.Products;
 using Sparrow.Web.Models.Users;
 
@@ -15,6 +16,7 @@ namespace Sparrow.Web
                 cfg.AddProfile<UserMappingProfile>();
                 cfg.AddProfile<ProductMappingProfile>();
                 cfg.AddProfile<CustomerMappingProfile>();
+                cfg.AddProfile<OfferMappingProfile>();
             });
             Mapper.AssertConfigurationIsValid();
         }
@@ -58,6 +60,15 @@ namespace Sparrow.Web
                 CreateMap<CustomerAddModel, Customer>()
                     .ForMember(x => x.Id, opts => opts.Ignore())
                     .ConstructUsing(model => new Customer(model.Name));
+            }
+        }
+
+        private class OfferMappingProfile : Profile
+        {
+            protected override void Configure()
+            {
+                CreateMap<Offer, OfferViewModel>();
+                CreateMap<OfferItem, OfferItemViewModel>();
             }
         }
     }

@@ -16,7 +16,10 @@ module sparrow {
             $routeProvider
                 .when('/admin', { templateUrl: 'app/partials/admin/overview.html', controller: 'AdminCtrl' })
                 // Offers
-                .when('/offers', { templateUrl: '/app/partials/offers/overview.html', controller: 'OffersCtrl' })
+                .when('/overview', { templateUrl: '/app/partials/offers/overview.html', controller: 'OffersOverviewCtrl' })
+                .when('/offers', { templateUrl: '/app/partials/offers/list.html', controller: 'OffersCtrl' })
+                .when('/offers/create', { templateUrl: '/app/partials/offers/create.html', controller: 'OfferCreateCtrl' })
+                .when('/offers/edit/:offerId', { templateUrl: '/app/partials/offers/edit.html', controller: 'OfferEditCtrl' })
                 // Customers
                 .when('/customers', { templateUrl: '/app/partials/customers/list.html', controller: 'CustomersCtrl' })
                 .when('/customers/create', { templateUrl: '/app/partials/customers/create.html', controller: 'CustomerCreateCtrl' })
