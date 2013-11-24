@@ -2,7 +2,7 @@
 
 namespace Sparrow.Web.Models.Customers
 {
-    public class CustomerEditModel : CustomerAddModel
+    public class CustomerEditModel : CustomerAddModel, IEditModel
     {
         /// <summary>
         /// Gets or sets the customer identification.

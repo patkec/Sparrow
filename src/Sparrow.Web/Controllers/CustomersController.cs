@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using AutoMapper;
-using Microsoft.AspNet.SignalR;
 using NHibernate.Criterion;
 using Sparrow.Domain.Models;
-using Sparrow.Web.Hubs;
 using Sparrow.Web.Infrastructure;
 using Sparrow.Web.Models;
 using Sparrow.Web.Models.Customers;
 
 namespace Sparrow.Web.Controllers
 {
-    public class CustomersController : SessionApiController
+    public class CustomersController : CrudApiController<Customer, CustomerViewModel, CustomerAddModel, CustomerEditModel>
     {
         /// <summary>
         /// Gets a paged list of customers.
@@ -46,60 +42,22 @@ namespace Sparrow.Web.Controllers
             };
         }
 
-        /// <summary>
-        /// Gets a customer by id.
-        /// </summary>
-        public HttpResponseMessage Get(Guid id)
+        protected override void OnEntityCreated(Customer entity)
         {
-            var customer = Session.Get<Customer>(id);
-
-            if (customer == null)
-                return new HttpResponseMessage(HttpStatusCode.NotFound);
-
-            var model = Mapper.Map<CustomerViewModel>(customer);
-            return Request.CreateResponse(HttpStatusCode.OK, model);
+            var viewModel = Mapper.Map<CustomerViewModel>(entity);
+            AdminHub.Clients.All.customerCreated(viewModel);
         }
 
-        /// <summary>
-        /// Creates a new customer.
-        /// </summary>
-        [ValidateModel]
-        public HttpResponseMessage Post(CustomerAddModel model)
+        protected override void OnEntityUpdated(Customer entity)
         {
-            var customer = Mapper.Map<Customer>(model);
-            Session.Save(customer);
-
-            GlobalHost.ConnectionManager.GetHubContext<AdminHub>().Clients.All.sendMessage(string.Format("New customer was added: {0}", model.Name));
-
-            var viewModel = Mapper.Map<CustomerViewModel>(customer);
-            return Request.CreateResponse(HttpStatusCode.Created, viewModel);
+            var viewModel = Mapper.Map<CustomerViewModel>(entity);
+            AdminHub.Clients.All.customerUpdated(viewModel);
         }
 
-        /// <summary>
-        /// Creates or updates a customer.
-        /// </summary>
-        [ValidateModel]
-        public HttpResponseMessage Put(CustomerEditModel model)
+        protected override void OnEntityDeleted(Customer entity)
         {
-            if (model.Id == Guid.Empty)
-                return Post(model);
-
-            var customer = Session.Load<Customer>(model.Id);
-            Mapper.Map(model, customer);
-            Session.Update(customer);
-
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
-
-        /// <summary>
-        /// Deletes a customer with id.
-        /// </summary>
-        public HttpResponseMessage Delete(Guid id)
-        {
-            var customerToDelete = Session.Get<Customer>(id);
-            if (customerToDelete != null)
-                Session.Delete(customerToDelete);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            var viewModel = Mapper.Map<CustomerViewModel>(entity);
+            AdminHub.Clients.All.customerDeleted(viewModel);
         }
     }
 }
