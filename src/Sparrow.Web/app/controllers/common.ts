@@ -1,3 +1,4 @@
+// File name is prefixed with _ because it should be loaded first (before other controllers)
 module sparrow.controllers {
     'use strict';
 

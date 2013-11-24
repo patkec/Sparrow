@@ -4,8 +4,10 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using AutoMapper;
+using Microsoft.AspNet.SignalR;
 using NHibernate.Criterion;
 using Sparrow.Domain.Models;
+using Sparrow.Web.Hubs;
 using Sparrow.Web.Infrastructure;
 using Sparrow.Web.Models;
 using Sparrow.Web.Models.Customers;
@@ -66,6 +68,8 @@ namespace Sparrow.Web.Controllers
         {
             var customer = Mapper.Map<Customer>(model);
             Session.Save(customer);
+
+            GlobalHost.ConnectionManager.GetHubContext<AdminHub>().Clients.All.sendMessage(string.Format("New customer was added: {0}", model.Name));
 
             var viewModel = Mapper.Map<CustomerViewModel>(customer);
             return Request.CreateResponse(HttpStatusCode.Created, viewModel);

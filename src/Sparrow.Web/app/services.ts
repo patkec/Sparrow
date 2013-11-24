@@ -12,6 +12,7 @@ module sparrow.services {
 
     // DEFINITIONS
     angular.module('sparrow.services', ['ngResource'])
+        .constant('$', $)
         .factory('storageService', function () {
             var data = {};
 

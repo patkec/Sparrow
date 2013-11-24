@@ -14,6 +14,7 @@ module sparrow {
         '$locationProvider',
         function ($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider) {
             $routeProvider
+                .when('/admin', { templateUrl: 'app/partials/admin/overview.html', controller: 'AdminCtrl' })
                 // Offers
                 .when('/offers', { templateUrl: '/app/partials/offers/overview.html', controller: 'OffersCtrl' })
                 // Customers
