@@ -32,6 +32,7 @@ namespace Sparrow.Web.App_Start
                             AutoMap.AssemblyOf<User>(new AutoMapConfiguration())
                                 .IgnoreBase<EntityBase>()
                                 .Conventions.Add(
+                                    new EnumConvention(),
                                     new NotNullConvention(),
                                     ConventionBuilder.Class.Always(c => c.Schema("dbo")),
                                     ConventionBuilder.Id.Always(id => id.GeneratedBy.GuidComb()),
@@ -52,6 +53,9 @@ namespace Sparrow.Web.App_Start
             return configuration.BuildSessionFactory();
         }
 
+        /// <summary>
+        /// Convention that makes all primitive types as well as Name and Title fields not nullable.
+        /// </summary>
         private class NotNullConvention : IPropertyConvention, IPropertyConventionAcceptance
         {
             public void Apply(IPropertyInstance instance)
@@ -61,7 +65,23 @@ namespace Sparrow.Web.App_Start
 
             public void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
             {
-                criteria.Expect(x => x.Nullable && (x.Name == "Name" || x.Name == "Title"));
+                criteria.Expect(x => x.Nullable && (x.Name == "Name" || x.Name == "Title" || x.Property.PropertyType.IsPrimitive));
+            }
+        }
+
+        /// <summary>
+        /// Convention to use enumeration as the property type (instead of default string).
+        /// </summary>
+        private class EnumConvention : IPropertyConvention, IPropertyConventionAcceptance
+        {
+            public void Apply(IPropertyInstance instance)
+            {
+                instance.CustomType(instance.Property.PropertyType);
+            }
+
+            public void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
+            {
+                criteria.Expect(x => x.Property.PropertyType.IsEnum);
             }
         }
 
