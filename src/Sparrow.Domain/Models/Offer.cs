@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Sparrow.Domain.Models
@@ -11,7 +12,9 @@ namespace Sparrow.Domain.Models
         private string _title;
         private double _discount;
         private OfferStatus _status;
-        private List<OfferItem> _items = new List<OfferItem>();
+        private DateTime _createdOn;
+        private DateTime _expiresOn;
+        private IList<OfferItem> _items = new List<OfferItem>();
 
         /// <summary>
         /// Gets the owner (or creator) of current offer.
@@ -51,9 +54,26 @@ namespace Sparrow.Domain.Models
         }
 
         /// <summary>
+        /// Gets the date when the offer was created.
+        /// </summary>
+        public virtual DateTime CreatedOn
+        {
+            get { return _createdOn; }
+        }
+
+        /// <summary>
+        /// Gets or sets the date when the offer expires.
+        /// </summary>
+        public virtual DateTime ExpiresOn
+        {
+            get { return _expiresOn; }
+            set { _expiresOn = value; }
+        }
+
+        /// <summary>
         /// Gets a list of items included in the offer.
         /// </summary>
-        public virtual IReadOnlyCollection<OfferItem> Items
+        public virtual IEnumerable<OfferItem> Items
         {
             get { return _items; }
         }
@@ -117,6 +137,8 @@ namespace Sparrow.Domain.Models
             _owner = owner;
             _customer = customer;
             _title = title;
+            _createdOn = DateTime.Now;
+            _expiresOn = DateTime.Now.AddDays(7);
         }
 
         /// <summary>
