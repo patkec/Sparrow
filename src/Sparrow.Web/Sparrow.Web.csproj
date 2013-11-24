@@ -134,16 +134,22 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\ValidateModelAttribute.cs" />
     <Compile Include="Models\PagedListModel.cs" />
     <Compile Include="Models\PagedListRequestModel.cs" />
-    <Compile Include="Models\Users\UserListItemModel.cs" />
+    <Compile Include="Models\Users\UserAddModel.cs" />
+    <Compile Include="Models\Users\UserEditModel.cs" />
+    <Compile Include="Models\Users\UserViewModel.cs" />
     <Compile Include="Models\Users\UserPagedListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\EnumerableExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\partials\customers\list.html" />
     <Content Include="app\partials\offers\overview.html" />
     <Content Include="app\partials\products\list.html" />
+    <Content Include="app\partials\users\create.html" />
+    <Content Include="app\partials\users\edit.html" />
     <Content Include="app\partials\users\list.html" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />

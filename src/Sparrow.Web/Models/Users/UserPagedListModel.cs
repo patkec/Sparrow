@@ -7,6 +7,6 @@ namespace Sparrow.Web.Models.Users
         /// <summary>
         /// Gets or sets a list of users in current page.
         /// </summary>
-        public IEnumerable<UserListItemModel> Users { get; set; }
+        public IEnumerable<UserViewModel> Users { get; set; }
     }
 }
