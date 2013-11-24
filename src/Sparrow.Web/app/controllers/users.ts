@@ -90,7 +90,7 @@ module sparrow.controllers {
         '$scope',
         '$location',
         'Users',
-        function ($scope: IEditScope, $location, Users: sparrow.services.IUserResourceClass) {
+        function ($scope: IEditScope, $location, Users: sparrow.services.IUpdateResourceClass) {
             $scope.alerts = [];
             $scope.user = {};
             $scope.confirm = function () {
@@ -115,7 +115,7 @@ module sparrow.controllers {
         '$routeParams',
         '$location',
         'Users',
-        function ($scope: IEditScope, $routeParams, $location, Users: sparrow.services.IUserResourceClass) {
+        function ($scope: IEditScope, $routeParams, $location, Users: sparrow.services.IUpdateResourceClass) {
             $scope.alerts = [];
             $scope.user = Users.get({ userId: $routeParams.userId });
             $scope.confirm = function () {

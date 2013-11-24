@@ -46,9 +46,30 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentNHibernate">
+      <HintPath>..\packages\FluentNHibernate.1.3.0.733\lib\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap">
+      <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -105,6 +126,9 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="WebActivator">
+      <HintPath>..\packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -127,26 +151,51 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\MapperConfig.cs" />
+    <Compile Include="App_Start\NHibernateConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="DependencyResolution\IoC.cs" />
+    <Compile Include="DependencyResolution\StructureMapDependencyResolver.cs" />
+    <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\NHibernateApiFilter.cs" />
+    <Compile Include="Infrastructure\SessionApiController.cs" />
     <Compile Include="Infrastructure\ValidateModelAttribute.cs" />
+    <Compile Include="Models\Customers\CustomerAddModel.cs" />
+    <Compile Include="Models\Customers\CustomerEditModel.cs" />
+    <Compile Include="Models\Customers\CustomerPagedListModel.cs" />
+    <Compile Include="Models\Customers\CustomerViewModel.cs" />
     <Compile Include="Models\PagedListModel.cs" />
     <Compile Include="Models\PagedListRequestModel.cs" />
+    <Compile Include="Models\Products\ProductAddModel.cs" />
+    <Compile Include="Models\Products\ProductEditModel.cs" />
+    <Compile Include="Models\Products\ProductPagedListModel.cs" />
+    <Compile Include="Models\Products\ProductViewModel.cs" />
     <Compile Include="Models\Users\UserAddModel.cs" />
     <Compile Include="Models\Users\UserEditModel.cs" />
     <Compile Include="Models\Users\UserViewModel.cs" />
     <Compile Include="Models\Users\UserPagedListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\EnumerableExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.Net4.dll">
+      <Link>AutoMapper.Net4.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="app\partials\customers\create.html" />
+    <Content Include="app\partials\customers\edit.html" />
     <Content Include="app\partials\customers\list.html" />
     <Content Include="app\partials\offers\overview.html" />
+    <Content Include="app\partials\products\create.html" />
+    <Content Include="app\partials\products\edit.html" />
     <Content Include="app\partials\products\list.html" />
     <Content Include="app\partials\users\create.html" />
     <Content Include="app\partials\users\edit.html" />
@@ -465,6 +514,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -487,6 +537,12 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-scenario.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sparrow.Domain\Sparrow.Domain.csproj">
+      <Project>{71C5790F-9AA0-4420-8EDE-492851B6BB53}</Project>
+      <Name>Sparrow.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

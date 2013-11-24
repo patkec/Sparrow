@@ -8,93 +8,93 @@ using NHibernate.Criterion;
 using Sparrow.Domain.Models;
 using Sparrow.Web.Infrastructure;
 using Sparrow.Web.Models;
-using Sparrow.Web.Models.Users;
+using Sparrow.Web.Models.Products;
 
 namespace Sparrow.Web.Controllers
 {
-    public class UsersController : SessionApiController
+    public class ProductsController : SessionApiController
     {
         /// <summary>
-        /// Gets a paged list of users.
+        /// Gets a paged list of products.
         /// </summary>
-        public UserPagedListModel Get([FromUri] PagedListRequestModel requestModel)
+        public ProductPagedListModel Get([FromUri] PagedListRequestModel requestModel)
         {
             requestModel = requestModel ?? new PagedListRequestModel
             {
                 PageSize = 20
             };
-            var usersToSkip = (requestModel.Page - 1)*requestModel.PageSize;
+            var productsToSkip = (requestModel.Page - 1) * requestModel.PageSize;
 
-            var usersQuery = Session.QueryOver<User>()
-                .Skip(usersToSkip)
+            var productsQuery = Session.QueryOver<Product>()
+                .Skip(productsToSkip)
                 .Take(requestModel.PageSize);
             if (!string.IsNullOrEmpty(requestModel.Sort))
-                usersQuery.UnderlyingCriteria.AddOrder(new Order(requestModel.Sort, requestModel.OrderAscending));
+                productsQuery.UnderlyingCriteria.AddOrder(new Order(requestModel.Sort, requestModel.OrderAscending));
 
-            var users = usersQuery.Future();
-            var totalItems = usersQuery.ToRowCountQuery().FutureValue<int>();
+            var products = productsQuery.Future();
+            var totalItems = productsQuery.ToRowCountQuery().FutureValue<int>();
 
-            return new UserPagedListModel
+            return new ProductPagedListModel
             {
                 Page = requestModel.Page,
                 PageSize = requestModel.PageSize,
                 TotalItems = totalItems.Value,
                 TotalPages = (int)Math.Ceiling(totalItems.Value / (double)requestModel.PageSize),
-                Users = Mapper.Map<IEnumerable<UserViewModel>>(users)
+                Products = Mapper.Map<IEnumerable<ProductViewModel>>(products)
             };
         }
 
         /// <summary>
-        /// Gets a user by id.
+        /// Gets a product by id.
         /// </summary>
         public HttpResponseMessage Get(Guid id)
         {
-            var user = Session.Get<User>(id);
+            var product = Session.Get<Product>(id);
 
-            if (user == null)
+            if (product == null)
                 return new HttpResponseMessage(HttpStatusCode.NotFound);
 
-            var model = Mapper.Map<UserViewModel>(user);
+            var model = Mapper.Map<ProductViewModel>(product);
             return Request.CreateResponse(HttpStatusCode.OK, model);
         }
 
         /// <summary>
-        /// Creates a new user.
+        /// Creates a new product.
         /// </summary>
         [ValidateModel]
-        public HttpResponseMessage Post(UserAddModel model)
+        public HttpResponseMessage Post(ProductAddModel model)
         {
-            var user = Mapper.Map<User>(model);
-            Session.Save(user);
+            var product = Mapper.Map<Product>(model);
+            Session.Save(product);
 
-            var viewModel = Mapper.Map<UserViewModel>(user);
+            var viewModel = Mapper.Map<ProductViewModel>(product);
             return Request.CreateResponse(HttpStatusCode.Created, viewModel);
         }
 
         /// <summary>
-        /// Creates or updates a user.
+        /// Creates or updates a product.
         /// </summary>
         [ValidateModel]
-        public HttpResponseMessage Put(UserEditModel model)
+        public HttpResponseMessage Put(ProductEditModel model)
         {
             if (model.Id == Guid.Empty)
                 return Post(model);
 
-            var user = Session.Load<User>(model.Id);
-            Mapper.Map(model, user);
-            Session.Update(user);
+            var product = Session.Load<Product>(model.Id);
+            Mapper.Map(model, product);
+            Session.Update(product);
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         /// <summary>
-        /// Deletes a user with id.
+        /// Deletes a product with id.
         /// </summary>
         public HttpResponseMessage Delete(Guid id)
         {
-            var userToDelete = Session.Get<User>(id);
-            if (userToDelete != null)
-                Session.Delete(userToDelete);
+            var productToDelete = Session.Get<Product>(id);
+            if (productToDelete != null)
+                Session.Delete(productToDelete);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
     }

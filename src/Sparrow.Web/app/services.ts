@@ -6,8 +6,8 @@ module sparrow.services {
         store(key: string, value: any);
         get(key: string): any;
     }
-    export interface IUserResourceClass extends ng.resource.IResourceClass {
-        update(user: any, success: Function, error: Function);
+    export interface IUpdateResourceClass extends ng.resource.IResourceClass {
+        update(item: any, success: Function, error: Function);
     }
 
     // DEFINITIONS
@@ -25,6 +25,16 @@ module sparrow.services {
             };
         })
         // RESOURCES
+        .factory('Customers', ['$resource', function ($resource: ng.resource.IResourceService) {
+            return $resource('/api/customers/:userId', {}, {
+                update: { method: 'PUT' }
+            });
+        }])
+        .factory('Products', ['$resource', function ($resource: ng.resource.IResourceService) {
+            return $resource('/api/products/:userId', {}, {
+                update: { method: 'PUT' }
+            });
+        }])
         .factory('Users', ['$resource', function ($resource: ng.resource.IResourceService) {
             return $resource('/api/users/:userId', {}, {
                 update: {method: 'PUT'}

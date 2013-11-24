@@ -1,6 +1,8 @@
 ﻿using System.Web.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Sparrow.Web.Infrastructure;
+using StructureMap;
 
 namespace Sparrow.Web
 {
@@ -9,9 +11,10 @@ namespace Sparrow.Web
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
+            config.Filters.Add(ObjectFactory.GetInstance<NHibernateApiFilter>());
 
             // Use lowercase for JSON serialization.
-            var settings = new JsonSerializerSettings { ContractResolver = new LowercaseContractResolver() };
+            var settings = new JsonSerializerSettings { ContractResolver = new CamelcaseContractResolver() };
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings = settings;
 
             // Web API routes
@@ -24,7 +27,7 @@ namespace Sparrow.Web
             );
         }
 
-        private class LowercaseContractResolver : DefaultContractResolver
+        private class CamelcaseContractResolver : DefaultContractResolver
         {
             protected override string ResolvePropertyName(string propertyName)
             {
