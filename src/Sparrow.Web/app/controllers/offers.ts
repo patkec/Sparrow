@@ -17,6 +17,7 @@ module sparrow.controllers {
     interface IEditScope extends ng.IScope {
         alerts: any;
         offer: any;
+        customers: any;
         confirm();
         cancel();
         closeAlert(index: number);
@@ -95,7 +96,7 @@ module sparrow.controllers {
 
             var getOffers = function (page) {
                 Offers.get({ page: page, pageSize: $scope.pageSize, sort: 'Title', orderAscending: true }, function (data) {
-                    $scope.offers = data.offers;
+                    $scope.offers = data.items;
                     $scope.currentPage = data.page;
                     $scope.totalItems = data.totalItems;
                 });
@@ -109,10 +110,17 @@ module sparrow.controllers {
     offerControllers.controller('OfferCreateCtrl', [
         '$scope',
         '$location',
+        '$http',
         'Offers',
-        function ($scope: IEditScope, $location, Offers: sparrow.services.IUpdateResourceClass) {
+        function ($scope: IEditScope, $location, $http, Offers: sparrow.services.IUpdateResourceClass) {
             $scope.alerts = [];
             $scope.offer = {};
+            $scope.customers = function (name) {
+                return $http.get('/api/customers?filter=' + name).then(function (response) {
+                    console.log(response);
+                    return response.data.items;
+                });
+            };
             $scope.confirm = function () {
                 Offers.update($scope.offer,
                     function () {
@@ -138,6 +146,11 @@ module sparrow.controllers {
         function ($scope: IEditScope, $routeParams, $location, Offers: sparrow.services.IUpdateResourceClass) {
             $scope.alerts = [];
             $scope.offer = Offers.get({ offerId: $routeParams.offerId });
+            $scope.customers = [
+                { ServiceID: 1, ServiceName: 'Service1' },
+                { ServiceID: 2, ServiceName: 'Service2' },
+                { ServiceID: 3, ServiceName: 'Service3' }
+            ];
             $scope.confirm = function () {
                 Offers.update($scope.offer,
                     function () {
