@@ -75,7 +75,7 @@ module sparrow.controllers {
 
             var getCustomers = function (page) {
                 Customers.get({ page: page, pageSize: $scope.pageSize, sort: 'Name', orderAscending: true }, function (data) {
-                    $scope.customers = data.customers;
+                    $scope.customers = data.items;
                     $scope.currentPage = data.page;
                     $scope.totalItems = data.totalItems;
                 });

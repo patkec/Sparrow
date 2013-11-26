@@ -193,24 +193,20 @@
     <Compile Include="Infrastructure\ValidateModelAttribute.cs" />
     <Compile Include="Models\Customers\CustomerAddModel.cs" />
     <Compile Include="Models\Customers\CustomerEditModel.cs" />
-    <Compile Include="Models\Customers\CustomerPagedListModel.cs" />
     <Compile Include="Models\Customers\CustomerViewModel.cs" />
     <Compile Include="Models\IEditModel.cs" />
     <Compile Include="Models\Offers\OfferAddModel.cs" />
     <Compile Include="Models\Offers\OfferDetailsViewModel.cs" />
     <Compile Include="Models\Offers\OfferItemViewModel.cs" />
-    <Compile Include="Models\Offers\OfferPagedListModel.cs" />
     <Compile Include="Models\Offers\OfferViewModel.cs" />
     <Compile Include="Models\PagedListModel.cs" />
     <Compile Include="Models\PagedListRequestModel.cs" />
     <Compile Include="Models\Products\ProductAddModel.cs" />
     <Compile Include="Models\Products\ProductEditModel.cs" />
-    <Compile Include="Models\Products\ProductPagedListModel.cs" />
     <Compile Include="Models\Products\ProductViewModel.cs" />
     <Compile Include="Models\Users\UserAddModel.cs" />
     <Compile Include="Models\Users\UserEditModel.cs" />
     <Compile Include="Models\Users\UserViewModel.cs" />
-    <Compile Include="Models\Users\UserPagedListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

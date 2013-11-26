@@ -75,7 +75,7 @@ module sparrow.controllers {
 
             var getProducts = function (page) {
                 Products.get({ page: page, pageSize: $scope.pageSize, sort: 'Title', orderAscending: true }, function (data) {
-                    $scope.products = data.products;
+                    $scope.products = data.items;
                     $scope.currentPage = data.page;
                     $scope.totalItems = data.totalItems;
                 });

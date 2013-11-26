@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
+using System.Web.Http;
 using AutoMapper;
 using Microsoft.AspNet.SignalR;
+using NHibernate.Criterion;
 using Remotion.Linq.Parsing.Structure.IntermediateModel;
 using Sparrow.Domain.Models;
 using Sparrow.Web.Hubs;
@@ -49,6 +53,41 @@ namespace Sparrow.Web.Infrastructure
             var model = Mapper.Map<TViewModel>(entity);
             return Request.CreateResponse(HttpStatusCode.OK, model);
         }
+
+        /// <summary>
+        /// Gets a paged list of customers.
+        /// </summary>
+        public PagedListModel<TViewModel> Get([FromUri] PagedListRequestModel requestModel)
+        {
+            requestModel = requestModel ?? new PagedListRequestModel
+            {
+                PageSize = 20
+            };
+            var itemsToSkip = (requestModel.Page - 1) * requestModel.PageSize;
+
+            var itemsQuery = Session.QueryOver<TEntity>();
+            if (!string.IsNullOrEmpty(requestModel.Filter))
+                itemsQuery.Where(CreateFilter(requestModel.Filter));
+            if (!string.IsNullOrEmpty(requestModel.Sort))
+                itemsQuery.UnderlyingCriteria.AddOrder(new Order(requestModel.Sort, requestModel.OrderAscending));
+            itemsQuery
+                .Skip(itemsToSkip)
+                .Take(requestModel.PageSize);
+
+            var items = itemsQuery.Future();
+            var totalItems = itemsQuery.ToRowCountQuery().FutureValue<int>();
+
+            return new PagedListModel<TViewModel>
+            {
+                Page = requestModel.Page,
+                PageSize = requestModel.PageSize,
+                TotalItems = totalItems.Value,
+                TotalPages = (int)Math.Ceiling(totalItems.Value / (double)requestModel.PageSize),
+                Items = Mapper.Map<IEnumerable<TViewModel>>(items)
+            };
+        }
+
+        protected abstract Expression<Func<TEntity, bool>> CreateFilter(string filter);
 
         /// <summary>
         /// Creates a new entity.

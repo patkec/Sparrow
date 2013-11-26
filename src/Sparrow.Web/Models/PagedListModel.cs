@@ -1,6 +1,8 @@
-﻿namespace Sparrow.Web.Models
+﻿using System.Collections.Generic;
+
+namespace Sparrow.Web.Models
 {
-    public class PagedListModel
+    public class PagedListModel<TModel>
     {
         /// <summary>
         /// Gets or sets total number of items.
@@ -18,5 +20,9 @@
         /// Gets or sets size of the returned page.
         /// </summary>
         public int PageSize { get; set; }
+        /// <summary>
+        /// Gets or sets the items in current page.
+        /// </summary>
+        public IEnumerable<TModel> Items { get; set; }
     }
 }

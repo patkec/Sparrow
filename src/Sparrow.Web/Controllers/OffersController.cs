@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -7,40 +8,12 @@ using AutoMapper;
 using NHibernate.Criterion;
 using Sparrow.Domain.Models;
 using Sparrow.Web.Infrastructure;
-using Sparrow.Web.Models;
 using Sparrow.Web.Models.Offers;
 
 namespace Sparrow.Web.Controllers
 {
     public class OffersController : CrudApiController<Offer, OfferViewModel, OfferAddModel, OfferEditModel>
     {
-        public OfferPagedListModel Get([FromUri] PagedListRequestModel requestModel)
-        {
-            requestModel = requestModel ?? new PagedListRequestModel
-            {
-                PageSize = 20
-            };
-            var productsToSkip = (requestModel.Page - 1) * requestModel.PageSize;
-
-            var productsQuery = Session.QueryOver<Offer>()
-                .Skip(productsToSkip)
-                .Take(requestModel.PageSize);
-            if (!string.IsNullOrEmpty(requestModel.Sort))
-                productsQuery.UnderlyingCriteria.AddOrder(new Order(requestModel.Sort, requestModel.OrderAscending));
-
-            var products = productsQuery.Future();
-            var totalItems = productsQuery.ToRowCountQuery().FutureValue<int>();
-
-            return new OfferPagedListModel
-            {
-                Page = requestModel.Page,
-                PageSize = requestModel.PageSize,
-                TotalItems = totalItems.Value,
-                TotalPages = (int)Math.Ceiling(totalItems.Value / (double)requestModel.PageSize),
-                Offers = Mapper.Map<IEnumerable<OfferViewModel>>(products)
-            };
-        }
-
         [HttpGet]
         [Route("api/offers/{offerId}/items")]
         public HttpResponseMessage GetItems(Guid offerId)
@@ -53,6 +26,11 @@ namespace Sparrow.Web.Controllers
                 return new HttpResponseMessage(HttpStatusCode.NotFound);
 
             return Request.CreateResponse(HttpStatusCode.OK, Mapper.Map<IEnumerable<OfferItemViewModel>>(offer.Items));
+        }
+
+        protected override Expression<Func<Offer, bool>> CreateFilter(string filter)
+        {
+            return (offer => offer.Title.IsInsensitiveLike(filter, MatchMode.Anywhere));
         }
 
         [HttpGet]
