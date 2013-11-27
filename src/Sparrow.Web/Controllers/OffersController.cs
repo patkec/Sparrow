@@ -58,21 +58,31 @@ namespace Sparrow.Web.Controllers
             return Mapper.Map<IEnumerable<OfferViewModel>>(offers);
         }
 
-        [Route("api/offers/{offerId}")]
-        public void PostItem(Guid offerId)
-        {
+        //[Route("api/offers/{offerId}")]
+        //public void PostItem(Guid offerId)
+        //{
             
-        }
+        //}
 
         protected override Offer CreateEntity(OfferAddModel model)
         {
-            throw new NotImplementedException();
+            var owner = Session.Load<User>(model.OwnerId);
+            var customer = Session.Load<Customer>(model.CustomerId);
+            
+            return new Offer(owner, customer, model.Title);
         }
 
         protected override void OnEntityCreated(Offer entity)
         {
             var viewModel = Mapper.Map<OfferViewModel>(entity);
             OffersHub.Clients.All.offerCreated(viewModel);
+        }
+
+        protected override void UpdateEntity(Offer entity, OfferEditModel model)
+        {
+            base.UpdateEntity(entity, model);
+            
+            entity.Customer = Session.Load<Customer>(model.CustomerId);
         }
 
         protected override void OnEntityUpdated(Offer entity)

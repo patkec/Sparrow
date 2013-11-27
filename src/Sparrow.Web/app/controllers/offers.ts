@@ -17,7 +17,8 @@ module sparrow.controllers {
     interface IEditScope extends ng.IScope {
         alerts: any;
         offer: any;
-        customers: any;
+        getCustomers(name: string);
+        getOwners(name: string);
         confirm();
         cancel();
         closeAlert(index: number);
@@ -112,17 +113,21 @@ module sparrow.controllers {
         '$location',
         '$http',
         'Offers',
-        function ($scope: IEditScope, $location, $http, Offers: sparrow.services.IUpdateResourceClass) {
+        function ($scope: IEditScope, $location, $http: ng.IHttpService, Offers: sparrow.services.IUpdateResourceClass) {
             $scope.alerts = [];
             $scope.offer = {};
-            $scope.customers = function (name) {
-                return $http.get('/api/customers?filter=' + name).then(function (response) {
-                    console.log(response);
+            $scope.getCustomers = function (name) {
+                return $http.get('/api/customers?sort=Name&orderAscending=true&filter=' + name).then(function (response) {
+                    return response.data.items;
+                });
+            };
+            $scope.getOwners = function (name) {
+                return $http.get('/api/users?sort=Name&orderAscending=true&filter=' + name).then(function (response) {
                     return response.data.items;
                 });
             };
             $scope.confirm = function () {
-                Offers.update($scope.offer,
+                Offers.save(mapToDto($scope.offer),
                     function () {
                         $location.path('/offers');
                     },
@@ -142,17 +147,18 @@ module sparrow.controllers {
         '$scope',
         '$routeParams',
         '$location',
+        '$http',
         'Offers',
-        function ($scope: IEditScope, $routeParams, $location, Offers: sparrow.services.IUpdateResourceClass) {
+        function ($scope: IEditScope, $routeParams, $location, $http: ng.IHttpService, Offers: sparrow.services.IUpdateResourceClass) {
             $scope.alerts = [];
             $scope.offer = Offers.get({ offerId: $routeParams.offerId });
-            $scope.customers = [
-                { ServiceID: 1, ServiceName: 'Service1' },
-                { ServiceID: 2, ServiceName: 'Service2' },
-                { ServiceID: 3, ServiceName: 'Service3' }
-            ];
+            $scope.getCustomers = function (name) {
+                return $http.get('/api/customers?sort=Name&orderAscending=true&filter=' + name).then(function (response) {
+                    return response.data.items;
+                });
+            };
             $scope.confirm = function () {
-                Offers.update($scope.offer,
+                Offers.update(mapToDto($scope.offer),
                     function () {
                         $location.path('/offers');
                     },
@@ -167,4 +173,14 @@ module sparrow.controllers {
                 $scope.alerts.splice(index, 1);
             };
         }]);
+
+    function mapToDto(entity): any {
+        var dto: any = {};
+        angular.extend(dto, entity);
+        dto.ownerId = entity.owner.id;
+        dto.customerId = entity.customer.id;
+        delete dto.owner;
+        delete dto.customer;
+        return dto;
+    }
 }

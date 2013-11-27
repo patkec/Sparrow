@@ -129,11 +129,21 @@ namespace Sparrow.Web.Infrastructure
                 return Post(model);
 
             var entity = Session.Load<TEntity>(model.Id);
-            Mapper.Map(model, entity);
+            UpdateEntity(entity, model);
             Session.Update(entity);
             OnEntityUpdated(entity);
 
             return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        /// <summary>
+        /// Updates the entity with values from given model.
+        /// </summary>
+        /// <param name="entity">Entity to be updated.</param>
+        /// <param name="model">Model that holds new values.</param>
+        protected virtual void UpdateEntity(TEntity entity, TEditModel model)
+        {
+            Mapper.Map(model, entity);
         }
 
         /// <summary>

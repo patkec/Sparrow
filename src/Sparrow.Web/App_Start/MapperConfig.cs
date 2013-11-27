@@ -69,6 +69,11 @@ namespace Sparrow.Web
             {
                 CreateMap<Offer, OfferViewModel>();
                 CreateMap<OfferItem, OfferItemViewModel>();
+                CreateMap<OfferEditModel, Offer>()
+                    .ForMember(x => x.ExpiresOn, opts => opts.Ignore())
+                    .ForMember(x => x.Discount, opts => opts.Ignore())
+                    .ForMember(x => x.Owner, opts => opts.Ignore())
+                    .ForMember(x => x.Customer, opts => opts.Ignore());
             }
         }
     }
