@@ -1,52 +1,18 @@
 ﻿<h1>Offers</h1>
 
-<button class="btn" ng-click="addOffer()">New Offer</button>
+<button class="btn" ng-click="addDraft()">New Offer</button>
 
-<table class="table table-striped table-condensed table-hover">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Owner</th>
-            <th>Customer</th>
-            <th>Price</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr data-ng-repeat="offer in offers">
-            <td>{{offer.title}}</td>
-            <td>{{offer.ownerName}}</td>
-            <td>{{offer.customerName}}</td>
-            <td>{{offer.offerPrice}}</td>
-            <td>
-                <a href><i class="glyphicon glyphicon-edit" data-ng-click="editOffer(offer)"></i></a>
-                <a href><i class="glyphicon glyphicon-remove" data-ng-click="deleteOffer(offer)"></i></a>
-            </td>
-        </tr>
-    </tbody>
-    <tfoot>
-    <td colspan="5">
-        <pagination boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" class="pull-right"
-                    total-items="totalItems" page="currentPage" items-per-page="pageSize">
-        </pagination>
-    </td>
-    </tfoot>
-</table>
+<br/>
+<br />
 
-<script type="text/ng-template" id="offerDeleteDialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" aria-hidden="true" data-ng-click="cancel()">&times;</button>
-                <h4 class="modal-title">Delete offer</h4>
-            </div>
-            <div class="modal-body">
-                Are you sure you wish to delete offer "{{offer.title}}"?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-ng-click="cancel()">No</button>
-                <button type="button" class="btn btn-danger" data-ng-click="confirm()">Yes</button>
-            </div>
-        </div>
-    </div>
-</script>
+<tabset>
+    <tab heading="Drafts" ng-controller="DraftsCtrl" active="showDrafts">
+        <div ng-include src="'/app/partials/offers/list-drafts.html'"></div>
+    </tab>
+    <tab heading="In progress" ng-controller="ActiveOffersCtrl" active="showActive">
+        <div ng-include src="'/app/partials/offers/list-active.html'"></div>
+    </tab>
+    <tab heading="Completed" ng-controller="CompletedOffersCtrl" active="showCompleted">
+        <div ng-include src="'/app/partials/offers/list-completed.html'"></div>
+    </tab>
+</tabset>

@@ -1,0 +1,68 @@
+﻿<h1>Offer</h1>
+
+<div class="row">
+    <div class="col-lg-2"><b>Title</b></div>
+    <div class="col-lg-offset-2">{{draft.title}}</div>
+</div>
+<div class="row">
+    <div class="col-lg-2"><b>Owner</b></div>
+    <div class="col-lg-offset-2">{{draft.ownerName}}</div>
+</div>
+<div class="row">
+    <div class="col-lg-2"><b>Customer</b></div>
+    <div class="col-lg-offset-2">{{draft.customerName}}</div>
+</div>
+<div class="row">
+    <div class="col-lg-2"><b>Discount</b></div>
+    <div class="col-lg-offset-2">{{draft.discount}}</div>
+</div>
+
+<h3>Items</h3>
+
+<button class="btn btn-default" ng-click="addItem()">Add Item</button>
+
+<table class="table table-condensed">
+    <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Discount</th>
+        <th>Total</th>
+        <th>&nbsp;</th>
+    </tr>
+    <tr ng-repeat="item in draft.items">
+        <td>
+            <span editable-text="item.product" e-name="product" e-required e-form="itemForm" onaftersave="updateProductTitle(item)" ng-if="!!!item.id"
+                  e-typeahead="product as product.title for product in getProducts($viewValue)" e-typeahead-min-length="2" e-typeahead-wait-ms="100">
+                {{item.product.title}}
+            </span>
+            <span ng-if="!!item.id">
+                {{item.product.title}}
+            </span>
+        </td>
+        <td>
+            {{item.product.price}}
+        </td>
+        <td>
+            <span editable-number="item.quantity" e-name="quantity" e-required e-min="1" e-form="itemForm">
+                {{item.quantity}}
+            </span>
+        </td>
+        <td>
+            <span editable-number="item.discount" e-name="discount" e-min="0" e-max="100" e-form="itemForm">
+                {{item.discount}}
+            </span>
+        </td>
+        <td>{{item.product.price * item.quantity * (1 - (item.discount || 0) / 100)}}</td>
+        <td>
+            <form editable-form name="itemForm" ng-show="itemForm.$visible" onbeforesave="saveItem($data, item)" shown="inserted === item">
+                <button type="submit" ng-disabled="itemForm.$waiting" class="btn btn-primary">Save</button>
+                <button type="button" ng-disabled="itemForm.$waiting" class="btn btn-default" ng-click="itemForm.$cancel()">Cancel</button>
+            </form>
+            <div ng-show="!itemForm.$visible">
+                <button class="btn btn-primary" ng-click="itemForm.$show()">Edit</button>
+                <button class="btn btn-danger" ng-click="deleteItem($index, item)">Delete</button>
+            </div>
+        </td>
+    </tr>
+</table>
