@@ -6,11 +6,11 @@
     <table class="table table-condensed table-striped">
         <tr>
             <th>Title</th>
-            <th>Created On</th>
+            <th>Offered On</th>
         </tr>
         <tr ng-repeat="offer in latestOffers">
             <td>{{offer.title}}</td>
-            <td>{{offer.createdOn}}</td>
+            <td>{{offer.offeredOn}}</td>
         </tr>
     </table>
 </div>
@@ -21,12 +21,12 @@
     <table class="table table-condensed table-striped">
         <tr>
             <th>Title</th>
-            <th>Created On</th>
+            <th>Offered On</th>
             <th>Expires On</th>
         </tr>
         <tr ng-repeat="offer in offersToExpire">
             <td>{{offer.title}}</td>
-            <td>{{offer.createdOn}}</td>
+            <td>{{offer.offeredOn}}</td>
             <td>{{offer.expiresOn}}</td>
         </tr>
     </table>

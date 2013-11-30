@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Sparrow.Domain.Models;
 using Sparrow.Web.Models.Customers;
+using Sparrow.Web.Models.Drafts;
 using Sparrow.Web.Models.Offers;
 using Sparrow.Web.Models.Products;
 using Sparrow.Web.Models.Users;
@@ -16,6 +17,7 @@ namespace Sparrow.Web
                 cfg.AddProfile<UserMappingProfile>();
                 cfg.AddProfile<ProductMappingProfile>();
                 cfg.AddProfile<CustomerMappingProfile>();
+                cfg.AddProfile<OfferDraftMappingProfile>();
                 cfg.AddProfile<OfferMappingProfile>();
             });
             Mapper.AssertConfigurationIsValid();
@@ -63,17 +65,27 @@ namespace Sparrow.Web
             }
         }
 
+        private class OfferDraftMappingProfile : Profile
+        {
+            protected override void Configure()
+            {
+                CreateMap<OfferDraft, DraftViewModel>();
+                CreateMap<OfferDraft, DraftDetailViewModel>();
+                CreateMap<OfferDraftItem, DraftItemViewModel>();
+            }
+        }
+
         private class OfferMappingProfile : Profile
         {
             protected override void Configure()
             {
                 CreateMap<Offer, OfferViewModel>();
-                CreateMap<OfferItem, OfferItemViewModel>();
-                CreateMap<OfferEditModel, Offer>()
-                    .ForMember(x => x.ExpiresOn, opts => opts.Ignore())
-                    .ForMember(x => x.Discount, opts => opts.Ignore())
-                    .ForMember(x => x.Owner, opts => opts.Ignore())
-                    .ForMember(x => x.Customer, opts => opts.Ignore());
+                //CreateMap<OfferItem, OfferItemViewModel>();
+                //CreateMap<OfferEditModel, Offer>()
+                //    .ForMember(x => x.ExpiresOn, opts => opts.Ignore())
+                //    .ForMember(x => x.Discount, opts => opts.Ignore())
+                //    .ForMember(x => x.Owner, opts => opts.Ignore())
+                //    .ForMember(x => x.Customer, opts => opts.Ignore());
             }
         }
     }

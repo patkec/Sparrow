@@ -42,6 +42,8 @@
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\EntityBase.cs" />
     <Compile Include="Models\Offer.cs" />
+    <Compile Include="Models\OfferDraft.cs" />
+    <Compile Include="Models\OfferDraftItem.cs" />
     <Compile Include="Models\OfferItem.cs" />
     <Compile Include="Models\OfferStatus.cs" />
     <Compile Include="Models\Product.cs" />

@@ -8,7 +8,7 @@ using Sparrow.Web.Models.Products;
 
 namespace Sparrow.Web.Controllers
 {
-    public class ProductsController : CrudApiController<Product, ProductViewModel, ProductAddModel, ProductEditModel>
+    public class ProductsController : CrudApiController<Product, ProductViewModel, ProductViewModel, ProductAddModel, ProductEditModel>
     {
         protected override void OnEntityCreated(Product entity)
         {

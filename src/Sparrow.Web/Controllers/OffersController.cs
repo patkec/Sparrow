@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -8,12 +7,30 @@ using AutoMapper;
 using NHibernate.Criterion;
 using Sparrow.Domain.Models;
 using Sparrow.Web.Infrastructure;
+using Sparrow.Web.Models;
 using Sparrow.Web.Models.Offers;
 
 namespace Sparrow.Web.Controllers
 {
-    public class OffersController : CrudApiController<Offer, OfferViewModel, OfferAddModel, OfferEditModel>
+    public class OffersController: SessionApiController
     {
+        [Route("api/offers")]
+        public void Get(PagedListRequestModel model)
+        {
+            
+        }
+
+        [Route("api/offers/completed")]
+        public void GetCompleted(PagedListRequestModel model)
+        {
+            
+        }
+
+        public void Get()
+        {
+            
+        }
+
         [HttpGet]
         [Route("api/offers/{offerId}/items")]
         public HttpResponseMessage GetItems(Guid offerId)
@@ -28,18 +45,13 @@ namespace Sparrow.Web.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, Mapper.Map<IEnumerable<OfferItemViewModel>>(offer.Items));
         }
 
-        protected override Expression<Func<Offer, bool>> CreateFilter(string filter)
-        {
-            return (offer => offer.Title.IsInsensitiveLike(filter, MatchMode.Anywhere));
-        }
-
         [HttpGet]
         [Route("api/offers/latest")]
         public IEnumerable<OfferViewModel> GetLatest()
         {
             var offers = Session.QueryOver<Offer>()
-                .Where(x => x.Status == OfferStatus.New)
-                .OrderBy(x => x.CreatedOn).Desc
+                .Where(x => x.Status == OfferStatus.Offered)
+                .OrderBy(x => x.OfferedOn).Desc
                 .Take(5)
                 .List();
 
@@ -51,50 +63,23 @@ namespace Sparrow.Web.Controllers
         public IEnumerable<OfferViewModel> GetSoonToExpire()
         {
             var offers = Session.QueryOver<Offer>()
-                .Where(x => x.Status != OfferStatus.Won && x.Status != OfferStatus.Lost)
+                .Where(x => x.Status == OfferStatus.Offered)
                 .And(x => x.ExpiresOn.IsBetween(DateTime.Now).And(DateTime.Now.AddDays(2)))
                 .List();
 
             return Mapper.Map<IEnumerable<OfferViewModel>>(offers);
         }
 
-        //[Route("api/offers/{offerId}")]
-        //public void PostItem(Guid offerId)
-        //{
-            
-        //}
-
-        protected override Offer CreateEntity(OfferAddModel model)
+        public HttpResponseMessage Put(Guid id, bool success)
         {
-            var owner = Session.Load<User>(model.OwnerId);
-            var customer = Session.Load<Customer>(model.CustomerId);
-            
-            return new Offer(owner, customer, model.Title);
-        }
+            var offer = Session.Get<Offer>(id);
+            if (offer == null)
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Offer not found.");
 
-        protected override void OnEntityCreated(Offer entity)
-        {
-            var viewModel = Mapper.Map<OfferViewModel>(entity);
-            OffersHub.Clients.All.offerCreated(viewModel);
-        }
+            offer.CompleteOffer(success);
+            Session.Update(offer);
 
-        protected override void UpdateEntity(Offer entity, OfferEditModel model)
-        {
-            base.UpdateEntity(entity, model);
-            
-            entity.Customer = Session.Load<Customer>(model.CustomerId);
-        }
-
-        protected override void OnEntityUpdated(Offer entity)
-        {
-            var viewModel = Mapper.Map<OfferViewModel>(entity);
-            OffersHub.Clients.All.offerUpdated(viewModel);
-        }
-
-        protected override void OnEntityDeleted(Offer entity)
-        {
-            var viewModel = Mapper.Map<OfferViewModel>(entity);
-            OffersHub.Clients.All.offerDeleted(viewModel);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
 }

@@ -8,7 +8,7 @@ using Sparrow.Web.Models.Users;
 
 namespace Sparrow.Web.Controllers
 {
-    public class UsersController : CrudApiController<User, UserViewModel, UserAddModel, UserEditModel>
+    public class UsersController : CrudApiController<User, UserViewModel, UserViewModel, UserAddModel, UserEditModel>
     {
         protected override void OnEntityCreated(User entity)
         {

@@ -8,7 +8,7 @@ using Sparrow.Web.Models.Customers;
 
 namespace Sparrow.Web.Controllers
 {
-    public class CustomersController : CrudApiController<Customer, CustomerViewModel, CustomerAddModel, CustomerEditModel>
+    public class CustomersController : CrudApiController<Customer, CustomerViewModel, CustomerViewModel, CustomerAddModel, CustomerEditModel>
     {
         protected override void OnEntityCreated(Customer entity)
         {

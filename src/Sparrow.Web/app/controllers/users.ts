@@ -17,22 +17,6 @@ module sparrow.controllers {
         cancel();
         closeAlert(index: number);
     };
-    interface IDeleteScope extends ng.IScope {
-        user: any;
-        confirm();
-        cancel();
-    };
-
-    // A private controller for deleting users
-    var UserDeleteCtrl = function ($scope: IDeleteScope, $modalInstance, user) {
-        $scope.user = user;
-        $scope.confirm = function () {
-            $modalInstance.close($scope.user);
-        };
-        $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
-        };
-    };
 
     // Global controllers
     var userControllers = angular.module('sparrow.controllers');
@@ -58,10 +42,10 @@ module sparrow.controllers {
             $scope.deleteUser = function (user) {
                 var modalInstance = $modal.open({
                     templateUrl: 'userDeleteDialog',
-                    controller: UserDeleteCtrl,
+                    controller: ItemDeleteCtrl,
                     windowClass: 'show', // Workaround for bootstrap 3 - dialog is not shown without this class
                     resolve: {
-                        user: function () {
+                        item: function () {
                             return user;
                         }
                     }

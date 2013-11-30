@@ -7,6 +7,7 @@ namespace Sparrow.Domain.Models
         private Product _product;
         private int _quantity;
         private double _discount;
+        private decimal _productPrice;
 
         /// <summary>
         /// Gets the product included in the offer.
@@ -17,31 +18,27 @@ namespace Sparrow.Domain.Models
         }
 
         /// <summary>
-        /// Gets or sets a number of products included in the offer.
+        /// Gets the price of the product as it was at the time of the offer.
+        /// </summary>
+        public virtual decimal ProductPrice
+        {
+            get { return _productPrice; }
+        }
+
+        /// <summary>
+        /// Gets a number of products included in the offer.
         /// </summary>
         public virtual int Quantity
         {
             get { return _quantity; }
-            set
-            {
-                if (value < 1)
-                    throw new ArgumentOutOfRangeException("value");
-                _quantity = value;
-            }
         }
 
         /// <summary>
-        /// Gets or sets a discount percentage for the products on offer.
+        /// Gets a discount percentage for the products on offer.
         /// </summary>
         public virtual double Discount
         {
             get { return _discount; }
-            set
-            {
-                if (value > 100.0)
-                    throw new ArgumentOutOfRangeException("value");
-                _discount = value;
-            }
         }
 
         /// <summary>
@@ -51,7 +48,7 @@ namespace Sparrow.Domain.Models
         {
             get
             {
-                return Quantity * Product.Price * (decimal)(100.0 - Discount);
+                return Quantity * ProductPrice * (decimal)(1 - Discount / 100.0);
             }
         }
 
@@ -67,7 +64,8 @@ namespace Sparrow.Domain.Models
         /// </summary>
         /// <param name="product">Product that should be included in offer.</param>
         /// <param name="quantity">Number of products included in offer.</param>
-        public OfferItem(Product product, int quantity)
+        /// <param name="discount">Discount percentage for the product.</param>
+        public OfferItem(Product product, int quantity, double discount)
         {
             if (product == null)
                 throw new ArgumentNullException("product");
@@ -76,6 +74,8 @@ namespace Sparrow.Domain.Models
 
             _product = product;
             _quantity = quantity;
+            _discount = discount;
+            _productPrice = _product.Price;
         } 
     }
 }

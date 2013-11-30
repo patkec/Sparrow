@@ -175,6 +175,7 @@
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Controllers\DraftsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OffersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
@@ -194,8 +195,14 @@
     <Compile Include="Models\Customers\CustomerAddModel.cs" />
     <Compile Include="Models\Customers\CustomerEditModel.cs" />
     <Compile Include="Models\Customers\CustomerViewModel.cs" />
+    <Compile Include="Models\Drafts\DraftAddModel.cs" />
+    <Compile Include="Models\Drafts\DraftDetailViewModel.cs" />
+    <Compile Include="Models\Drafts\DraftEditModel.cs" />
+    <Compile Include="Models\Drafts\DraftItemAddModel.cs" />
+    <Compile Include="Models\Drafts\DraftItemEditModel.cs" />
+    <Compile Include="Models\Drafts\DraftItemViewModel.cs" />
     <Compile Include="Models\IEditModel.cs" />
-    <Compile Include="Models\Offers\OfferAddModel.cs" />
+    <Compile Include="Models\Drafts\DraftViewModel.cs" />
     <Compile Include="Models\Offers\OfferDetailsViewModel.cs" />
     <Compile Include="Models\Offers\OfferItemViewModel.cs" />
     <Compile Include="Models\Offers\OfferViewModel.cs" />
@@ -219,7 +226,13 @@
     <Content Include="app\partials\customers\create.html" />
     <Content Include="app\partials\customers\edit.html" />
     <Content Include="app\partials\customers\list.html" />
+    <Content Include="app\partials\drafts\create.html" />
+    <Content Include="app\partials\drafts\details.html" />
+    <Content Include="app\partials\drafts\edit.html" />
     <Content Include="app\partials\offers\create.html" />
+    <Content Include="app\partials\offers\list-active.html" />
+    <Content Include="app\partials\offers\list-completed.html" />
+    <Content Include="app\partials\offers\list-drafts.html" />
     <Content Include="app\partials\offers\edit.html" />
     <Content Include="app\partials\offers\list.html" />
     <Content Include="app\partials\offers\overview.html" />
@@ -233,6 +246,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\xeditable.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -526,6 +540,8 @@
     <Content Include="Scripts\ui-bootstrap-tpls-0.7.0.min.js">
       <DependentUpon>ui-bootstrap-tpls-0.7.0.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\xeditable.js" />
+    <Content Include="Scripts\xeditable.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -555,7 +571,9 @@
     <TypeScriptCompile Include="app\controllers\admin.ts" />
     <TypeScriptCompile Include="app\controllers\common.ts" />
     <TypeScriptCompile Include="app\controllers\customers.ts" />
+    <TypeScriptCompile Include="app\controllers\drafts.ts" />
     <TypeScriptCompile Include="app\controllers\offers.ts" />
+    <TypeScriptCompile Include="app\controllers\overview.ts" />
     <TypeScriptCompile Include="app\controllers\products.ts" />
     <TypeScriptCompile Include="app\controllers\users.ts" />
     <TypeScriptCompile Include="app\directives.ts" />

@@ -7,14 +7,13 @@ using System.Web.Http;
 using AutoMapper;
 using Microsoft.AspNet.SignalR;
 using NHibernate.Criterion;
-using Remotion.Linq.Parsing.Structure.IntermediateModel;
 using Sparrow.Domain.Models;
 using Sparrow.Web.Hubs;
 using Sparrow.Web.Models;
 
 namespace Sparrow.Web.Infrastructure
 {
-    public abstract class CrudApiController<TEntity, TViewModel, TAddModel, TEditModel>: SessionApiController
+    public abstract class CrudApiController<TEntity, TViewModel, TDetailViewModel, TAddModel, TEditModel>: SessionApiController
         where TEntity: EntityBase
         where TEditModel: TAddModel, IEditModel
     {
@@ -43,6 +42,7 @@ namespace Sparrow.Web.Infrastructure
         /// <summary>
         /// Gets an entity by id.
         /// </summary>
+        [HttpGet]
         public HttpResponseMessage Get(Guid id)
         {
             var entity = Session.Get<TEntity>(id);
@@ -50,13 +50,14 @@ namespace Sparrow.Web.Infrastructure
             if (entity == null)
                 return new HttpResponseMessage(HttpStatusCode.NotFound);
 
-            var model = Mapper.Map<TViewModel>(entity);
+            var model = Mapper.Map<TDetailViewModel>(entity);
             return Request.CreateResponse(HttpStatusCode.OK, model);
         }
 
         /// <summary>
         /// Gets a paged list of customers.
         /// </summary>
+        [HttpGet]
         public PagedListModel<TViewModel> Get([FromUri] PagedListRequestModel requestModel)
         {
             requestModel = requestModel ?? new PagedListRequestModel
@@ -92,6 +93,7 @@ namespace Sparrow.Web.Infrastructure
         /// <summary>
         /// Creates a new entity.
         /// </summary>
+        [HttpPost]
         [ValidateModel]
         public HttpResponseMessage Post(TAddModel model)
         {
@@ -122,6 +124,7 @@ namespace Sparrow.Web.Infrastructure
         /// <summary>
         /// Creates or updates an entity.
         /// </summary>
+        [HttpPut]
         [ValidateModel]
         public HttpResponseMessage Put(TEditModel model)
         {
@@ -157,6 +160,7 @@ namespace Sparrow.Web.Infrastructure
         /// <summary>
         /// Deletes an entity with id.
         /// </summary>
+        [HttpDelete]
         public HttpResponseMessage Delete(Guid id)
         {
             var entityToDelete = Session.Get<TEntity>(id);

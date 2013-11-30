@@ -1,0 +1,49 @@
+﻿<table class="table table-striped table-condensed table-hover">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Owner</th>
+            <th>Customer</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-ng-repeat="draft in drafts">
+            <td><a href data-ng-click="showDetails(draft)">{{draft.title}}</a></td>
+            <td>{{draft.ownerName}}</td>
+            <td>{{draft.customerName}}</td>
+            <td>{{draft.offerPrice}}</td>
+            <td>
+                <a href><i class="glyphicon glyphicon-edit" data-ng-click="editDraft(draft)"></i></a>
+                <a href><i class="glyphicon glyphicon-remove" data-ng-click="deleteDraft(draft)"></i></a>
+                <a href><i class="glyphicon glyphicon-credit-card" data-ng-click="createOffer(draft)"></i></a>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+    <td colspan="5">
+        <pagination boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" class="pull-right"
+                    total-items="totalItems" page="currentPage" items-per-page="pageSize">
+        </pagination>
+    </td>
+    </tfoot>
+</table>
+
+<script type="text/ng-template" id="draftDeleteDialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-hidden="true" data-ng-click="cancel()">&times;</button>
+                <h4 class="modal-title">Delete draft</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you wish to delete offer draft "{{item.title}}"?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-ng-click="cancel()">No</button>
+                <button type="button" class="btn btn-danger" data-ng-click="confirm()">Yes</button>
+            </div>
+        </div>
+    </div>
+</script>

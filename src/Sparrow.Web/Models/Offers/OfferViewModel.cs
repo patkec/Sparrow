@@ -13,7 +13,7 @@ namespace Sparrow.Web.Models.Offers
         public CustomerViewModel Customer { get; set; }
         public OfferStatus Status { get; set; }
         public decimal OfferPrice { get; set; }
-        public DateTime CreatedOn { get; set; }
+        public DateTime OfferedOn { get; set; }
         public DateTime ExpiresOn { get; set; }
     }
 }

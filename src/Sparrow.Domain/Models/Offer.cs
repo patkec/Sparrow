@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Sparrow.Domain.Models
 {
+    /// <summary>
+    /// Represents an offer that was sent to the customer. An offer cannot be altered.
+    /// </summary>
     public class Offer: EntityBase
     {
         private Customer _customer;
@@ -12,9 +14,18 @@ namespace Sparrow.Domain.Models
         private string _title;
         private double _discount;
         private OfferStatus _status;
-        private DateTime _createdOn;
+        private DateTime _offeredOn;
         private DateTime _expiresOn;
+        private OfferDraft _draft;
         private IList<OfferItem> _items = new List<OfferItem>();
+
+        /// <summary>
+        /// Gets the <see cref="OfferDraft"/> on which this offer is based.
+        /// </summary>
+        public virtual OfferDraft Draft
+        {
+            get { return _draft; }
+        }
 
         /// <summary>
         /// Gets the owner (or creator) of current offer.
@@ -25,49 +36,35 @@ namespace Sparrow.Domain.Models
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="Customer"/> that should get the offer.
+        /// Gets the <see cref="Customer"/> that should get the offer.
         /// </summary>
         public virtual Customer Customer
         {
             get { return _customer; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-                AssertNewOffer();
-                _customer = value;
-            }
         }
 
         /// <summary>
-        /// Gets or sets the offer title.
+        /// Gets the offer title.
         /// </summary>
         public virtual string Title
         {
             get { return _title; }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    throw new ArgumentNullException("value");
-                _title = value;
-            }
         }
 
         /// <summary>
-        /// Gets the date when the offer was created.
+        /// Gets the date when the offer was sent to the customer.
         /// </summary>
-        public virtual DateTime CreatedOn
+        public virtual DateTime OfferedOn
         {
-            get { return _createdOn; }
+            get { return _offeredOn; }
         }
 
         /// <summary>
-        /// Gets or sets the date when the offer expires.
+        /// Gets the date when the offer expires.
         /// </summary>
         public virtual DateTime ExpiresOn
         {
             get { return _expiresOn; }
-            set { _expiresOn = value; }
         }
 
         /// <summary>
@@ -79,18 +76,11 @@ namespace Sparrow.Domain.Models
         }
 
         /// <summary>
-        /// Gets or sets a discount percentage for the whole offer.
+        /// Gets a discount percentage for the whole offer.
         /// </summary>
         public virtual double Discount
         {
             get { return _discount; }
-            set
-            {
-                if (value > 100.0)
-                    throw new ArgumentOutOfRangeException("value");
-                AssertNewOffer();
-                _discount = value;
-            }
         }
 
         /// <summary>
@@ -100,7 +90,7 @@ namespace Sparrow.Domain.Models
         {
             get
             {
-                return _items.Sum(x => x.TotalPrice) * (decimal)(100.0 - Discount);
+                return _items.Sum(x => x.TotalPrice) * (decimal)(1 - Discount / 100.0);
             }
         }
 
@@ -122,64 +112,38 @@ namespace Sparrow.Domain.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="Offer"/> class for specified customer.
         /// </summary>
-        /// <param name="owner">Owner/creator of the offer.</param>
-        /// <param name="customer">Customer which should get the offer.</param>
-        /// <param name="title">Offer title.</param>
-        public Offer(User owner, Customer customer, string title)
+        /// <param name="draft">Source draft for the offer.</param>
+        /// <param name="expiresOn"><see cref="DateTime"/> after which the offer is no longer valid.</param>
+        public Offer(OfferDraft draft, DateTime expiresOn)
         {
-            if (owner == null)
-                throw new ArgumentNullException("owner");
-            if (customer == null)
-                throw new ArgumentNullException("customer");
-            if (string.IsNullOrEmpty(title))
-                throw new ArgumentNullException("title");
+            if (draft == null)
+                throw new ArgumentNullException("draft");
+            if (draft.Owner == null)
+                throw new ArgumentException("Owner for the offer is not specified.", "draft");
+            if (draft.Customer == null)
+                throw new ArgumentException("Customer for the offer is not specified.", "draft");
+            if (expiresOn < DateTime.Now)
+                throw new ArgumentOutOfRangeException("expiresOn", expiresOn, "Offer expiry date should be in the future.");
 
-            _owner = owner;
-            _customer = customer;
-            _title = title;
-            _createdOn = DateTime.Now;
-            _expiresOn = DateTime.Now.AddDays(7);
+            _draft = draft;
+            _owner = draft.Owner;
+            _customer = draft.Customer;
+            _title = draft.Title;
+            _discount = draft.Discount;
+            _expiresOn = expiresOn;
+            _offeredOn = DateTime.Now;
         }
 
         /// <summary>
         /// Adds a new item to the offer.
         /// </summary>
         /// <param name="item"><see cref="OfferItem"/> that should be added to the offer.</param>
-        public virtual void AddItem(OfferItem item)
+        protected internal virtual void AddItem(OfferItem item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
 
-            AssertNewOffer();
             _items.Add(item);
-        }
-
-        /// <summary>
-        /// Removes specified item from the offer.
-        /// </summary>
-        /// <param name="item"><see cref="OfferItem"/> that should be removed from the offer.</param>
-        public virtual void RemoveItem(OfferItem item)
-        {
-            if (item == null)
-                throw new ArgumentNullException("item");
-
-            AssertNewOffer();
-            _items.Remove(item);
-        }
-
-        private void AssertNewOffer()
-        {
-            if (_status != OfferStatus.New)
-                throw new InvalidOperationException("Offer cannot be modified after it was sent to the customer.");
-        }
-
-        /// <summary>
-        /// Sends the offer to the customer.
-        /// </summary>
-        public virtual void SendOffer()
-        {
-            AssertNewOffer();
-            _status = OfferStatus.Offered;
         }
 
         /// <summary>
@@ -188,8 +152,6 @@ namespace Sparrow.Domain.Models
         /// <param name="success">Indicates whether the offer was successful or not.</param>
         public virtual void CompleteOffer(bool success)
         {
-            if (_status == OfferStatus.New)
-                throw new InvalidOperationException("Offer must be sent to the customer before it can be completed.");
             if (_status != OfferStatus.Offered)
                 throw new InvalidOperationException("Offer was already completed.");
 
