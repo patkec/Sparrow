@@ -36,8 +36,11 @@ namespace Sparrow.Web.App_Start
                                     new NotNullConvention(),
                                     ConventionBuilder.Class.Always(c => c.Schema("dbo")),
                                     ConventionBuilder.Id.Always(id => id.GeneratedBy.GuidComb()),
-                                    ConventionBuilder.HasMany.Always(many => many.Cascade.AllDeleteOrphan()),
-                                    DefaultCascade.All(),
+                                    ConventionBuilder.HasMany.Always(many =>
+                                    {
+                                        many.Inverse();
+                                        many.Cascade.AllDeleteOrphan();
+                                    }),
                                     PrimaryKey.Name.Is(id => "ID"),
                                     ForeignKey.EndsWith("ID"),
                                     DefaultAccess.CamelCaseField(CamelCasePrefix.Underscore)
