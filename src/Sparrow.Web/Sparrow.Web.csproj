@@ -168,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\DomainEventConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\MapperConfig.cs" />
     <Compile Include="App_Start\NHibernateConfig.cs" />
@@ -592,6 +593,10 @@
     <ProjectReference Include="..\Sparrow.Domain\Sparrow.Domain.csproj">
       <Project>{71C5790F-9AA0-4420-8EDE-492851B6BB53}</Project>
       <Name>Sparrow.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sparrow.Infrastructure\Sparrow.Infrastructure.csproj">
+      <Project>{15EFF5D4-5CD3-4581-8CD2-B5AFCBBADE9B}</Project>
+      <Name>Sparrow.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

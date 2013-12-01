@@ -29,17 +29,6 @@ namespace Sparrow.Web.Infrastructure
         }
 
         /// <summary>
-        /// Gets the offers messaging hub.
-        /// </summary>
-        protected IHubContext OffersHub
-        {
-            get
-            {
-                return GlobalHost.ConnectionManager.GetHubContext<OffersHub>();
-            }
-        }
-
-        /// <summary>
         /// Gets an entity by id.
         /// </summary>
         [HttpGet]

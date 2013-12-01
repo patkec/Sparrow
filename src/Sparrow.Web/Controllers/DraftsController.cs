@@ -6,6 +6,8 @@ using System.Web.Http;
 using AutoMapper;
 using NHibernate.Criterion;
 using Sparrow.Domain.Models;
+using Sparrow.Domain.Tasks;
+using Sparrow.Infrastructure.Tasks;
 using Sparrow.Web.Infrastructure;
 using Sparrow.Web.Models.Drafts;
 
@@ -99,14 +101,18 @@ namespace Sparrow.Web.Controllers
             //if (expiresOn < DateTime.Now)
             //    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Offer expiry date should be in the future.");
 
+            // Some parameter checking up-front
             var draft = Session.Get<OfferDraft>(draftId);
             if (draft == null)
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Draft not found.");
 
-            var offer = draft.CreateOffer(DateTime.Now.AddDays(7));
-            Session.Save(offer);
+            TaskExecutor.ExecuteLater(new SendOfferTask
+            {
+                DraftId = draftId,
+                ExpiresOn = DateTime.Now.AddDays(7)
+            });
 
-            return Request.CreateResponse(HttpStatusCode.OK, offer.Id);
+            return Request.CreateResponse(HttpStatusCode.Accepted);
         }
     }
 }

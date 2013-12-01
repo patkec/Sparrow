@@ -36,7 +36,7 @@ namespace Sparrow.Domain.Tasks
         private void SendEmailForOffer(Offer offer)
         {
             // It can take some time to prepare and send an email.
-            Thread.Sleep(500);
+            Thread.Sleep(2000);
         }
     }
 }

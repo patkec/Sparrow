@@ -16,6 +16,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using NHibernate;
+using Sparrow.Infrastructure.Tasks;
 using Sparrow.Web.App_Start;
 using StructureMap;
 namespace Sparrow.Web.DependencyResolution
@@ -34,6 +35,8 @@ namespace Sparrow.Web.DependencyResolution
                 x.For<ISessionFactory>()
                     .Use(NHibernateConfig.BuildSessionFactory);
             });
+            TaskExecutor.SessionFactory = ObjectFactory.GetInstance<ISessionFactory>();
+
             return ObjectFactory.Container;
         }
     }

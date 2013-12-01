@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Web.Http;
 using AutoMapper;
 using NHibernate.Criterion;
+using Sparrow.Domain.Commands;
 using Sparrow.Domain.Models;
 using Sparrow.Web.Infrastructure;
 using Sparrow.Web.Models;
@@ -70,15 +71,39 @@ namespace Sparrow.Web.Controllers
             return Mapper.Map<IEnumerable<OfferViewModel>>(offers);
         }
 
-        public HttpResponseMessage Put(Guid id, bool success)
+        [HttpPut]
+        [Route("api/offers/{offerId}/won")]
+        public HttpResponseMessage CloseAsWon(Guid id)
         {
+            // Some parameter checking up-front
             var offer = Session.Get<Offer>(id);
             if (offer == null)
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Offer not found.");
 
-            offer.CompleteOffer(success);
-            Session.Update(offer);
+            var command = new CloseOfferAsWonCommand
+            {
+                OfferId = id
+            };
 
+            CommandExecutor.ExecuteCommand(command);
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        [HttpPut]
+        [Route("api/offers/{offerId}/lost")]
+        public HttpResponseMessage CloseAsLost(Guid id)
+        {
+            // Some parameter checking up-front
+            var offer = Session.Get<Offer>(id);
+            if (offer == null)
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Offer not found.");
+
+            var command = new CloseOfferAsLostCommand
+            {
+                OfferId = id
+            };
+
+            CommandExecutor.ExecuteCommand(command);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
