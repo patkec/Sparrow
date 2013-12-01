@@ -1,9 +1,10 @@
 ﻿using System;
+using Sparrow.Domain.Models;
 
 namespace Sparrow.Domain.Events
 {
     public class OfferLostEvent
     {
-        public Guid OfferId { get; set; }
+        public Offer Offer { get; set; }
     }
 }

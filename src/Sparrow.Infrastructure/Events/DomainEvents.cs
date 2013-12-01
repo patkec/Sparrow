@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace Sparrow.Infrastructure.Events
 {
     public static class DomainEvents
     {
-        private static readonly ThreadLocal<List<Delegate>> _eventActions =
-           new ThreadLocal<List<Delegate>>(() => new List<Delegate>());
+        private static readonly List<Delegate> _eventActions = new List<Delegate>();
 
         /// <summary>
         /// Registers to an event with specified arguments.
@@ -17,8 +15,14 @@ namespace Sparrow.Infrastructure.Events
         /// </returns>
         public static IDisposable Register<T>(Action<T> callback)
         {
-            _eventActions.Value.Add(callback);
-            return new DomainEventRegistrationRemover(() => _eventActions.Value.Remove(callback));
+            lock (_eventActions)
+                _eventActions.Add(callback);
+            
+            return new DomainEventRegistrationRemover(() =>
+            {
+                lock (_eventActions)
+                    _eventActions.Remove(callback);
+            });
         }
 
         /// <summary>
@@ -26,7 +30,9 @@ namespace Sparrow.Infrastructure.Events
         /// </summary>
         public static void Raise<T>(T eventArgs)
         {
-            var actions = _eventActions.Value.ToArray();
+            Delegate[] actions;
+            lock (_eventActions)
+                actions = _eventActions.ToArray();
 
             foreach (var action in actions)
             {

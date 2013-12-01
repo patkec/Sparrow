@@ -28,7 +28,7 @@ namespace Sparrow.Domain.Tasks
 
             DomainEvents.Raise(new OfferSentEvent
             {
-                OfferId = offer.Id,
+                Offer = offer,
                 SentTime = DateTime.Now
             });
         }

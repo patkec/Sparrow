@@ -24,7 +24,7 @@ namespace Sparrow.Domain.Commands
 
             DomainEvents.Raise(new OfferWonEvent
             {
-                OfferId = OfferId
+                Offer = offer
             });
         }
     }
