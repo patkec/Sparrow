@@ -29,7 +29,7 @@ module sparrow.controllers {
         function ($scope: IListScope, $location: ng.ILocationService, $modal, Users: ng.resource.IResourceClass, storageService: sparrow.services.IStorageService) {
             $scope.totalItems = 0;
             $scope.currentPage = 0;
-            $scope.pageSize = 20;
+            $scope.pageSize = 10;
 
             $scope.addUser = function () {
                 storageService.store('users\page', $scope.currentPage);
