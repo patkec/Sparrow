@@ -6,10 +6,10 @@ using System.Web.Http;
 using AutoMapper;
 using NHibernate.Criterion;
 using Sparrow.Domain.Models;
-using Sparrow.Domain.Tasks;
 using Sparrow.Infrastructure.Tasks;
 using Sparrow.Web.Infrastructure;
 using Sparrow.Web.Models.Drafts;
+using Sparrow.Web.Tasks;
 
 namespace Sparrow.Web.Controllers
 {
@@ -106,7 +106,7 @@ namespace Sparrow.Web.Controllers
             if (draft == null)
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Draft not found.");
 
-            TaskExecutor.ExecuteLater(new SendOfferTask
+            TaskExecutor.ExecuteLater(new CreateOfferFromDraftTask
             {
                 DraftId = draftId,
                 ExpiresOn = DateTime.Now.AddDays(7)

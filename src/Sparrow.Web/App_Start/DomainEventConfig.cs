@@ -2,7 +2,6 @@
 using AutoMapper;
 using Microsoft.AspNet.SignalR;
 using Sparrow.Domain.Events;
-using Sparrow.Infrastructure.Events;
 using Sparrow.Web.Hubs;
 using Sparrow.Web.Models.Offers;
 

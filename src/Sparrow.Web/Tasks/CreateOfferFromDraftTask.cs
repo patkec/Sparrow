@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Threading;
-using Sparrow.Domain.Events;
 using Sparrow.Domain.Models;
-using Sparrow.Infrastructure.Events;
 using Sparrow.Infrastructure.Tasks;
 
-namespace Sparrow.Domain.Tasks
+namespace Sparrow.Web.Tasks
 {
-    public class SendOfferTask: BackgroundTask
+    public class CreateOfferFromDraftTask: BackgroundTask
     {
         public Guid DraftId { get; set; }
 
@@ -21,22 +18,13 @@ namespace Sparrow.Domain.Tasks
 
             var offer = draft.CreateOffer(ExpiresOn);
 
-            SendEmailForOffer(offer);
-
             Session.Save(offer);
             Session.Update(draft);
 
-            DomainEvents.Raise(new OfferSentEvent
+            TaskExecutor.ExecuteLater(new SendOfferEmailTask
             {
-                Offer = offer,
-                SentTime = DateTime.Now
+                OfferId = offer.Id
             });
-        }
-
-        private void SendEmailForOffer(Offer offer)
-        {
-            // It can take some time to prepare and send an email.
-            Thread.Sleep(2000);
         }
     }
 }

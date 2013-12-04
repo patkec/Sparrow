@@ -2,9 +2,8 @@
 using Sparrow.Domain.Events;
 using Sparrow.Domain.Models;
 using Sparrow.Infrastructure.Commands;
-using Sparrow.Infrastructure.Events;
 
-namespace Sparrow.Domain.Commands
+namespace Sparrow.Web.Commands
 {
     public class CloseOfferAsLostCommand: Command
     {
