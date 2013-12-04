@@ -5,10 +5,20 @@ namespace Sparrow.Infrastructure.Tasks
 {
     public abstract class BackgroundTask
     {
+        private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// Gets the <see cref="ISession"/> for the task.
         /// </summary>
         protected ISession Session { get; private set; }
+
+        /// <summary>
+        /// Gets the logger for the current task.
+        /// </summary>
+        protected NLog.Logger Logger
+        {
+            get { return _logger; }
+        }
 
         /// <summary>
         /// Initializes the task.
@@ -50,6 +60,7 @@ namespace Sparrow.Infrastructure.Tasks
             }
             catch (Exception ex)
             {
+                Logger.ErrorException("Error processing task " + GetType().Name, ex);
                 OnError(ex);
                 return false;
             }

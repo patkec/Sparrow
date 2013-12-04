@@ -5,10 +5,20 @@ namespace Sparrow.Infrastructure.Commands
 {
     public abstract class Command
     {
+        private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// Gets the <see cref="ISession"/> for the command.
         /// </summary>
         protected ISession Session { get; private set; }
+
+        /// <summary>
+        /// Gets the logger for the current task.
+        /// </summary>
+        protected NLog.Logger Logger
+        {
+            get { return _logger; }
+        }
 
         /// <summary>
         /// Initializes the command.
@@ -43,6 +53,7 @@ namespace Sparrow.Infrastructure.Commands
             }
             catch (Exception ex)
             {
+                Logger.ErrorException("Error executing command " + GetType().Name, ex);
                 OnError(ex);
                 return false;
             }
