@@ -102,3 +102,32 @@ input[type="checkbox"].input-validation-error {
     padding-top: 1px;
     padding-bottom: 0;
 }
+
+/* STAR RATING */
+
+.rating{
+    color: #a9a9a9;
+    margin: 0;
+    padding: 0;
+}
+
+ul.rating {
+    display: inline-block;
+}
+
+.rating li {
+    list-style-type: none;
+    display: inline-block;
+    padding: 1px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.rating li.readonly {
+    cursor: default;
+}
+
+.rating .filled {
+    color: #d17581;
+}

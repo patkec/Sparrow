@@ -38,12 +38,12 @@ module sparrow.services {
             });
         }])
         .factory('Customers', ['$resource', function ($resource: ng.resource.IResourceService) {
-            return $resource('/api/customers/:userId', {}, {
+            return $resource('/api/customers/:customerId', {}, {
                 update: { method: 'PUT' }
             });
         }])
         .factory('Products', ['$resource', function ($resource: ng.resource.IResourceService) {
-            return $resource('/api/products/:userId', {}, {
+            return $resource('/api/products/:productId', {}, {
                 update: { method: 'PUT' }
             });
         }])

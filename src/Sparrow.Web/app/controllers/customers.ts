@@ -6,6 +6,8 @@ module sparrow.controllers {
         currentPage: number;
         pageSize: number;
         customers: any;
+        searchText: string;
+        search();
         addCustomer();
         editCustomer(customer: any);
         deleteCustomer(customer: any);
@@ -25,18 +27,17 @@ module sparrow.controllers {
         '$location',
         '$modal',
         'Customers',
-        'storageService',
-        function ($scope: IListScope, $location: ng.ILocationService, $modal, Customers: ng.resource.IResourceClass, storageService: sparrow.services.IStorageService) {
+        '$routeParams',
+        function ($scope: IListScope, $location: ng.ILocationService, $modal, Customers: ng.resource.IResourceClass, $routeParams) {
             $scope.totalItems = 0;
-            $scope.currentPage = 0;
             $scope.pageSize = 20;
+            $scope.searchText = $routeParams.search;
+            $scope.currentPage = $routeParams.page || 1;
 
             $scope.addCustomer = function () {
-                storageService.store('customers\page', $scope.currentPage);
                 $location.url('/customers/create');
             };
             $scope.editCustomer = function (customer) {
-                storageService.store('customers\page', $scope.currentPage);
                 $location.url('/customers/edit/' + customer.id);
             };
             $scope.deleteCustomer = function (customer) {
@@ -56,18 +57,25 @@ module sparrow.controllers {
                     });
                 });
             };
+            $scope.search = function () {
+                getCustomers($scope.currentPage);
+            };
 
             var getCustomers = function (page) {
-                Customers.get({ page: page, pageSize: $scope.pageSize, sort: 'Name', orderAscending: true }, function (data) {
+                if (page > 1) {
+                    $location.search('page', page);
+                }
+                if ($scope.searchText) {
+                    $location.search('search', $scope.searchText);
+                }
+
+                Customers.get({ page: page, pageSize: $scope.pageSize, sort: 'Name', orderAscending: true, filter: $scope.searchText }, function (data) {
                     $scope.customers = data.items;
                     $scope.currentPage = data.page;
                     $scope.totalItems = data.totalItems;
                 });
             };
             $scope.$watch('currentPage', getCustomers);
-
-            // Fetch data for the first page.
-            $scope.currentPage = storageService.get('customers\page') || 1;
         }]);
 
     customerControllers.controller('CustomerCreateCtrl', [
@@ -78,7 +86,7 @@ module sparrow.controllers {
             $scope.alerts = [];
             $scope.customer = {};
             $scope.confirm = function () {
-                Customers.update($scope.customer,
+                Customers.save($scope.customer,
                     function () {
                         $location.path('/customers');
                     },
@@ -101,7 +109,7 @@ module sparrow.controllers {
         'Customers',
         function ($scope: IEditScope, $routeParams, $location, Customers: sparrow.services.IUpdateResourceClass) {
             $scope.alerts = [];
-            $scope.customer = Customers.get({ productId: $routeParams.productId });
+            $scope.customer = Customers.get({ customerId: $routeParams.customerId });
             $scope.confirm = function () {
                 Customers.update($scope.customer,
                     function () {

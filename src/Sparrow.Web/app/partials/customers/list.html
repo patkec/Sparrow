@@ -1,6 +1,36 @@
-﻿<h1>Customers</h1>
+﻿<div class="content-header">
+    <div>
+        <h1>Customers</h1>
+        <div class="toolbar">
+            <form class="search-form" ng-submit="search()">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" ng-model="searchText">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+            <div class="btn-group">
+                <a class="btn btn-primary btn-lg" title="Add User" ng-click="addCustomer()">
+                    <i class="glyphicon glyphicon-plus"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
-<button class="btn" ng-click="addCustomer()">New Customer</button>
+<ol class="breadcrumb">
+    <li>
+        <a href="/">
+            <i class="glyphicon glyphicon-home"></i>
+        </a>
+    </li>
+    <li class="active">
+        Customers
+    </li>
+</ol>
 
 <table class="table table-striped table-condensed table-hover">
     <thead>
@@ -15,7 +45,7 @@
         <tr data-ng-repeat="customer in customers">
             <td>{{customer.name}}</td>
             <td>{{customer.email}}</td>
-            <td>{{customer.rating}}</td>
+            <td><div star-rating rating-value="customer.rating" max="5" readonly="true"></div></td>
             <td>
                 <a href><i class="glyphicon glyphicon-edit" data-ng-click="editCustomer(customer)"></i></a>
                 <a href><i class="glyphicon glyphicon-remove" data-ng-click="deleteCustomer(customer)"></i></a>
