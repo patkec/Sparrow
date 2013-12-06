@@ -31,12 +31,15 @@ namespace Sparrow.Domain.Models
         }
 
         /// <summary>
-        /// Gets or sets a discount for the current product.
+        /// Gets a discount for the current product.
         /// </summary>
+        /// <remarks>
+        /// Item discount can be applied only via <see cref="OfferDraft"/>.
+        /// </remarks>
         public virtual double Discount
         {
             get { return _discount; }
-            set
+            protected internal set
             {
                 if ((value < 0) || (value > 100))
                     throw new ArgumentOutOfRangeException("value");

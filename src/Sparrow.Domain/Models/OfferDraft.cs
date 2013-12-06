@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sparrow.Domain.Models
 {
@@ -153,6 +154,42 @@ namespace Sparrow.Domain.Models
             if (item == null)
                 throw new ArgumentNullException("item");
             _items.Remove(item);
+        }
+
+        /// <summary>
+        /// Changes discount for given item.
+        /// </summary>
+        /// <param name="itemId">Item identifier for which to change discount.</param>
+        /// <param name="discount">Discount for the item.</param>
+        public virtual void ChangeItemDiscount(Guid itemId, double discount)
+        {
+            var item = Items.FirstOrDefault(x => x.Id == itemId);
+            if (item == null)
+                throw new ArgumentException("Item with specified id does not exist.", "itemId");
+            
+            ChangeItemDiscount(item, discount);
+        }
+
+        /// <summary>
+        /// Changes discount for given item.
+        /// </summary>
+        /// <param name="item">Item for which to change discount.</param>
+        /// <param name="discount">Discount for the item.</param>
+        public virtual void ChangeItemDiscount(OfferDraftItem item, double discount)
+        {
+            if (item == null)
+                throw new ArgumentNullException("item");
+            if (!Items.Contains(item))
+                throw new ArgumentException("Item is not part of current draft.", "item");
+
+            // Dummy business rule - at most 5 items can have an additional discount.
+            if ((discount > 0) && (item.Discount < double.Epsilon))
+            {
+                var itemsWithDiscount = Items.Count(x => x.Discount > 0);
+                if (itemsWithDiscount >= 5)
+                    throw new InvalidOperationException("At most 5 items can have a special discount.");
+            }
+            item.Discount = discount;
         }
 
         /// <summary>
