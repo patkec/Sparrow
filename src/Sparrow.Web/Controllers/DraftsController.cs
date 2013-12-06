@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
@@ -40,12 +41,10 @@ namespace Sparrow.Web.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Draft not found.");
 
             var product = Session.Load<Product>(model.ProductId.Value);
-            var draftItem = new OfferDraftItem(product, model.Quantity)
-            {
-                Discount = model.Discount
-            };
+            var draftItem = new OfferDraftItem(product, model.Quantity);
 
             draft.AddItem(draftItem);
+            draft.ChangeItemDiscount(draftItem, model.Discount);
             // Call Save explicitly to generate new Id which will be returned.
             Session.Save(draftItem);
             Session.Update(draft);
@@ -65,13 +64,17 @@ namespace Sparrow.Web.Controllers
             if (model.ProductId.HasValue)
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Cannot update product for item.");
 
-            var draftItem = Session.Get<OfferDraftItem>(model.Id);
+            var draft = Session.Get<OfferDraft>(draftId);
+            if (draft == null)
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Draft not found.");
+
+            var draftItem = draft.Items.FirstOrDefault(x => x.Id == model.Id);
             if (draftItem == null)
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Draft item not found.");
 
-            draftItem.Discount = model.Discount;
             draftItem.Quantity = model.Quantity;
-            Session.Update(draftItem);
+            draft.ChangeItemDiscount(draftItem, model.Discount);
+            Session.Update(draft);
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
