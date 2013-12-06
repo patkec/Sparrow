@@ -29,9 +29,10 @@ module sparrow {
                 .when('/customers/create', { templateUrl: '/app/partials/customers/create.html', controller: 'CustomerCreateCtrl' })
                 .when('/customers/edit/:customerId', { templateUrl: '/app/partials/customers/edit.html', controller: 'CustomerEditCtrl' })
                 // Users
-                .when('/users', { templateUrl: '/app/partials/users/list.html', controller: 'UsersCtrl' })
+                .when('/users', { templateUrl: '/app/partials/users/list.html', controller: 'UsersCtrl' })                
                 .when('/users/create', { templateUrl: '/app/partials/users/create.html', controller: 'UserCreateCtrl' })
                 .when('/users/edit/:userId', { templateUrl: '/app/partials/users/edit.html', controller: 'UserEditCtrl' })
+                .when('/users/:userId', { templateUrl: '/app/partials/users/details.html', controller: 'UserDetailsCtrl' })
                 // Products
                 .when('/products', { templateUrl: '/app/partials/products/list.html', controller: 'ProductsCtrl' })
                 .when('/products/create', { templateUrl: '/app/partials/products/create.html', controller: 'ProductCreateCtrl' })

@@ -215,7 +215,9 @@
     <Compile Include="Models\Products\ProductEditModel.cs" />
     <Compile Include="Models\Products\ProductViewModel.cs" />
     <Compile Include="Models\Users\UserAddModel.cs" />
+    <Compile Include="Models\Users\UserDetailsViewModel.cs" />
     <Compile Include="Models\Users\UserEditModel.cs" />
+    <Compile Include="Models\Users\UserEditModelBase.cs" />
     <Compile Include="Models\Users\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -245,6 +247,7 @@
     <Content Include="app\partials\products\edit.html" />
     <Content Include="app\partials\products\list.html" />
     <Content Include="app\partials\users\create.html" />
+    <Content Include="app\partials\users\details.html" />
     <Content Include="app\partials\users\edit.html" />
     <Content Include="app\partials\users\list.html" />
     <Content Include="Content\bootstrap-theme.css" />

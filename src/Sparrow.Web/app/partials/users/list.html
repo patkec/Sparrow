@@ -42,16 +42,17 @@
                 </div>
                 <div class="col-xs-9 col-md-9 section-box">
                     <h2>
-                        {{user.name}}
+                        <a href="/users/{{user.id}}" style="color: black;">{{user.fullName}}</a>
+                        <small class="text-muted">{{user.location}}</small>
                     </h2>
                     <table class="table table-condensed table-responsive table-user-information">
                         <tbody>
                             <tr>
-                                <td class="text-muted">Role</td>
+                                <td class="text-muted col-sm-4">Role</td>
                                 <td>{{user.role}}</td>
                             </tr>
                             <tr>
-                                <td class="text-muted">E-mail</td>
+                                <td class="text-muted col-sm-4">E-mail</td>
                                 <td>{{user.email}}</td>
                             </tr>
                         </tbody>
@@ -59,17 +60,16 @@
                     <hr />
                     <div class="row rating-desc">
                         <div class="col-md-12">
-                            <button class="btn btn-sm btn-primary" type="button" ng-class="{disabled: !!!user.email}"
-                                    data-toggle="tooltip"
-                                    data-original-title="Send message to user">
-                                <i class="glyphicon glyphicon-envelope"></i>
-                            </button>
+                            <a href="/users/{{user.id}}" class="btn btn-sm btn-info" type="button"
+                               data-toggle="tooltip" data-original-title="Additional details">
+                                <i class="glyphicon glyphicon-folder-open"></i>
+                            </a>
                             <span class="pull-right">
-                                <button class="btn btn-sm btn-warning" type="button" ng-click="editUser(user)"
+                                <a href="/users/edit/{{user.id}}" class="btn btn-sm btn-warning"
                                         data-toggle="tooltip"
-                                        data-original-title="Edit this user">
+                                        data-original-title="Additional details">
                                     <i class="glyphicon glyphicon-edit"></i>
-                                </button>
+                                </a>
                                 <button class="btn btn-sm btn-danger" type="button" ng-click="deleteUser(user)"
                                         data-toggle="tooltip"
                                         data-original-title="Remove this user">
@@ -101,8 +101,8 @@
                 Are you sure you wish to delete user "{{item.name}}"?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-ng-click="cancel()">No</button>
-                <button type="button" class="btn btn-danger" data-ng-click="confirm()">Yes</button>
+                <button type="button" class="btn btn-default" data-ng-click="cancel()">Cancel</button>
+                <button type="button" class="btn btn-danger" data-ng-click="confirm()">Delete</button>
             </div>
         </div>
     </div>

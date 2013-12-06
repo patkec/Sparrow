@@ -28,12 +28,14 @@ namespace Sparrow.Web
             protected override void Configure()
             {
                 CreateMap<User, UserViewModel>();
+                CreateMap<User, UserDetailsViewModel>();
                 CreateMap<User, UserEditModel>();
                 CreateMap<UserEditModel, User>()
-                    .ForMember(x => x.Id, opts => opts.Ignore());
+                    .ForMember(x => x.Id, opts => opts.Ignore())
+                    .ForMember(x => x.UserName, opts => opts.Ignore());
                 CreateMap<UserAddModel, User>()
                     .ForMember(x => x.Id, opts => opts.Ignore())
-                    .ConstructUsing(model => new User(model.Name));
+                    .ConstructUsing(model => new User(model.UserName));
             }
         }
 

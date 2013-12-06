@@ -27,20 +27,15 @@ module sparrow.controllers {
         '$location',
         '$modal',
         'Users',
-        'storageService',
-        function ($scope: IListScope, $location: ng.ILocationService, $modal, Users: ng.resource.IResourceClass, storageService: sparrow.services.IStorageService) {
+        '$routeParams',
+        function ($scope: IListScope, $location: ng.ILocationService, $modal, Users: ng.resource.IResourceClass, $routeParams) {
             $scope.totalItems = 0;
-            $scope.currentPage = 0;
-            $scope.pageSize = 10;
-            $scope.searchText = '';
+            $scope.pageSize = 10;       
+            $scope.searchText = $routeParams.search;
+            $scope.currentPage = $routeParams.page || 1;
 
             $scope.addUser = function () {
-                storageService.store('users\page', $scope.currentPage);
                 $location.url('/users/create');
-            };
-            $scope.editUser = function (user) {
-                storageService.store('users\page', $scope.currentPage);
-                $location.url('/users/edit/' + user.id);
             };
             $scope.deleteUser = function (user) {
                 var modalInstance = $modal.open({
@@ -60,23 +55,35 @@ module sparrow.controllers {
                 });
             };
             $scope.search = function () {
-                console.log('sojcin');
-                console.log($scope.searchText);
                 getUsers($scope.currentPage);
             };
 
             var getUsers = function (page) {
-                Users.get({ page: page, pageSize: $scope.pageSize, sort: 'Name', orderAscending: true, filter: $scope.searchText }, function (data) {
-                    $scope.users = data.items;
-                    $scope.currentPage = data.page;
+                if (page > 1) {
+                    $location.search('page', page);
+                }
+                if ($scope.searchText) {
+                    $location.search('search', $scope.searchText);
+                }
+
+                Users.get({ page: page, pageSize: $scope.pageSize, sort: 'FirstName', orderAscending: true, filter: $scope.searchText }, function (data) {
+                    $scope.users = data.items;                                        
                     $scope.totalItems = data.totalItems;
+                    $scope.currentPage = data.page;
                 });
             };
-            $scope.$watch('currentPage', getUsers);
 
-            // Fetch data for the first page.
-            $scope.currentPage = storageService.get('users\page') || 1;
+            $scope.$watch('currentPage', getUsers);
         }]);
+
+    userControllers.controller('UserDetailsCtrl', [
+        '$scope',
+        '$routeParams',
+        'Users',
+        function ($scope, $routeParams, Users) {
+            $scope.user = Users.get({ userId: $routeParams.userId });
+        }
+    ]);
 
     userControllers.controller('UserCreateCtrl', [
         '$scope',
@@ -86,7 +93,7 @@ module sparrow.controllers {
             $scope.alerts = [];
             $scope.user = {};
             $scope.confirm = function () {
-                Users.update($scope.user,
+                Users.save($scope.user,
                     function () {
                         $location.path('/users');
                     },

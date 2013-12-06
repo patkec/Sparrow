@@ -2,7 +2,7 @@
 
 namespace Sparrow.Web.Models.Users
 {
-    public class UserEditModel : UserAddModel, IEditModel
+    public class UserEditModel : UserEditModelBase, IEditModel
     {
         /// <summary>
         /// Gets or sets the user identification.

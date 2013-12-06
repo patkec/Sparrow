@@ -15,7 +15,8 @@ namespace Sparrow.Web.Infrastructure
 {
     public abstract class CrudApiController<TEntity, TViewModel, TDetailViewModel, TAddModel, TEditModel>: SessionApiController
         where TEntity: EntityBase
-        where TEditModel: TAddModel, IEditModel
+        where TAddModel: class
+        where TEditModel: class, IEditModel
     {
         /// <summary>
         /// Gets the administrative messaging hub.
@@ -118,7 +119,10 @@ namespace Sparrow.Web.Infrastructure
         public HttpResponseMessage Put(TEditModel model)
         {
             if (model.Id == Guid.Empty)
-                return Post(model);
+            {
+                var addModel = ConvertToAddModel(model);
+                return Post(addModel);
+            }
 
             var entity = Session.Load<TEntity>(model.Id);
             UpdateEntity(entity, model);
@@ -126,6 +130,21 @@ namespace Sparrow.Web.Infrastructure
             OnEntityUpdated(entity);
 
             return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        /// <summary>
+        /// Converts given EditModel to AddModel so that it can be used with Post.
+        /// </summary>
+        protected virtual TAddModel ConvertToAddModel(TEditModel editModel)
+        {
+            if (editModel == null)
+                return null;
+
+            var addModel = editModel as TAddModel;
+            if (addModel != null)
+                return addModel;
+
+            return Mapper.Map<TAddModel>(editModel);
         }
 
         /// <summary>

@@ -2,16 +2,24 @@
 
 namespace Sparrow.Web.Models.Users
 {
-    public class UserViewModel
+    public class UserDetailsViewModel
     {
         /// <summary>
         /// Gets or sets the user identification.
         /// </summary>
         public Guid Id { get; set; }
         /// <summary>
-        /// Gets or sets the full name of the user.
+        /// Gets or sets the user name.
         /// </summary>
-        public string FullName { get; set; }
+        public string UserName { get; set; }
+        /// <summary>
+        /// Gets or sets the first name of the user.
+        /// </summary>
+        public string FirstName { get; set; }
+        /// <summary>
+        /// Gets or sets the last name of the user.
+        /// </summary>
+        public string LastName { get; set; }
         /// <summary>
         /// Gets or sets the role of the user.
         /// </summary>

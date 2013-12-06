@@ -1,0 +1,75 @@
+﻿<div class="content-header">
+    <div>
+        <h1>User Details</h1>
+    </div>
+</div>
+
+<ol class="breadcrumb">
+    <li>
+        <a href="/">
+            <i class="glyphicon glyphicon-home"></i>
+        </a>
+    </li>
+    <li>
+        <a href="/users">Users</a>
+    </li>
+    <li class="active">
+        User Details
+    </li>
+</ol>
+
+<div class=" page-header" style="margin-top:0;">
+        <div style="width: 100%">
+            <img alt="User" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100" class="pull-left" style="width: 100px;">
+            <div class="pull-right">
+                <a href="/users/edit/{{user.id}}" class="btn btn-sm btn-warning" data-toggle="tooltip" data-original-title="Edit">
+                    <i class="glyphicon glyphicon-edit"></i>
+                </a>
+            </div>
+            <h2 style="margin-left: 110px">{{user.firstName}} {{user.lastName}}</h2>
+            <span style="margin-left: 12px" class="text-muted">
+                <i class="glyphicon glyphicon-envelope"></i>
+                {{user.email || 'E-mail: none'}}
+            </span>
+        </div>
+    </div>
+
+<br/>
+<section>
+    <h4>Account</h4>
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">User name</label>
+            <div class="col-sm-10" style="margin-top: 7px">
+                <span>{{user.userName}}</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-2 control-label">Role</label>
+            <div class="col-sm-10" style="margin-top: 7px">
+                <span>{{user.role}}</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-2 control-label">Location</label>
+            <div class="col-sm-10" style="margin-top: 7px">
+                <span>{{user.location}}</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<br />
+<section>
+    <h4>Recent offers</h4>
+    <table class="table table-condensed">
+        <tr>
+            <th>Title</th>
+            <th>Customer</th>
+            <th>Offered On</th>
+            <th>Expires On</th>
+        </tr>
+    </table>
+</section>

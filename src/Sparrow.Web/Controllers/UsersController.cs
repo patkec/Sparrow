@@ -8,7 +8,7 @@ using Sparrow.Web.Models.Users;
 
 namespace Sparrow.Web.Controllers
 {
-    public class UsersController : CrudApiController<User, UserViewModel, UserViewModel, UserAddModel, UserEditModel>
+    public class UsersController : CrudApiController<User, UserViewModel, UserDetailsViewModel, UserAddModel, UserEditModel>
     {
         protected override void OnEntityCreated(User entity)
         {
@@ -30,7 +30,7 @@ namespace Sparrow.Web.Controllers
 
         protected override Expression<Func<User, bool>> CreateFilter(string filter)
         {
-            return (user => user.Name.IsInsensitiveLike(filter, MatchMode.Anywhere));
+            return (user => user.FirstName.IsInsensitiveLike(filter, MatchMode.Anywhere) || user.LastName.IsInsensitiveLike(filter, MatchMode.Anywhere));
         }
     }
 }
