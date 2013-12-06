@@ -5,7 +5,9 @@ module sparrow.controllers {
         totalItems: number;
         currentPage: number;
         pageSize: number;
+        searchText: string;
         products: any;
+        search();
         addProduct();
         editProduct(product: any);
         deleteProduct(product: any);
@@ -25,18 +27,17 @@ module sparrow.controllers {
         '$location',
         '$modal',
         'Products',
-        'storageService',
-        function ($scope: IListScope, $location: ng.ILocationService, $modal, Products: ng.resource.IResourceClass, storageService: sparrow.services.IStorageService) {
+        '$routeParams',
+        function ($scope: IListScope, $location: ng.ILocationService, $modal, Products: ng.resource.IResourceClass, $routeParams) {
             $scope.totalItems = 0;
-            $scope.currentPage = 0;
             $scope.pageSize = 20;
+            $scope.searchText = $routeParams.search;
+            $scope.currentPage = $routeParams.page || 1;
 
             $scope.addProduct = function () {
-                storageService.store('products\page', $scope.currentPage);
                 $location.url('/products/create');
             };
             $scope.editProduct = function (product) {
-                storageService.store('products\page', $scope.currentPage);
                 $location.url('/products/edit/' + product.id);
             };
             $scope.deleteProduct = function (product) {
@@ -56,18 +57,18 @@ module sparrow.controllers {
                     });
                 });
             };
+            $scope.search = function () {
+                getProducts($scope.currentPage);
+            };
 
             var getProducts = function (page) {
-                Products.get({ page: page, pageSize: $scope.pageSize, sort: 'Title', orderAscending: true }, function (data) {
+                Products.get({ page: page, pageSize: $scope.pageSize, sort: 'Title', orderAscending: true, filter: $scope.searchText }, function (data) {
                     $scope.products = data.items;
                     $scope.currentPage = data.page;
                     $scope.totalItems = data.totalItems;
                 });
             };
             $scope.$watch('currentPage', getProducts);
-
-            // Fetch data for the first page.
-            $scope.currentPage = storageService.get('products\page') || 1;
         }]);
 
     productControllers.controller('ProductCreateCtrl', [
@@ -78,7 +79,7 @@ module sparrow.controllers {
             $scope.alerts = [];
             $scope.product = {};
             $scope.confirm = function () {
-                Products.update($scope.product,
+                Products.save($scope.product,
                     function () {
                         $location.path('/products');
                     },

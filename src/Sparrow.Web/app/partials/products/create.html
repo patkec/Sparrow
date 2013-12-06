@@ -1,21 +1,53 @@
-﻿<h1>Create Product</h1>
+﻿<div class="content-header">
+    <div>
+        <h1>New Product</h1>
+    </div>
+</div>
+
+<ol class="breadcrumb">
+    <li>
+        <a href="/">
+            <i class="glyphicon glyphicon-home"></i>
+        </a>
+    </li>
+    <li>
+        <a href="/products">Products</a>
+    </li>
+    <li class="active">
+        New Product
+    </li>
+</ol>
 
 <alert ng-repeat="alert in alerts" type="'danger'" close="closeAlert($index)">Error creating product.</alert>
 
-<form novalidate role="form" name="form">
-    <div class="form-group" ng-class="{'has-error': form.title.$dirty && form.title.$invalid}">
-        <label class="control-label" for="title">Title</label>
-        <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" data-ng-model="product.title" required />
+<form novalidate role="form" name="form" class="form-horizontal">
+    <div class="panel panel-default">
+        <div class="panel-heading">Product Information</div>
+        <div class="panel-body">
+            <div class="form-group" ng-class="{'has-error': form.title.$dirty && form.title.$invalid}">
+                <label class="control-label col-sm-2" for="title">Title</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" data-ng-model="product.title" required />
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': form.description.$dirty && form.description.$invalid}">
+                <label class="control-label col-sm-2" for="description">Description</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="description" name="description" placeholder="Enter description" data-ng-model="product.description" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="price">Price</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="price" name="price" placeholder="Enter price" data-ng-model="product.price" required />
+                </div>
+            </div>
+        </div>
     </div>
     <div class="form-group">
-        <label class="control-label" for="description">Description</label>
-        <input type="text" class="form-control" id="description" name="description" placeholder="Enter description" data-ng-model="product.description" />
+        <div class="col-sm-offset-2 col-sm-10">
+            <button class="btn" ng-click="cancel()">Cancel</button>
+            <button class="btn btn-primary" ng-click="confirm()" ng-disabled="form.$invalid">Save</button>
+        </div>
     </div>
-    <div class="form-group" ng-class="{'has-error': form.mail.$dirty && form.mail.$invalid}">
-        <label class="control-label" for="price">Price</label>
-        <input type="number" class="form-control" id="price" name="price" placeholder="Enter price" data-ng-model="product.price" required />
-    </div>
-
-    <button class="btn" ng-click="cancel()">Cancel</button>
-    <button class="btn btn-primary" ng-click="confirm()" ng-disabled="form.$invalid">Save</button>
 </form>
