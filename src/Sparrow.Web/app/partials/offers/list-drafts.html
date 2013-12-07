@@ -5,6 +5,7 @@
             <th>Owner</th>
             <th>Customer</th>
             <th>Price</th>
+            <th>Created On</th>
             <th></th>
         </tr>
     </thead>
@@ -14,6 +15,7 @@
             <td>{{draft.ownerName}}</td>
             <td>{{draft.customerName}}</td>
             <td>{{draft.offerPrice}}</td>
+            <td>{{draft.createdOn | date:'longDate'}}</td>
             <td>
                 <a href><i class="glyphicon glyphicon-edit" data-ng-click="editDraft(draft)"></i></a>
                 <a href><i class="glyphicon glyphicon-remove" data-ng-click="deleteDraft(draft)"></i></a>

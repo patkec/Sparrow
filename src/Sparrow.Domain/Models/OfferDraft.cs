@@ -14,6 +14,7 @@ namespace Sparrow.Domain.Models
         private Customer _customer;
         private Offer _sourceOffer;
         private double _discount;
+        private DateTime _createdOn;
         private IList<Offer> _offers = new List<Offer>();
         private IList<OfferDraftItem> _items = new List<OfferDraftItem>();
 
@@ -57,6 +58,14 @@ namespace Sparrow.Domain.Models
                     throw new ArgumentNullException("value");
                 _customer = value;
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the date when draft was created.
+        /// </summary>
+        public virtual DateTime CreatedOn
+        {
+            get { return _createdOn; }
         }
 
         /// <summary>
@@ -131,6 +140,7 @@ namespace Sparrow.Domain.Models
                 throw new ArgumentNullException("title");
             _owner = owner;
             _title = title;
+            _createdOn = DateTime.Now;
             _sourceOffer = sourceOffer;
         }
 

@@ -57,7 +57,7 @@ module sparrow.controllers {
         });
 
         function getDrafts(page: number) {
-            Drafts.get({ page: page, pageSize: $scope.pageSize, sort: 'Title', orderAscending: true }, function (data) {
+            Drafts.get({ page: page, pageSize: $scope.pageSize, sort: 'CreatedOn', orderAscending: false }, function (data) {
                 $scope.drafts = data.items;
                 $scope.currentPage = data.page;
                 $scope.totalItems = data.totalItems;
