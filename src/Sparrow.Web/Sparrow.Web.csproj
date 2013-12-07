@@ -235,7 +235,6 @@
     <Content Include="app\partials\customers\list.html" />
     <Content Include="app\partials\drafts\create.html" />
     <Content Include="app\partials\drafts\details.html" />
-    <Content Include="app\partials\drafts\edit.html" />
     <Content Include="app\partials\drafts\list.html" />
     <Content Include="app\partials\offers\archive.html" />
     <Content Include="app\partials\offers\edit.html" />

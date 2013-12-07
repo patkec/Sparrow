@@ -2,6 +2,21 @@ module sparrow.directives {
     'use strict';
 
     angular.module('sparrow.directives', [])
+        .directive('editableDisabled', function () {
+            return {
+                restrict: 'A',
+                link: function (scope, elem, attrs) {
+                    scope.$watch(attrs.editableDisabled, function (val) {
+                        if (val === true) {                            
+                            elem.attr('disabled', 'disabled');
+                        }
+                        else {
+                            elem.removeAttr('disabled');
+                        }
+                    });
+                }
+            };
+        })
         .directive('starRating', function () {
             return {
                 restrict: 'A',

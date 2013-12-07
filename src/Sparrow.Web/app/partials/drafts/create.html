@@ -1,23 +1,55 @@
-﻿<h1>Create Offer</h1>
+﻿<div class="content-header">
+    <div>
+        <h1>New Offer</h1>
+    </div>
+</div>
+
+<ol class="breadcrumb">
+    <li>
+        <a href="/">
+            <i class="glyphicon glyphicon-home"></i>
+        </a>
+    </li>
+    <li>
+        <a href="/offers">Offers</a>
+    </li>
+    <li class="active">
+        New Offer
+    </li>
+</ol>
 
 <alert ng-repeat="alert in alerts" type="'danger'" close="closeAlert($index)">Error creating offer.</alert>
 
-<form novalidate role="form" name="form">
-    <div class="form-group" ng-class="{'has-error': form.title.$dirty && form.title.$invalid}">
-        <label class="control-label" for="title">Title</label>
-        <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" data-ng-model="offer.title" required />
+<form novalidate role="form" name="form" class="form-horizontal">
+    <div class="panel panel-default">
+        <div class="panel-heading">Offer Information</div>
+        <div class="panel-body">
+            <div class="form-group" ng-class="{'has-error': form.title.$dirty && form.title.$invalid}">
+                <label class="control-label col-sm-2" for="title">Title</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" data-ng-model="draft.title" required />
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': form.description.$dirty && form.description.$invalid}">
+                <label class="control-label col-sm-2" for="customer">Customer</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="Enter customer" data-ng-model="draft.customer"
+                           typeahead="item as item.name for item in getCustomers($viewValue)" typeahead-min-length="2" typeahead-wait-ms="100" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="owner">Owner</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="Enter owner" data-ng-model="draft.owner"
+                           typeahead="item as item.fullName for item in getOwners($viewValue)" typeahead-min-length="2" typeahead-wait-ms="100" required />
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group" ng-class="{'has-error': form.customer.$dirty && form.customer.$invalid}">
-        <label class="control-label" for="customer">Customer</label>
-        <input type="text" class="form-control" placeholder="Enter customer" data-ng-model="offer.customer" 
-               typeahead="item as item.name for item in getCustomers($viewValue)" typeahead-min-length="2" typeahead-wait-ms="100" required/>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button class="btn" ng-click="cancel()">Cancel</button>
+            <button class="btn btn-primary" ng-click="confirm()" ng-disabled="form.$invalid">Next</button>
+        </div>
     </div>
-    <div class="form-group" ng-class="{'has-error': form.owner.$dirty && form.owner.$invalid}">
-        <label class="control-label" for="owner">Owner</label>
-        <input type="text" class="form-control" placeholder="Enter owner" data-ng-model="offer.owner"
-               typeahead="item as item.fullName for item in getOwners($viewValue)" typeahead-min-length="2" typeahead-wait-ms="100" required />
-    </div>
-
-    <button class="btn" ng-click="cancel()">Cancel</button>
-    <button class="btn btn-primary" ng-click="confirm()" ng-disabled="form.$invalid || !!!offer.customer.id || !!!offer.owner.id">Save</button>
 </form>

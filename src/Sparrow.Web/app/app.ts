@@ -20,7 +20,6 @@ module sparrow {
                 .when('/drafts', { templateUrl: '/app/partials/drafts/list.html', controller: 'DraftsCtrl' })
                 .when('/drafts/create', { templateUrl: '/app/partials/drafts/create.html', controller: 'DraftCreateCtrl' })
                 .when('/drafts/:draftId', { templateUrl: '/app/partials/drafts/details.html', controller: 'DraftDetailsCtrl' })
-                .when('/drafts/edit/:draftId', { templateUrl: '/app/partials/drafts/edit.html', controller: 'DraftEditCtrl'})
                 // Offers
                 .when('/offers', { templateUrl: '/app/partials/offers/list.html', controller: 'OffersCtrl' })
                 .when('/offers/archive', { templateUrl: '/app/partials/offers/archive.html', controller: 'OffersArchiveCtrl' })
@@ -42,4 +41,7 @@ module sparrow {
             // Enable pretty URLs (without #)
             $locationProvider.html5Mode(true);
         }]);
+    app.run(function (editableOptions) {
+        editableOptions.theme = 'bs3';
+    });
 }

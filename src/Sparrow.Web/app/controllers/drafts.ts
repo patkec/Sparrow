@@ -86,7 +86,9 @@ module sparrow.controllers {
         '$http',
         'Drafts',
         function ($scope, $routeParams, $http, Drafts) {
-            $scope.draft = Drafts.get({ draftId: $routeParams.draftId });
+            $scope.draft = Drafts.get({ draftId: $routeParams.draftId }, function () {
+                $scope.addItem();
+            });            
 
             $scope.addItem = function () {
                 if (!!!$scope.draft.items)
@@ -115,9 +117,9 @@ module sparrow.controllers {
                     quantity: data.quantity
                 };
                 var promise = $http.put('/api/drafts/' + $scope.draft.id + '/items', data);
-                promise.success(function (response) {
-                    console.log(response);
+                promise.success(function (response) {                    
                     item.id = response.id;
+                    $scope.addItem();
                 });
                 return promise;
             };
@@ -150,8 +152,8 @@ module sparrow.controllers {
             };
             $scope.confirm = function () {
                 Drafts.save(mapToDto($scope.draft),
-                    function () {
-                        $location.path('/drafts');
+                    function (data) {
+                        $location.path('/drafts/' + data.id);
                     },
                     function () {
                         $scope.alerts.push({});

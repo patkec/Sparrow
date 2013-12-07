@@ -152,6 +152,9 @@ namespace Sparrow.Domain.Models
         {
             if (item == null)
                 throw new ArgumentNullException("item");
+            if (item.OfferDraft != null)
+                throw new ArgumentException("Item is already contained in a draft.");
+            item.OfferDraft = this;
             _items.Add(item);
         }
 
@@ -163,6 +166,10 @@ namespace Sparrow.Domain.Models
         {
             if (item == null)
                 throw new ArgumentNullException("item");
+            if (!Equals(item.OfferDraft, this))
+                throw new ArgumentException("Item is not part of current draft.", "item");
+
+            item.OfferDraft = null;
             _items.Remove(item);
         }
 
