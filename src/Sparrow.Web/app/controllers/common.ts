@@ -4,6 +4,7 @@ module sparrow.controllers {
 
     interface IMenuScope extends ng.IScope {
         activeViewPath: string;
+        isActivePath(path: string): boolean;
     }
 
     export interface IItemDeleteScope extends ng.IScope {
@@ -28,5 +29,12 @@ module sparrow.controllers {
             $scope.$on('$routeChangeSuccess', function () {
                 $scope.activeViewPath = $location.path();
             });
+            $scope.isActivePath = function (path: string) {
+                if (!$scope.activeViewPath)
+                    return false;
+
+                var activeViewPathRoot = $scope.activeViewPath.slice(0, path.length);
+                return activeViewPathRoot === path;
+            };
         }]);
 }

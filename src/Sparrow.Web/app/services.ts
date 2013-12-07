@@ -28,7 +28,8 @@ module sparrow.services {
         // RESOURCES
         .factory('Offers', ['$resource', function ($resource: ng.resource.IResourceService) {
             return $resource('/api/offers/:offerId', {}, {
-                update: { method: 'PUT' }
+                update: { method: 'PUT' },
+                getArchived: { method: 'GET', url: '/api/offers/archived' }
             });
         }])
         .factory('Drafts', ['$resource', function ($resource: ng.resource.IResourceService) {

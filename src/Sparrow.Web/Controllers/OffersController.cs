@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -16,15 +17,46 @@ namespace Sparrow.Web.Controllers
     public class OffersController: SessionApiController
     {
         [Route("api/offers")]
-        public void Get(PagedListRequestModel model)
+        public PagedListModel<OfferViewModel> Get(PagedListRequestModel requestModel)
         {
-            
+            return GetOffers(requestModel, x => x.Status == OfferStatus.Offered);
         }
 
-        [Route("api/offers/completed")]
-        public void GetCompleted(PagedListRequestModel model)
+        [Route("api/offers/archived")]
+        public PagedListModel<OfferViewModel> GetCompleted(PagedListRequestModel requestModel)
         {
-            
+            return GetOffers(requestModel, x => x.Status == OfferStatus.Won || x.Status == OfferStatus.Lost);
+        }
+
+        private PagedListModel<OfferViewModel> GetOffers(PagedListRequestModel requestModel, Expression<Func<Offer, bool>> filterExpression)
+        {
+            requestModel = requestModel ?? new PagedListRequestModel
+            {
+                PageSize = 20
+            };
+            var itemsToSkip = (requestModel.Page - 1) * requestModel.PageSize;
+
+            var itemsQuery = Session.QueryOver<Offer>()
+                .Where(filterExpression);
+            if (!string.IsNullOrEmpty(requestModel.Filter))
+                itemsQuery.Where(x => x.Title.IsInsensitiveLike(requestModel.Filter, MatchMode.Anywhere));
+            if (!string.IsNullOrEmpty(requestModel.Sort))
+                itemsQuery.UnderlyingCriteria.AddOrder(new Order(requestModel.Sort, requestModel.OrderAscending));
+            itemsQuery
+                .Skip(itemsToSkip)
+                .Take(requestModel.PageSize);
+
+            var items = itemsQuery.Future();
+            var totalItems = itemsQuery.ToRowCountQuery().FutureValue<int>();
+
+            return new PagedListModel<OfferViewModel>
+            {
+                Page = requestModel.Page,
+                PageSize = requestModel.PageSize,
+                TotalItems = totalItems.Value,
+                TotalPages = (int)Math.Ceiling(totalItems.Value / (double)requestModel.PageSize),
+                Items = Mapper.Map<IEnumerable<OfferViewModel>>(items)
+            };
         }
 
         public void Get()

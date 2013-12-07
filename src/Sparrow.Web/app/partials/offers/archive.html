@@ -1,6 +1,6 @@
 ﻿<div class="content-header">
     <div>
-        <h1>Active Offers</h1>
+        <h1>Archived Offers</h1>
         <div class="toolbar">
             <form class="search-form" ng-submit="search()">
                 <div class="input-group">
@@ -27,8 +27,11 @@
             <i class="glyphicon glyphicon-home"></i>
         </a>
     </li>
+    <li>
+        <a href="/offers">Offers</a>
+    </li>
     <li class="active">
-        Offers
+        Archived
     </li>
 </ol>
 
@@ -45,15 +48,15 @@
         <tr data-ng-repeat="offer in offers">
             <td>{{offer.title}}</td>
             <td>{{offer.owner.fullName}}</td>
-            <td>{{offer.customer.name}}</td>
+            <td>{{offer.customer.Name}}</td>
             <td>{{offer.offerPrice}}</td>
         </tr>
     </tbody>
     <tfoot>
-        <td colspan="5">
-            <pagination boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" class="pull-right"
-                        total-items="totalItems" page="currentPage" items-per-page="pageSize">
-            </pagination>
-        </td>
+    <td colspan="5">
+        <pagination boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" class="pull-right"
+                    total-items="totalItems" page="currentPage" items-per-page="pageSize">
+        </pagination>
+    </td>
     </tfoot>
 </table>

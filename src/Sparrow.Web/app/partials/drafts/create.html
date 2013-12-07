@@ -15,7 +15,7 @@
     <div class="form-group" ng-class="{'has-error': form.owner.$dirty && form.owner.$invalid}">
         <label class="control-label" for="owner">Owner</label>
         <input type="text" class="form-control" placeholder="Enter owner" data-ng-model="offer.owner"
-               typeahead="item as item.name for item in getOwners($viewValue)" typeahead-min-length="2" typeahead-wait-ms="100" required />
+               typeahead="item as item.fullName for item in getOwners($viewValue)" typeahead-min-length="2" typeahead-wait-ms="100" required />
     </div>
 
     <button class="btn" ng-click="cancel()">Cancel</button>

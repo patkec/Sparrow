@@ -236,10 +236,8 @@
     <Content Include="app\partials\drafts\create.html" />
     <Content Include="app\partials\drafts\details.html" />
     <Content Include="app\partials\drafts\edit.html" />
-    <Content Include="app\partials\offers\create.html" />
-    <Content Include="app\partials\offers\list-active.html" />
-    <Content Include="app\partials\offers\list-completed.html" />
-    <Content Include="app\partials\offers\list-drafts.html" />
+    <Content Include="app\partials\drafts\list.html" />
+    <Content Include="app\partials\offers\archive.html" />
     <Content Include="app\partials\offers\edit.html" />
     <Content Include="app\partials\offers\list.html" />
     <Content Include="app\partials\offers\overview.html" />

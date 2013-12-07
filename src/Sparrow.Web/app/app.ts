@@ -17,13 +17,14 @@ module sparrow {
                 .when('/admin', { templateUrl: 'app/partials/admin/overview.html', controller: 'AdminCtrl' })
                 .when('/overview', { templateUrl: 'app/partials/offers/overview.html', controller: 'OverviewCtrl' })
                 // Offers - Drafts
+                .when('/drafts', { templateUrl: '/app/partials/drafts/list.html', controller: 'DraftsCtrl' })
                 .when('/drafts/create', { templateUrl: '/app/partials/drafts/create.html', controller: 'DraftCreateCtrl' })
                 .when('/drafts/:draftId', { templateUrl: '/app/partials/drafts/details.html', controller: 'DraftDetailsCtrl' })
                 .when('/drafts/edit/:draftId', { templateUrl: '/app/partials/drafts/edit.html', controller: 'DraftEditCtrl'})
                 // Offers
                 .when('/offers', { templateUrl: '/app/partials/offers/list.html', controller: 'OffersCtrl' })
-                //.when('/offers/create', { templateUrl: '/app/partials/offers/create.html', controller: 'OfferCreateCtrl' })
-                //.when('/offers/edit/:offerId', { templateUrl: '/app/partials/offers/edit.html', controller: 'OfferEditCtrl' })
+                .when('/offers/archive', { templateUrl: '/app/partials/offers/archive.html', controller: 'OffersArchiveCtrl' })
+                .when('/offers/:offerId', { templateUrl: '/app/partials/offers/details.html', controller: 'OfferDetailsCtrl' })
                 // Customers
                 .when('/customers', { templateUrl: '/app/partials/customers/list.html', controller: 'CustomersCtrl' })
                 .when('/customers/create', { templateUrl: '/app/partials/customers/create.html', controller: 'CustomerCreateCtrl' })
@@ -37,7 +38,7 @@ module sparrow {
                 .when('/products', { templateUrl: '/app/partials/products/list.html', controller: 'ProductsCtrl' })
                 .when('/products/create', { templateUrl: '/app/partials/products/create.html', controller: 'ProductCreateCtrl' })
                 .when('/products/edit/:productId', { templateUrl: '/app/partials/products/edit.html', controller: 'ProductEditCtrl' })
-                .otherwise({ redirectTo: '/offers' });
+                .otherwise({ redirectTo: '/overview' });
             // Enable pretty URLs (without #)
             $locationProvider.html5Mode(true);
         }]);

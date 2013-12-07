@@ -15,10 +15,16 @@ module sparrow.controllers {
 
     var draftControllers = angular.module('sparrow.controllers');
 
-    draftControllers.controller('DraftsCtrl', ['$scope', '$modal', '$location', 'Drafts', function ($scope, $modal, $location, Drafts) {
+    draftControllers.controller('DraftsCtrl', [
+        '$scope',
+        '$modal',
+        '$location',
+        '$routeParams',
+        'Drafts', function ($scope, $modal, $location, $routeParams, Drafts) {
         $scope.totalItems = 0;
-        $scope.currentPage = 0;
         $scope.drafts = [];
+        $scope.searchText = $routeParams.search;
+        $scope.currentPage = $routeParams.page || 1;
 
         $scope.showDetails = function (draft) {
             $location.url('/drafts/' + draft.id);
@@ -46,6 +52,9 @@ module sparrow.controllers {
                 });
             });
         };
+        $scope.search = function () {
+            getDrafts($scope.currentPage);
+        };
 
         $scope.$watch('showDrafts', function () {
             if ($scope.currentPage == 0) {
@@ -57,7 +66,13 @@ module sparrow.controllers {
         });
 
         function getDrafts(page: number) {
-            Drafts.get({ page: page, pageSize: $scope.pageSize, sort: 'CreatedOn', orderAscending: false }, function (data) {
+            if (page > 1) {
+                $location.search('page', page);
+            }
+            if ($scope.searchText) {
+                $location.search('search', $scope.searchText);
+            }
+            Drafts.get({ page: page, pageSize: $scope.pageSize, sort: 'CreatedOn', orderAscending: false, filter: $scope.searchText }, function (data) {
                 $scope.drafts = data.items;
                 $scope.currentPage = data.page;
                 $scope.totalItems = data.totalItems;
@@ -129,14 +144,14 @@ module sparrow.controllers {
                 });
             };
             $scope.getOwners = function (name) {
-                return $http.get('/api/users?sort=Name&orderAscending=true&filter=' + name).then(function (response) {
+                return $http.get('/api/users?sort=FirstName&orderAscending=true&filter=' + name).then(function (response) {
                     return response.data.items;
                 });
             };
             $scope.confirm = function () {
                 Drafts.save(mapToDto($scope.draft),
                     function () {
-                        $location.path('/offers');
+                        $location.path('/drafts');
                     },
                     function () {
                         $scope.alerts.push({});

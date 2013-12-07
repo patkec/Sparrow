@@ -7,77 +7,79 @@ module sparrow.controllers {
         currentPage: number;
         pageSize: number;
         offers: any;
+        searchText: string;
         addOffer();
+        search();
         editOffer(offer: any);
         deleteOffer(offer: any);
     }
 
     var offerControllers = angular.module('sparrow.controllers');
 
-    offerControllers.controller('ActiveOffersCtrl', ['$scope', 'Offers', function ($scope, Offers) {
-        $scope.totalItems = 0;
-        $scope.currentPage = -1;
-        $scope.offers = [];
+    offerControllers.controller('OffersCtrl', [
+        '$scope',
+        '$location',
+        '$routeParams',
+        'Offers',
+        function ($scope, $location: ng.ILocationService, $routeParams, Offers) {
+            $scope.pageSize = 20;
+            $scope.totalItems = 0;
+            $scope.searchText = $routeParams.search;
+            $scope.currentPage = $routeParams.page || 1;
 
-        $scope.$watch('showActive', function () {
-            if ($scope.currentPage < 1) {
-                $scope.currentPage++;
-            }
-        });
-        $scope.$watch('currentPage', function (page) {
-            console.log('get active: ' + page);
-            if (page > 0) {
-                Offers.get({ page: page, pageSize: $scope.pageSize, sort: 'Title', orderAscending: true }, function (data) {
-                    console.log(data);
+            $scope.$watch('currentPage', function (page) {
+                getOffers(page);
+            });
+            $scope.search = function () {
+                getOffers($scope.currentPage);
+            };
+
+            function getOffers(page) {
+                if (page > 1) {
+                    $location.search('page', page);
+                }
+                if ($scope.searchText) {
+                    $location.search('search', $scope.searchText);
+                }
+                Offers.get({ page: page, pageSize: $scope.pageSize, sort: 'Title', orderAscending: true, filter: $scope.searchText }, function (data) {
                     $scope.offers = data.items;
                     $scope.currentPage = data.page;
                     $scope.totalItems = data.totalItems;
                 });
-            }
-        });
-    }]);
+            };
+        }]);
 
-    offerControllers.controller('CompletedOffersCtrl', ['$scope', 'Offers', function ($scope, Offers) {
-        $scope.totalItems = 0;
-        $scope.currentPage = 0;
-        $scope.offers = [];
-
-        $scope.$watch('showCompleted', function () {
-            if ($scope.currentPage == 0) {
-                $scope.currentPage = 1;
-            }
-        });
-        $scope.$watch('currentPage', function (page) {
-            Offers.get({ page: page, pageSize: $scope.pageSize, sort: 'Title', orderAscending: true }, function (data) {
-                $scope.offers = data.items;
-                $scope.currentPage = data.page;
-                $scope.totalItems = data.totalItems;
-            });
-        });
-    }]);
-
-    offerControllers.controller('OffersCtrl', [
+    offerControllers.controller('OffersArchiveCtrl', [
         '$scope',
         '$location',
-        'storageService',
-        function ($scope, $location: ng.ILocationService, storageService: sparrow.services.IStorageService) {
+        '$routeParams',
+        'Offers',
+        function ($scope, $location: ng.ILocationService, $routeParams, Offers) {
             $scope.pageSize = 20;
+            $scope.totalItems = 0;
+            $scope.searchText = $routeParams.search;
+            $scope.currentPage = $routeParams.page || 1;
 
-            $scope.addDraft = function () {
-                $location.url('/offers/create');
+            $scope.$watch('currentPage', function (page) {
+                getOffers(page);
+            });
+            $scope.search = function () {
+                getOffers($scope.currentPage);
             };
-            $scope.$watch('showDrafts', function (value) {
-                storageService.store('offers\tab\drafts', value);
-            });
-            $scope.$watch('showActive', function (value) {
-                storageService.store('offers\tab\active', value);
-            });
-            $scope.$watch('showCompleted', function (value) {
-                storageService.store('offers\tab\completed', value);
-            });
 
-            $scope.showDrafts = storageService.get('offers\tab\drafts') || true;
-            $scope.showActive = storageService.get('offers\tab\active');
-            $scope.showCompleted = storageService.get('offers\tab\completed');
+            function getOffers(page) {
+                if (page > 1) {
+                    $location.search('page', page);
+                }
+                if ($scope.searchText) {
+                    $location.search('search', $scope.searchText);
+                }
+                Offers.getArchived({ page: page, pageSize: $scope.pageSize, sort: 'Title', orderAscending: true, filter: $scope.searchText }, function (data) {
+                    $scope.offers = data.items;
+                    $scope.currentPage = data.page;
+                    $scope.totalItems = data.totalItems;
+                });
+            };
         }]);
+
 }
