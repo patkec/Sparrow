@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
@@ -174,10 +175,33 @@ namespace Sparrow.Web.Infrastructure
             var entityToDelete = Session.Get<TEntity>(id);
             if (entityToDelete != null)
             {
-                Session.Delete(entityToDelete);
-                OnEntityDeleted(entityToDelete);
+                DeleteEntity(entityToDelete);
             }
             return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        /// <summary>
+        /// Deletes multiple entities with given identifiers.
+        /// </summary>
+        [HttpDelete]
+        public HttpResponseMessage DeleteMany([FromUri] IEnumerable<Guid> ids)
+        {
+            var idArray = (ids == null) ? new Guid[0] : ids.ToArray();
+            if (idArray.Length > 0)
+            {
+                var entitiesToDelete = Session.QueryOver<TEntity>()
+                    .Where(x => x.Id.IsIn(idArray))
+                    .List();
+                foreach (var entity in entitiesToDelete)
+                    DeleteEntity(entity);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        private void DeleteEntity(TEntity entity)
+        {
+            Session.Delete(entity);
+            OnEntityDeleted(entity);
         }
 
         /// <summary>

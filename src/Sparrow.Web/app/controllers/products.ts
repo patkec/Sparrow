@@ -10,7 +10,8 @@ module sparrow.controllers {
         search();
         addProduct();
         editProduct(product: any);
-        deleteProduct(product: any);
+        deleteProducts();
+        selectProduct(product: any, $event: any);
     }
     interface IEditScope extends ng.IScope {
         alerts: any;
@@ -29,6 +30,7 @@ module sparrow.controllers {
         'Products',
         '$routeParams',
         function ($scope: IListScope, $location: ng.ILocationService, $modal, Products: ng.resource.IResourceClass, $routeParams) {
+            var lastSelectedIdx;
             $scope.totalItems = 0;
             $scope.pageSize = 20;
             $scope.searchText = $routeParams.search;
@@ -40,19 +42,39 @@ module sparrow.controllers {
             $scope.editProduct = function (product) {
                 $location.url('/products/edit/' + product.id);
             };
-            $scope.deleteProduct = function (product) {
+            $scope.selectProduct = function (product, $event) {
+                if ($event.shiftKey) {
+                    var idx = lastSelectedIdx;
+                    lastSelectedIdx = $scope.products.indexOf(product);
+
+                    var productsToSelect = $scope.products.slice(Math.min(idx, lastSelectedIdx), Math.max(idx, lastSelectedIdx) + 1);
+
+                    var selected = !!!product.selected;
+                    $.each(productsToSelect, function (i, p) {
+                        p.selected = selected;
+                    });
+                    return;
+                }
+                lastSelectedIdx = $scope.products.indexOf(product);
+            };
+            $scope.deleteProducts = function () {
                 var modalInstance = $modal.open({
                     templateUrl: 'productDeleteDialog',
                     controller: ItemDeleteCtrl,
                     windowClass: 'show', // Workaround for bootstrap 3 - dialog is not shown without this class
                     resolve: {
                         item: function () {
-                            return product;
+                            return null;
                         }
                     }
                 });
                 modalInstance.result.then(function () {
-                    Products.delete({ productId: product.id }, function () {
+                    var products = [];
+                    $.each($scope.products, function (i, product) {
+                        if (product.selected) products.push(product.id);
+                    });
+
+                    Products.delete({ ids: products }, function () {
                         getProducts($scope.currentPage);
                     });
                 });
