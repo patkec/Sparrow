@@ -1,7 +1,8 @@
+/// <reference path="../viewModels/drafts.ts" />
 /// <reference path="common.ts" />
 
 module sparrow.controllers {
-    'use strict';
+    'use strict';    
 
     interface IEditScope extends ng.IScope {
         alerts: any;
@@ -86,40 +87,28 @@ module sparrow.controllers {
         '$http',
         'Drafts',
         function ($scope, $routeParams, $http, Drafts) {
-            $scope.draft = Drafts.get({ draftId: $routeParams.draftId }, function () {
-                $scope.addItem();
-            });            
+            Drafts.get({ draftId: $routeParams.draftId }, function (data) {
+                // Use the view model for ease of use.
+                $scope.draft = new sparrow.viewModels.DraftViewModel(data);
+                $scope.draft.addNewItem();
+            });
 
-            $scope.addItem = function () {
-                if (!!!$scope.draft.items)
-                    $scope.draft.items = [];
-
-                $scope.inserted = {
-                    productTitle: '',
-                    productPrice: null,
-                    discount: null,
-                    quantity: 1
-                };
-                $scope.draft.items.push($scope.inserted);
-            };
             $scope.getProducts = function (title) {
                 return $http.get('/api/products?sort=Title&orderAscending=true&filter=' + title).then(function (response) {
                     return response.data.items;
                 });
             };
-            $scope.updateProductTitle = function (item) {
-                item.productTitle = item.product.title;
+            $scope.getCustomers = function (name) {
+                return $http.get('/api/customers?sort=Name&orderAscending=true&filter=' + name).then(function (response) {
+                    return response.data.items;
+                });
             };
             $scope.saveItem = function (data, item) {
-                data = {
-                    id: item.id,
-                    productId: item.id ? null : data.product.id, // Product cannot be updated for existing items
-                    quantity: data.quantity
-                };
-                var promise = $http.put('/api/drafts/' + $scope.draft.id + '/items', data);
-                promise.success(function (response) {                    
+                item.endEdit();
+                var promise = $http.put('/api/drafts/' + $scope.draft.id + '/items', item.getUpdateData());
+                promise.success(function (response) {
                     item.id = response.id;
-                    $scope.addItem();
+                    $scope.draft.addNewItem();
                 });
                 return promise;
             };
@@ -129,6 +118,10 @@ module sparrow.controllers {
                         $scope.draft.items.splice(index, 1);
                     });
             };
+            $scope.saveDraftInfo = function () {
+                $scope.draft.endEdit();                
+                return $http.put('/api/drafts', $scope.draft.getUpdateData());
+            };            
         }
     ]);
 

@@ -29,6 +29,13 @@ namespace Sparrow.Web.Controllers
             return new OfferDraft(owner, customer, model.Title);
         }
 
+        protected override void UpdateEntity(OfferDraft entity, DraftEditModel model)
+        {
+            entity.Title = model.Title;
+            entity.Discount = model.Discount;
+            entity.Customer = Session.Load<Customer>(model.CustomerId);
+        }
+
         [HttpPost]
         [Route("api/drafts/{draftId}/items")]
         public HttpResponseMessage PostItem(Guid draftId, DraftItemAddModel model)

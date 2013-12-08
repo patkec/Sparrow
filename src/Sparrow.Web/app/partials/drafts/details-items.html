@@ -1,0 +1,49 @@
+﻿<h3>Items</h3>
+
+<table class="table table-condensed">
+    <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+        <th>Discount</th>
+        <th>Total</th>
+        <th>&nbsp;</th>
+    </tr>
+    <tr ng-repeat="item in draft.items">
+        <td>
+            <span editable-text="item.product" e-name="product" e-required e-form="itemForm"
+                  e-placeholder="Search for a product" e-editable-disabled="!!item.id" e-typeahead-on-select="item.updateEditProduct($item)"
+                  e-typeahead="product as product.title for product in getProducts($viewValue)" e-typeahead-min-length="2" e-typeahead-wait-ms="100">
+                {{item.product.title}}
+            </span>
+        </td>
+        <td>
+            {{item.getPrice() | currency}}
+        </td>
+        <td>
+            <span editable-number="item.quantity" e-name="quantity" e-required e-min="1" e-form="itemForm" e-class="form-control" e-ng-change="item.updateEditQuantity($data)">
+                {{item.quantity}}
+            </span>
+        </td>
+        <td>
+            {{item.calcSubtotal() | currency}}
+        </td>
+        <td>
+            <span editable-number="item.discount" e-name="discount" e-min="0" e-max="100" e-form="itemForm" e-class="form-control" e-ng-change="item.updateEditDiscount($data)">
+                {{item.discount}}
+            </span>
+        </td>
+        <td>{{item.calcTotal() | currency}}</td>
+        <td>
+            <form editable-form name="itemForm" ng-show="itemForm.$visible" onbeforesave="saveItem($data, item)" shown="draft.newItem == item" oncancel="item.endEdit()" onshow="item.beginEdit()">
+                <button type="submit" ng-disabled="itemForm.$waiting" class="btn btn-primary">Save</button>
+                <button type="button" ng-disabled="itemForm.$waiting || draft.newItem == item" class="btn btn-default" ng-click="itemForm.$cancel()">Cancel</button>
+            </form>
+            <div ng-show="!itemForm.$visible">
+                <button class="btn btn-primary" ng-click="itemForm.$show()">Edit</button>
+                <button class="btn btn-danger" ng-click="deleteItem($index, item)">Delete</button>
+            </div>
+        </td>
+    </tr>
+</table>

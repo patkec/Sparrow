@@ -234,6 +234,9 @@
     <Content Include="app\partials\customers\edit.html" />
     <Content Include="app\partials\customers\list.html" />
     <Content Include="app\partials\drafts\create.html" />
+    <Content Include="app\partials\drafts\details-header.html" />
+    <Content Include="app\partials\drafts\details-items.html" />
+    <Content Include="app\partials\drafts\details-totals.html" />
     <Content Include="app\partials\drafts\details.html" />
     <Content Include="app\partials\drafts\list.html" />
     <Content Include="app\partials\offers\archive.html" />
@@ -584,6 +587,7 @@
     <TypeScriptCompile Include="app\directives.ts" />
     <TypeScriptCompile Include="app\filters.ts" />
     <TypeScriptCompile Include="app\services.ts" />
+    <TypeScriptCompile Include="app\viewModels\drafts.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-resource.d.ts" />

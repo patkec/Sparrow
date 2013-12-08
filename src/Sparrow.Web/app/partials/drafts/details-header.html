@@ -1,0 +1,48 @@
+﻿<div class="col-lg-6">
+    <form editable-form name="generalForm" onbeforesave="saveDraftInfo()">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <span class="draft-panel-title" editable-text="draft.title" e-name="title" e-required>{{draft.title}}</span>
+                    <div class="pull-right">
+                        <button class="btn btn-sm btn-default" type="button"
+                                data-toggle="tooltip" ng-click="generalForm.$show()" ng-show="!generalForm.$visible"
+                                data-original-title="Edit offer information">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </button>
+                        <span ng-show="generalForm.$visible">
+                            <button class="btn btn-sm btn-primary" type="submit"
+                                    data-toggle="tooltip" data-original-title="Update">
+                                <i class="glyphicon glyphicon-ok"></i>
+                            </button>
+                            <button class="btn btn-sm btn-default" type="button"
+                                    data-toggle="tooltip" ng-click="generalForm.$cancel()"
+                                    data-original-title="Cancel">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-3"><b>Created By</b></div>
+                    <div class="col-lg-offset-3">{{draft.ownerFullName}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3"><b>Created On</b></div>
+                    <div class="col-lg-offset-3">{{draft.createdOn | date:'longDate'}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3"><b>Customer</b></div>
+                    <div class="col-lg-offset-3">
+                        <span editable-text="draft.customer" e-name="customer" e-required
+                              e-typeahead="customer as customer.name for customer in getCustomers($viewValue)" e-typeahead-min-length="2" e-typeahead-wait-ms="100">
+                            {{draft.customer.name || 'none'}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

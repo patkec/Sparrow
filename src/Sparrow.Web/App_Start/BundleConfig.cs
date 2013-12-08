@@ -31,6 +31,7 @@ namespace Sparrow.Web
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
                       "~/app/controllers/common.js", // Ensure that common is loaded first.
                       "~/app/controllers/*.js",
+                      "~/app/viewModels/*.js",
                       "~/app/*.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

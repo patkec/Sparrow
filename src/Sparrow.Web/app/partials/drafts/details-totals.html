@@ -1,0 +1,53 @@
+﻿<div class="col-lg-6">
+    <form editable-form name="totalsForm" onbeforesave="saveDraftInfo()">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <span class="draft-panel-title">Totals</span>
+                    <div class="pull-right">
+                        <button class="btn btn-sm btn-default" type="button"
+                                data-toggle="tooltip" ng-click="totalsForm.$show()" ng-show="!totalsForm.$visible"
+                                data-original-title="Edit discounts">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </button>
+                        <span ng-show="totalsForm.$visible">
+                            <button class="btn btn-sm btn-primary" type="submit"
+                                    data-toggle="tooltip" data-original-title="Update">
+                                <i class="glyphicon glyphicon-ok"></i>
+                            </button>
+                            <button class="btn btn-sm btn-default" type="button"
+                                    data-toggle="tooltip" ng-click="totalsForm.$cancel()"
+                                    data-original-title="Cancel">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-3"><b>Subtotal</b></div>
+                    <div class="col-lg-offset-3">{{draft.calcSubtotal() | currency}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3"><b>Discount (%)</b></div>
+                    <div class="col-lg-offset-3">
+                        <span editable-number="draft.discount" e-min="0" e-max="100" e-name="discount" e-class="form-control" e-ng-change="draft.updateEditDiscount($data)" oncancel="draft.endEdit()">
+                            {{draft.discount || 'none'}}
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3"><b>Discount</b></div>
+                    <div class="col-lg-offset-3">
+                        {{draft.calcDiscountAmount() | currency}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3"><b>Total</b></div>
+                    <div class="col-lg-offset-3">{{draft.calcTotal() | currency}}</div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
