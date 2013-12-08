@@ -66,8 +66,8 @@ namespace Sparrow.Web.Controllers
         {
             if (model == null)
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Bad request.");
-            if (model.Id == Guid.Empty)
-                return PostItem(draftId, model);
+            //if (model.Id == Guid.Empty)
+             //   return PostItem(draftId, model);
             if (model.ProductId.HasValue)
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Cannot update product for item.");
 
@@ -106,10 +106,10 @@ namespace Sparrow.Web.Controllers
 
         [HttpPost]
         [Route("api/drafts/{draftId}/offer")]
-        public HttpResponseMessage CreateOffer(Guid draftId/*, DateTime expiresOn*/)
+        public HttpResponseMessage CreateOffer(Guid draftId, SendOfferModel model)
         {
-            //if (expiresOn < DateTime.Now)
-            //    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Offer expiry date should be in the future.");
+            if ((model == null) || (model.ExpiresOn < DateTime.Now))
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Offer expiry date should be in the future.");
 
             // Some parameter checking up-front
             var draft = Session.Get<OfferDraft>(draftId);
@@ -119,7 +119,7 @@ namespace Sparrow.Web.Controllers
             TaskExecutor.ExecuteLater(new CreateOfferFromDraftTask
             {
                 DraftId = draftId,
-                ExpiresOn = DateTime.Now.AddDays(7)
+                ExpiresOn = model.ExpiresOn
             });
 
             return Request.CreateResponse(HttpStatusCode.Accepted);

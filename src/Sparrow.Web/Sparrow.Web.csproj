@@ -204,6 +204,7 @@
     <Compile Include="Models\Drafts\DraftItemAddModel.cs" />
     <Compile Include="Models\Drafts\DraftItemEditModel.cs" />
     <Compile Include="Models\Drafts\DraftItemViewModel.cs" />
+    <Compile Include="Models\Drafts\SendOfferModel.cs" />
     <Compile Include="Models\IEditModel.cs" />
     <Compile Include="Models\Drafts\DraftViewModel.cs" />
     <Compile Include="Models\Offers\OfferDetailsViewModel.cs" />

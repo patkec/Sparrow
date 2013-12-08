@@ -1,6 +1,16 @@
 ﻿<div class="content-header">
     <div>
         <h1>Offer (draft)</h1>
+        <div class="toolbar">
+            <div class="btn-group">
+                <button class="btn btn-success btn-lg" title="Send offer" ng-click="sendOffer()">
+                    <i class="glyphicon glyphicon-send"></i>
+                </button>
+                <button class="btn btn-default btn-lg" title="Discard" ng-click="discardDraft()">
+                    <i class="glyphicon glyphicon-trash"></i>
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -21,3 +31,22 @@
 <div ng-include="'/app/partials/drafts/details-header.html'"></div>
 <div ng-include="'/app/partials/drafts/details-totals.html'"></div>
 <div ng-include="'/app/partials/drafts/details-items.html'"></div>
+
+<script type="text/ng-template" id="sendOfferDialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-hidden="true" data-ng-click="cancel()">&times;</button>
+                <h4 class="modal-title">Send offer</h4>
+            </div>
+            <div class="modal-body">                
+                <div><input type="text" ng-model="$parent.dt" ng-required="true" datepicker-popup class="form-control pull-right" style="width: 150px;" /></div>
+                <div style="padding-top: 6px">Provide expiration date for the offer:</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-ng-click="cancel()">Cancel</button>
+                <button type="button" class="btn btn-primary" data-ng-click="confirm()">Send</button>
+            </div>
+        </div>
+    </div>
+</script>

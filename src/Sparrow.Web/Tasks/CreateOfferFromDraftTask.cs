@@ -17,9 +17,9 @@ namespace Sparrow.Web.Tasks
                 throw new InvalidOperationException("Draft not found.");
 
             var offer = draft.CreateOffer(ExpiresOn);
-
             Session.Save(offer);
-            Session.Update(draft);
+            // We don't need the draft anymore
+            Session.Delete(draft);
 
             TaskExecutor.ExecuteLater(new SendOfferEmailTask
             {

@@ -15,7 +15,6 @@ namespace Sparrow.Domain.Models
         private Offer _sourceOffer;
         private double _discount;
         private DateTime _createdOn;
-        private IList<Offer> _offers = new List<Offer>();
         private IList<OfferDraftItem> _items = new List<OfferDraftItem>();
 
         /// <summary>
@@ -96,14 +95,6 @@ namespace Sparrow.Domain.Models
         public virtual IEnumerable<OfferDraftItem> Items
         {
             get { return _items; }
-        }
-
-        /// <summary>
-        /// Gets a list of all offers created from current draft.
-        /// </summary>
-        public virtual IEnumerable<Offer> Offers
-        {
-            get { return _offers; }
         }
 
         /// <summary>
@@ -226,7 +217,6 @@ namespace Sparrow.Domain.Models
             var offer = new Offer(this, expiresOn);
             foreach (var draftItem in Items)
                 offer.AddItem(new OfferItem(draftItem.Product, draftItem.Quantity, draftItem.Discount));
-            _offers.Add(offer);
 
             return offer;
         }

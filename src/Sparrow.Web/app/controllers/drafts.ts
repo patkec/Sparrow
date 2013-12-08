@@ -16,6 +16,16 @@ module sparrow.controllers {
 
     var draftControllers = angular.module('sparrow.controllers');
 
+    function SendOfferCtrl($scope, $modalInstance) {
+        $scope.dt = new Date();
+        $scope.confirm = function () {
+            $modalInstance.close($scope.dt);
+        };
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+    };    
+
     draftControllers.controller('DraftsCtrl', [
         '$scope',
         '$modal',
@@ -29,12 +39,6 @@ module sparrow.controllers {
 
         $scope.showDetails = function (draft) {
             $location.url('/drafts/' + draft.id);
-        };
-        $scope.createOffer = function (draft) {
-            Drafts.createOffer({ draftId: draft.id });
-        };
-        $scope.editDraft = function (draft) {
-            $location.url('/drafts/edit/' + draft.id);
         };
         $scope.deleteDraft = function (draft) {
             var modalInstance = $modal.open({
@@ -85,8 +89,10 @@ module sparrow.controllers {
         '$scope',
         '$routeParams',
         '$http',
+        '$location',
+        '$modal',
         'Drafts',
-        function ($scope, $routeParams, $http, Drafts) {
+        function ($scope, $routeParams, $http, $location, $modal, Drafts) {
             Drafts.get({ draftId: $routeParams.draftId }, function (data) {
                 // Use the view model for ease of use.
                 $scope.draft = new sparrow.viewModels.DraftViewModel(data);
@@ -121,7 +127,26 @@ module sparrow.controllers {
             $scope.saveDraftInfo = function () {
                 $scope.draft.endEdit();                
                 return $http.put('/api/drafts', $scope.draft.getUpdateData());
-            };            
+            };
+            $scope.sendOffer = function () {
+                var modalInstance = $modal.open({
+                    templateUrl: 'sendOfferDialog',
+                    controller: SendOfferCtrl,
+                    windowClass: 'show' // Workaround for bootstrap 3 - dialog is not shown without this class
+                });
+                modalInstance.result.then(function (date) {
+                    var url = '/api/drafts/' + $scope.draft.id + '/offer';
+                    $http.post(url, { expiresOn: date })
+                        .success(function () {
+                            $location.path('/offers');
+                        });
+                });
+            };
+            $scope.discardOffer = function () {
+                Drafts.delete({ draftId: $scope.draft.id }, function () {
+                    $location.path('/drafts');
+                });
+            };
         }
     ]);
 

@@ -16,16 +16,7 @@ namespace Sparrow.Domain.Models
         private OfferStatus _status;
         private DateTime _offeredOn;
         private DateTime _expiresOn;
-        private OfferDraft _draft;
         private IList<OfferItem> _items = new List<OfferItem>();
-
-        /// <summary>
-        /// Gets the <see cref="OfferDraft"/> on which this offer is based.
-        /// </summary>
-        public virtual OfferDraft Draft
-        {
-            get { return _draft; }
-        }
 
         /// <summary>
         /// Gets the owner (or creator) of current offer.
@@ -125,7 +116,6 @@ namespace Sparrow.Domain.Models
             if (expiresOn < DateTime.Now)
                 throw new ArgumentOutOfRangeException("expiresOn", expiresOn, "Offer expiry date should be in the future.");
 
-            _draft = draft;
             _owner = draft.Owner;
             _customer = draft.Customer;
             _title = draft.Title;
