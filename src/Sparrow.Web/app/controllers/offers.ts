@@ -82,4 +82,13 @@ module sparrow.controllers {
             };
         }]);
 
+    offerControllers.controller('OfferDetailsCtrl', [
+        '$scope',
+        '$routeParams',
+        'Offers',
+        function ($scope, $routeParams, Offers) {
+            $scope.offer = Offers.get({ offerId: $routeParams.offerId });
+        }
+    ]);
+
 }

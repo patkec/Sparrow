@@ -43,7 +43,7 @@
     </thead>
     <tbody>
         <tr data-ng-repeat="offer in offers">
-            <td>{{offer.title}}</td>
+            <td><a href="/offers/{{offer.id}}">{{offer.title}}</a></td>
             <td>{{offer.owner.fullName}}</td>
             <td>{{offer.customer.name}}</td>
             <td>{{offer.offerPrice}}</td>
