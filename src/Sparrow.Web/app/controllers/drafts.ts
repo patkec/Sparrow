@@ -111,7 +111,9 @@ module sparrow.controllers {
             };
             $scope.saveItem = function (data, item) {
                 item.endEdit();
-                var promise = $http.put('/api/drafts/' + $scope.draft.id + '/items', item.getUpdateData());
+                
+                var promise = $http.put('/api/drafts/' + $scope.draft.id + '/items',
+                    $.extend({}, data, { productId: data.product.id }));
                 promise.success(function (response) {
                     item.id = response.id;
                     $scope.draft.addNewItem();
@@ -124,9 +126,12 @@ module sparrow.controllers {
                         $scope.draft.items.splice(index, 1);
                     });
             };
-            $scope.saveDraftInfo = function () {
-                $scope.draft.endEdit();                
-                return $http.put('/api/drafts', $scope.draft.getUpdateData());
+            $scope.saveDraftHeader = function (data) {
+                return $http.put('/api/drafts', $.extend({}, data, {id: $scope.draft.id, discount: $scope.draft.discount, customerId: data.customer.id}));
+            };
+            $scope.saveDraftDiscount = function (data) {
+                $scope.draft.endEdit();
+                return $http.put('/api/drafts', $.extend({}, data, { id: $scope.draft.id, title: $scope.draft.title, customerId: $scope.customer.id }));
             };
             $scope.sendOffer = function () {
                 var modalInstance = $modal.open({

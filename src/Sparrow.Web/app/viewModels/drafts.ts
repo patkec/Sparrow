@@ -43,15 +43,6 @@ module sparrow.viewModels {
                     this[key] = source[key];
         }
 
-        getUpdateData() {
-            return {
-                id: this.id,
-                discount: this.discount,
-                title: this.title,
-                customerId: this.customer.id
-            };
-        }
-
         addNewItem() {
             this._newItem = new DraftItemViewModel({});
             this._items.push(this._newItem);
@@ -61,21 +52,25 @@ module sparrow.viewModels {
             this._editDiscount = value;
         }
 
-        calcSubtotal = function () {
+        endEdit() {
+            delete this._editDiscount;
+        }
+
+        calcSubtotal() {
             var sum = 0;
             $.each(this._items, function (i, item) {
                 sum = sum + item.calcTotal();
             });
             return sum;
-        };
+        }
 
-        calcTotal = function () {
+        calcTotal() {
             return this.calcSubtotal() * (1 - (this._editDiscount || this.discount) / 100);
-        };
+        }
 
-        calcDiscountAmount = function () {
+        calcDiscountAmount() {
             return this.calcSubtotal() * (this._editDiscount || this.discount) / 100;
-        };
+        }
     }
 
     export class DraftItemViewModel {
@@ -93,14 +88,6 @@ module sparrow.viewModels {
             for (var key in source)
                 if (key[0] !== '$')
                     this[key] = source[key];
-        }
-
-        getUpdateData() {
-            return {
-                id: this.id,
-                productId: this.id ? null : this.product.id, // Product cannot be updated for existing items
-                quantity: this.quantity
-            };
         }
 
         beginEdit() {

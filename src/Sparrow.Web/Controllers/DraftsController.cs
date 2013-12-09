@@ -66,10 +66,8 @@ namespace Sparrow.Web.Controllers
         {
             if (model == null)
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Bad request.");
-            //if (model.Id == Guid.Empty)
-             //   return PostItem(draftId, model);
-            if (model.ProductId.HasValue)
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Cannot update product for item.");
+            if (model.Id == Guid.Empty)
+                return PostItem(draftId, model);
 
             var draft = Session.Get<OfferDraft>(draftId);
             if (draft == null)
