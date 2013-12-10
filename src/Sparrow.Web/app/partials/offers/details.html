@@ -3,10 +3,10 @@
         <h1>Offer</h1>
         <div class="toolbar">
             <div class="btn-group">
-                <button class="btn btn-success btn-lg" title="Create Order">
+                <button class="btn btn-success btn-lg" title="Create Order" ng-if="offer.status === 0">
                     <i class="glyphicon glyphicon-shopping-cart"></i>
                 </button>
-                <button class="btn btn-warning btn-lg" title="Archive" ng-click="archiveOffer()">
+                <button class="btn btn-warning btn-lg" title="Archive" ng-click="archiveOffer()" ng-if="offer.status === 0">
                     <i class="glyphicon glyphicon-book"></i>
                 </button>
                 <button class="btn btn-primary btn-lg" title="Copy to New Offer" ng-click="cloneOffer()">

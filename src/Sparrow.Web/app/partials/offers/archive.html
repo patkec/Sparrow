@@ -42,14 +42,20 @@
             <th>Owner</th>
             <th>Customer</th>
             <th>Price</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
         <tr data-ng-repeat="offer in offers">
-            <td>{{offer.title}}</td>
+            <td><a href="/offers/{{offer.id}}">{{offer.title}}</a></td>
             <td>{{offer.owner.fullName}}</td>
-            <td>{{offer.customer.Name}}</td>
-            <td>{{offer.offerPrice}}</td>
+            <td>{{offer.customer.name}}</td>
+            <td>{{offer.total | currency}}</td>
+            <td ng-switch on="offer.status">
+                <span ng-switch-when="1">Ordered</span>
+                <span ng-switch-when="2">Declined</span>
+                <span ng-switch-default>Unknown status</span>
+            </td>
         </tr>
     </tbody>
     <tfoot>
