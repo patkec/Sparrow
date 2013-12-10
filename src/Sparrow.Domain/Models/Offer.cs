@@ -12,7 +12,10 @@ namespace Sparrow.Domain.Models
         private Customer _customer;
         private User _owner;
         private string _title;
-        private double _discount;
+        private int _discount;
+        private decimal _discountAmount;
+        private decimal _subtotal;
+        private decimal _total;
         private OfferStatus _status;
         private DateTime _offeredOn;
         private DateTime _expiresOn;
@@ -69,20 +72,33 @@ namespace Sparrow.Domain.Models
         /// <summary>
         /// Gets a discount percentage for the whole offer.
         /// </summary>
-        public virtual double Discount
+        public virtual int Discount
         {
             get { return _discount; }
         }
 
         /// <summary>
-        /// Gets the total offer price.
+        /// Gets the discount amount for the offer.
         /// </summary>
-        public virtual decimal OfferPrice
+        public virtual decimal DiscountAmount
         {
-            get
-            {
-                return _items.Sum(x => x.TotalPrice) * (decimal)(1 - Discount / 100.0);
-            }
+            get { return _discountAmount; }
+        }
+
+        /// <summary>
+        /// Gets the subtotal for the offer.
+        /// </summary>
+        public virtual decimal Subtotal
+        {
+            get { return _subtotal; }
+        }
+
+        /// <summary>
+        /// Gets the total price of the offer.
+        /// </summary>
+        public virtual decimal Total
+        {
+            get { return _total; }
         }
 
         /// <summary>
@@ -122,6 +138,9 @@ namespace Sparrow.Domain.Models
             _discount = draft.Discount;
             _expiresOn = expiresOn;
             _offeredOn = DateTime.Now;
+            _discountAmount = draft.DiscountAmount;
+            _subtotal = draft.Subtotal;
+            _total = draft.Total;
         }
 
         /// <summary>

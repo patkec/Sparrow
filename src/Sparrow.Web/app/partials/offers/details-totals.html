@@ -10,7 +10,7 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-lg-3"><b>Subtotal</b></div>
-                <div class="col-lg-offset-3">{{offer.calcSubtotal() | currency}}</div>
+                <div class="col-lg-offset-3">{{offer.subtotal | currency}}</div>
             </div>
             <div class="row">
                 <div class="col-lg-3"><b>Discount (%)</b></div>
@@ -21,12 +21,12 @@
             <div class="row">
                 <div class="col-lg-3"><b>Discount</b></div>
                 <div class="col-lg-offset-3">
-                    {{offer.calcDiscountAmount() | currency}}
+                    {{offer.discountAmount | currency}}
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-3"><b>Total</b></div>
-                <div class="col-lg-offset-3">{{offer.calcTotal() | currency}}</div>
+                <div class="col-lg-offset-3">{{offer.total | currency}}</div>
             </div>
         </div>
     </div>

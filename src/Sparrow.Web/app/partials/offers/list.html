@@ -38,7 +38,7 @@
             <th>Title</th>
             <th>Owner</th>
             <th>Customer</th>
-            <th>Price</th>
+            <th>Total</th>
         </tr>
     </thead>
     <tbody>
@@ -46,7 +46,7 @@
             <td><a href="/offers/{{offer.id}}">{{offer.title}}</a></td>
             <td>{{offer.owner.fullName}}</td>
             <td>{{offer.customer.name}}</td>
-            <td>{{offer.offerPrice}}</td>
+            <td>{{offer.total | currency}}</td>
         </tr>
     </tbody>
     <tfoot>

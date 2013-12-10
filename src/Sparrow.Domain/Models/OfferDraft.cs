@@ -13,7 +13,7 @@ namespace Sparrow.Domain.Models
         private User _owner;
         private Customer _customer;
         private Offer _sourceOffer;
-        private double _discount;
+        private int _discount;
         private DateTime _createdOn;
         private IList<OfferDraftItem> _items = new List<OfferDraftItem>();
 
@@ -70,7 +70,7 @@ namespace Sparrow.Domain.Models
         /// <summary>
         /// Gets or sets the discount for the offer.
         /// </summary>
-        public virtual double Discount
+        public virtual int Discount
         {
             get { return _discount; }
             set
@@ -78,6 +78,45 @@ namespace Sparrow.Domain.Models
                 if ((value < 0) || (value > 100))
                     throw new ArgumentOutOfRangeException("value");
                 _discount = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the discount amount for the offer.
+        /// </summary>
+        /// <remarks>
+        /// Discounts for items are not included here.
+        /// </remarks>
+        public virtual decimal DiscountAmount
+        {
+            get
+            {
+                return Subtotal * Discount / 100m;
+            }
+        }
+
+        /// <summary>
+        /// Gets the subtotal for the offer.
+        /// </summary>
+        /// <remarks>
+        /// Item discounts are already included here.
+        /// </remarks>
+        public virtual decimal Subtotal
+        {
+            get
+            {
+                return _items.Sum(x => x.ItemTotal);
+            }
+        }
+
+        /// <summary>
+        /// Gets the total price for the offer.
+        /// </summary>
+        public virtual decimal Total
+        {
+            get
+            {
+                return Subtotal - DiscountAmount;
             }
         }
 
@@ -129,8 +168,10 @@ namespace Sparrow.Domain.Models
                 throw new ArgumentNullException("customer");
             if (string.IsNullOrEmpty(title))
                 throw new ArgumentNullException("title");
+
             _owner = owner;
             _title = title;
+            _customer = customer;
             _createdOn = DateTime.Now;
             _sourceOffer = sourceOffer;
         }
@@ -169,7 +210,7 @@ namespace Sparrow.Domain.Models
         /// </summary>
         /// <param name="itemId">Item identifier for which to change discount.</param>
         /// <param name="discount">Discount for the item.</param>
-        public virtual void ChangeItemDiscount(Guid itemId, double discount)
+        public virtual void ChangeItemDiscount(Guid itemId, int discount)
         {
             var item = Items.FirstOrDefault(x => x.Id == itemId);
             if (item == null)
@@ -183,7 +224,7 @@ namespace Sparrow.Domain.Models
         /// </summary>
         /// <param name="item">Item for which to change discount.</param>
         /// <param name="discount">Discount for the item.</param>
-        public virtual void ChangeItemDiscount(OfferDraftItem item, double discount)
+        public virtual void ChangeItemDiscount(OfferDraftItem item, int discount)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
@@ -191,7 +232,7 @@ namespace Sparrow.Domain.Models
                 throw new ArgumentException("Item is not part of current draft.", "item");
 
             // Dummy business rule - at most 5 items can have an additional discount.
-            if ((discount > 0) && (item.Discount < double.Epsilon))
+            if ((discount > 0) && (item.Discount == 0))
             {
                 var itemsWithDiscount = Items.Count(x => x.Discount > 0);
                 if (itemsWithDiscount >= 5)
@@ -216,7 +257,7 @@ namespace Sparrow.Domain.Models
 
             var offer = new Offer(this, expiresOn);
             foreach (var draftItem in Items)
-                offer.AddItem(new OfferItem(draftItem.Product, draftItem.Quantity, draftItem.Discount));
+                offer.AddItem(new OfferItem(draftItem));
 
             return offer;
         }

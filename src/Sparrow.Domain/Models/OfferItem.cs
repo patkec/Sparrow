@@ -6,8 +6,11 @@ namespace Sparrow.Domain.Models
     {
         private Product _product;
         private int _quantity;
-        private double _discount;
+        private int _discount;
         private decimal _productPrice;
+        private decimal _discountAmount;
+        private decimal _itemSubtotal;
+        private decimal _itemTotal;
         private Offer _offer;
 
         /// <summary>
@@ -46,20 +49,33 @@ namespace Sparrow.Domain.Models
         /// <summary>
         /// Gets a discount percentage for the products on offer.
         /// </summary>
-        public virtual double Discount
+        public virtual int Discount
         {
             get { return _discount; }
         }
 
         /// <summary>
-        /// Gets the total price of current <see cref="OfferItem"/>.
+        /// Gets a discount amount for current item.
         /// </summary>
-        public virtual decimal TotalPrice
+        public virtual decimal DiscountAmount
         {
-            get
-            {
-                return Quantity * ProductPrice * (decimal)(1 - Discount / 100.0);
-            }
+            get { return _discountAmount; }
+        }
+
+        /// <summary>
+        /// Gets the subtotal price for current item.
+        /// </summary>
+        public virtual decimal ItemSubtotal
+        {
+            get { return _itemSubtotal; }
+        }
+
+        /// <summary>
+        /// Gets the total price for current item.
+        /// </summary>
+        public virtual decimal ItemTotal
+        {
+            get { return _itemTotal; }
         }
 
         /// <summary>
@@ -72,20 +88,19 @@ namespace Sparrow.Domain.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="OfferItem"/> class for the specified product.
         /// </summary>
-        /// <param name="product">Product that should be included in offer.</param>
-        /// <param name="quantity">Number of products included in offer.</param>
-        /// <param name="discount">Discount percentage for the product.</param>
-        public OfferItem(Product product, int quantity, double discount)
+        /// <param name="draftItem"><see cref="OfferDraftItem"/> from which the offer item is created.</param>
+        public OfferItem(OfferDraftItem draftItem)
         {
-            if (product == null)
-                throw new ArgumentNullException("product");
-            if (quantity < 1)
-                throw new ArgumentOutOfRangeException("quantity");
+            if (draftItem == null)
+                throw new ArgumentNullException("draftItem");
 
-            _product = product;
-            _quantity = quantity;
-            _discount = discount;
+            _product = draftItem.Product;
+            _quantity = draftItem.Quantity;
+            _discount = draftItem.Discount;
             _productPrice = _product.Price;
+            _discountAmount = draftItem.DiscountAmount;
+            _itemTotal = draftItem.ItemTotal;
+            _itemSubtotal = draftItem.ItemSubtotal;
         } 
     }
 }

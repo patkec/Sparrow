@@ -11,8 +11,10 @@ namespace Sparrow.Web.Models.Offers
         public string OwnerFullName { get; set; }
         public string CustomerName { get; set; }
         public OfferStatus Status { get; set; }
-        public double Discount { get; set; }
-        public decimal OfferPrice { get; set; }
+        public int Discount { get; set; }
+        public decimal DiscountAmount { get; set; }
+        public decimal Subtotal { get; set; }
+        public decimal Total { get; set; }
         public DateTime OfferedOn { get; set; }
         public IEnumerable<OfferItemViewModel> Items { get; set; }
     }

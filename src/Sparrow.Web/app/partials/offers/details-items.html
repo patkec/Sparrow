@@ -6,31 +6,38 @@
         <th>Price</th>
         <th>Quantity</th>
         <th>Subtotal</th>
+        <th>Discount %</th>
         <th>Discount</th>
         <th>Total</th>
     </tr>
     <tr ng-repeat="item in offer.items">
         <td>
-            <span>
-                {{item.product.title}}
-            </span>
+            {{item.product.title}}
         </td>
         <td>
-            {{item.getPrice() | currency}}
+            {{item.productPrice | currency}}
         </td>
         <td>
-            <span>
-                {{item.quantity}}
-            </span>
+            {{item.quantity}}
         </td>
         <td>
-            {{item.calcSubtotal() | currency}}
+            {{item.itemSubtotal | currency}}
         </td>
         <td>
-            <span>
-                {{item.discount}}
-            </span>
+            {{item.discount}}
         </td>
-        <td>{{item.calcTotal() | currency}}</td>
+        <td>
+            {{item.discountAmount | currency}}
+        </td>
+        <td>{{item.itemTotal | currency}}</td>
     </tr>
+    <tfoot>
+        <tr>
+            <td colspan="7">
+                <span class="pull-right" style="font-weight: bold">
+                    Items total: {{offer.subtotal || 0 | currency}}
+                </span>
+            </td>
+        </tr>
+    </tfoot>
 </table>
