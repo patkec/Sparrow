@@ -129,8 +129,8 @@ namespace Sparrow.Web.Controllers
         }
 
         [HttpPut]
-        [Route("api/offers/{offerId}/lost")]
-        public HttpResponseMessage CloseAsLost(Guid id)
+        [Route("api/offers/{id}/archive")]
+        public HttpResponseMessage ArchiveOffer(Guid id)
         {
             // Some parameter checking up-front
             var offer = Session.Get<Offer>(id);

@@ -149,18 +149,7 @@ namespace Sparrow.Domain.Models
         /// <param name="owner"><see cref="User"/> that has created the draft.</param>
         /// <param name="customer"><see cref="Customer"/> for which this offer is being created.</param>
         /// <param name="title">Title for the offer.</param>
-        public OfferDraft(User owner, Customer customer, string title): this(owner, customer, title, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OfferDraft"/> class.
-        /// </summary>
-        /// <param name="owner"><see cref="User"/> that has created the draft.</param>
-        /// <param name="customer"><see cref="Customer"/> for which this offer is being created.</param>
-        /// <param name="title">Title for the offer.</param>
-        /// <param name="sourceOffer">Source offer, if any.</param>
-        public OfferDraft(User owner, Customer customer, string title, Offer sourceOffer)
+        public OfferDraft(User owner, Customer customer, string title)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
@@ -168,12 +157,28 @@ namespace Sparrow.Domain.Models
                 throw new ArgumentNullException("customer");
             if (string.IsNullOrEmpty(title))
                 throw new ArgumentNullException("title");
-
+            
             _owner = owner;
             _title = title;
             _customer = customer;
             _createdOn = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OfferDraft"/> class.
+        /// </summary>
+        /// <param name="sourceOffer">Source offer from which to create a new draft</param>
+        private OfferDraft(Offer sourceOffer)
+        {
+            if (sourceOffer == null)
+                throw new ArgumentNullException("sourceOffer");
+
             _sourceOffer = sourceOffer;
+            _owner = sourceOffer.Owner;
+            _title = sourceOffer.Title;
+            _customer = sourceOffer.Customer;
+            _discount = sourceOffer.Discount;
+            _createdOn = DateTime.Now;
         }
 
         /// <summary>
@@ -260,6 +265,26 @@ namespace Sparrow.Domain.Models
                 offer.AddItem(new OfferItem(draftItem));
 
             return offer;
+        }
+
+        /// <summary>
+        /// Creates a new draft from given offer.
+        /// </summary>
+        /// <returns>A new <see cref="OfferDraft"/> instance.</returns>
+        public static OfferDraft CreateFromOffer(Offer sourceOffer)
+        {
+            if (sourceOffer == null)
+                throw new ArgumentNullException("sourceOffer");
+
+            var draft = new OfferDraft(sourceOffer);
+            foreach (var item in sourceOffer.Items)
+            {
+                var draftItem = new OfferDraftItem(item.Product, item.Quantity);
+                draft.AddItem(draftItem);
+                draft.ChangeItemDiscount(draftItem, item.Discount);
+            }
+
+            return draft;
         }
     }
 }

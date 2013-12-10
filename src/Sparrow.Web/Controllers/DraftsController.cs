@@ -37,6 +37,20 @@ namespace Sparrow.Web.Controllers
         }
 
         [HttpPost]
+        [Route("api/drafts/create/{offerId}")]
+        public HttpResponseMessage CreateFromOffer(Guid offerId)
+        {
+            var offer = Session.Get<Offer>(offerId);
+            if (offer == null)
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+
+            var draft = OfferDraft.CreateFromOffer(offer);
+            Session.Save(draft);
+
+            return Request.CreateResponse(HttpStatusCode.Created, draft.Id);
+        }
+
+        [HttpPost]
         [Route("api/drafts/{draftId}/items")]
         public HttpResponseMessage PostItem(Guid draftId, DraftItemAddModel model)
         {

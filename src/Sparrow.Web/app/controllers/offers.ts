@@ -85,9 +85,20 @@ module sparrow.controllers {
     offerControllers.controller('OfferDetailsCtrl', [
         '$scope',
         '$routeParams',
+        '$http',
+        '$location',
         'Offers',
-        function ($scope, $routeParams, Offers) {
+        function ($scope, $routeParams, $http, $location, Offers) {
             $scope.offer = Offers.get({ offerId: $routeParams.offerId });
+
+            $scope.archiveOffer = function () {
+                $http.put('/api/offers/' + $scope.offer.id + '/archive');
+            };
+            $scope.cloneOffer = function () {
+                $http.post('/api/drafts/create/' + $scope.offer.id).then(function (response) {
+                    $location.path('/drafts/' + response.data.replace(/"/g, ''));
+                });
+            };
         }
     ]);
 
