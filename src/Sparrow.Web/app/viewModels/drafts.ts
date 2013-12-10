@@ -13,6 +13,10 @@ module sparrow.viewModels {
         customer: any;
         discount: number;
 
+        get isDirty(): boolean {
+            return this._editDiscount || $.grep(this._items, function (el) { return el.isDirty; }).length > 0;
+        }
+
         get items(): DraftItemViewModel[]{
             return this._items;
         }
@@ -74,6 +78,7 @@ module sparrow.viewModels {
     }
 
     export class DraftItemViewModel {
+        private _isDirty: boolean;
         private _editInfo: any;
 
         id: any;
@@ -81,9 +86,14 @@ module sparrow.viewModels {
         discount: number;
         product: any;
 
-        constructor(source: any) {
+        get isDirty(): boolean {
+            return this._isDirty;
+        }
+
+        constructor(source: any) {            
             this.quantity = 0;
             this.discount = 0;
+            this._isDirty = false;
             // Copy all the properties from source to current view model
             for (var key in source)
                 if (key[0] !== '$')
@@ -95,22 +105,31 @@ module sparrow.viewModels {
             this.updateEditProduct(this.product);
             this.updateEditQuantity(this.quantity);
             this.updateEditDiscount(this.discount);
+            this._isDirty = false;
         }
 
         endEdit() {
+            this._isDirty = false;
             delete this._editInfo;
         }
 
         updateEditProduct(product: any) {
+            this._isDirty = true;
             this._editInfo.price = product ? product.price : 0;
         }
 
         updateEditQuantity(quantity: number) {
-            this._editInfo.quantity = quantity;
+            if (this._editInfo.quantity !== quantity) {
+                this._isDirty = true;
+                this._editInfo.quantity = quantity;
+            }            
         }
 
         updateEditDiscount(discount: number) {
-            this._editInfo.discount = discount;
+            if (this._editInfo.discount !== discount) {
+                this._isDirty = true;
+                this._editInfo.discount = discount;
+            }            
         }
 
         getQuantity() {

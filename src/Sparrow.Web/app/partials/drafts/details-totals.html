@@ -3,7 +3,10 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="panel-title">
-                    <span class="draft-panel-title">Totals</span>
+                    <span class="draft-panel-title">
+                        Totals
+                        <span ng-show="draft.isDirty">*</span>
+                    </span>
                     <div class="pull-right">
                         <button class="btn btn-sm btn-default" type="button"
                                 data-toggle="tooltip" ng-click="totalsForm.$show()" ng-show="!totalsForm.$visible"
@@ -33,7 +36,7 @@
                     <div class="col-lg-3"><b>Discount (%)</b></div>
                     <div class="col-lg-offset-3">
                         <span editable-number="draft.discount" e-min="0" e-max="100" e-name="discount" e-class="form-control" e-ng-change="draft.updateEditDiscount($data)" oncancel="draft.endEdit()">
-                            {{draft.discount || 'none'}}
+                            {{draft.discount || 0}}
                         </span>
                     </div>
                 </div>

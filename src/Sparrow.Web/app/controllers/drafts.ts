@@ -109,16 +109,14 @@ module sparrow.controllers {
                     return response.data.items;
                 });
             };
-            $scope.saveItem = function (data, item) {
-                item.endEdit();
-                
-                var promise = $http.put('/api/drafts/' + $scope.draft.id + '/items',
-                    $.extend({}, data, { productId: data.product.id }));
-                promise.success(function (response) {
-                    item.id = response.id;
-                    $scope.draft.addNewItem();
-                });
-                return promise;
+            $scope.saveItem = function ($data, item) {
+                var data = $.extend({}, $data, { productId: $data.product.id });
+                return $http.put('/api/drafts/' + $scope.draft.id + '/items', data)
+                    .then(function (response) {
+                        item.endEdit();
+                        item.id = response.id;
+                        $scope.draft.addNewItem();
+                    });
             };
             $scope.deleteItem = function (index, item) {
                 $http.delete('/api/drafts/' + $scope.draft.id + '/items/' + item.id)
@@ -126,12 +124,16 @@ module sparrow.controllers {
                         $scope.draft.items.splice(index, 1);
                     });
             };
-            $scope.saveDraftHeader = function (data) {
-                return $http.put('/api/drafts', $.extend({}, data, {id: $scope.draft.id, discount: $scope.draft.discount, customerId: data.customer.id}));
+            $scope.saveDraftHeader = function ($data) {
+                var data = $.extend({}, $data, { id: $scope.draft.id, discount: $scope.draft.discount, customerId: $data.customer.id });
+                return $http.put('/api/drafts', data);
             };
-            $scope.saveDraftDiscount = function (data) {
-                $scope.draft.endEdit();
-                return $http.put('/api/drafts', $.extend({}, data, { id: $scope.draft.id, title: $scope.draft.title, customerId: $scope.customer.id }));
+            $scope.saveDraftDiscount = function ($data) {
+                var data = $.extend({}, $data, { id: $scope.draft.id, title: $scope.draft.title, customerId: $scope.customer.id })                
+                return $http.put('/api/drafts', data)
+                    .then(function () {
+                        $scope.draft.endEdit();
+                    });
             };
             $scope.sendOffer = function () {
                 var modalInstance = $modal.open({
