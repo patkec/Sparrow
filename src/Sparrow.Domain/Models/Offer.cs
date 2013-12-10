@@ -132,7 +132,10 @@ namespace Sparrow.Domain.Models
         {
             if (item == null)
                 throw new ArgumentNullException("item");
+            if (item.Offer != null)
+                throw new ArgumentException("Item is already contained in an offer.");
 
+            item.Offer = this;
             _items.Add(item);
         }
 

@@ -241,6 +241,9 @@
     <Content Include="app\partials\drafts\details.html" />
     <Content Include="app\partials\drafts\list.html" />
     <Content Include="app\partials\offers\archive.html" />
+    <Content Include="app\partials\offers\details-header.html" />
+    <Content Include="app\partials\offers\details-items.html" />
+    <Content Include="app\partials\offers\details-totals.html" />
     <Content Include="app\partials\offers\details.html" />
     <Content Include="app\partials\offers\list.html" />
     <Content Include="app\partials\offers\overview.html" />

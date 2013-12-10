@@ -1,0 +1,27 @@
+﻿<div class="col-lg-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <span class="draft-panel-title">{{offer.title}}</span>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-3"><b>Offered By</b></div>
+                <div class="col-lg-offset-3">{{offer.ownerFullName}}</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3"><b>Offered On</b></div>
+                <div class="col-lg-offset-3">{{offer.offeredOn | date:'longDate'}}</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3"><b>Customer</b></div>
+                <div class="col-lg-offset-3">
+                    <span>
+                        {{offer.customerName || 'none'}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

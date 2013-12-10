@@ -82,12 +82,8 @@ namespace Sparrow.Web
             protected override void Configure()
             {
                 CreateMap<Offer, OfferViewModel>();
-                //CreateMap<OfferItem, OfferItemViewModel>();
-                //CreateMap<OfferEditModel, Offer>()
-                //    .ForMember(x => x.ExpiresOn, opts => opts.Ignore())
-                //    .ForMember(x => x.Discount, opts => opts.Ignore())
-                //    .ForMember(x => x.Owner, opts => opts.Ignore())
-                //    .ForMember(x => x.Customer, opts => opts.Ignore());
+                CreateMap<Offer, OfferDetailsViewModel>();
+                CreateMap<OfferItem, OfferItemViewModel>();
             }
         }
     }

@@ -1,0 +1,36 @@
+﻿<h3>Items</h3>
+
+<table class="table table-condensed">
+    <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+        <th>Discount</th>
+        <th>Total</th>
+    </tr>
+    <tr ng-repeat="item in offer.items">
+        <td>
+            <span>
+                {{item.product.title}}
+            </span>
+        </td>
+        <td>
+            {{item.getPrice() | currency}}
+        </td>
+        <td>
+            <span>
+                {{item.quantity}}
+            </span>
+        </td>
+        <td>
+            {{item.calcSubtotal() | currency}}
+        </td>
+        <td>
+            <span>
+                {{item.discount}}
+            </span>
+        </td>
+        <td>{{item.calcTotal() | currency}}</td>
+    </tr>
+</table>

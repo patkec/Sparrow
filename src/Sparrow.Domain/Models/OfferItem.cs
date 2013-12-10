@@ -8,6 +8,16 @@ namespace Sparrow.Domain.Models
         private int _quantity;
         private double _discount;
         private decimal _productPrice;
+        private Offer _offer;
+
+        /// <summary>
+        /// Gets the parent <see cref="Offer"/>.
+        /// </summary>
+        public virtual Offer Offer
+        {
+            get { return _offer; }
+            protected internal set { _offer = value; }
+        }
 
         /// <summary>
         /// Gets the product included in the offer.

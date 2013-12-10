@@ -59,9 +59,16 @@ namespace Sparrow.Web.Controllers
             };
         }
 
-        public void Get()
+        [HttpGet]
+        public HttpResponseMessage Get(Guid id)
         {
-            
+            var entity = Session.Get<Offer>(id);
+
+            if (entity == null)
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+
+            var model = Mapper.Map<OfferDetailsViewModel>(entity);
+            return Request.CreateResponse(HttpStatusCode.OK, model);
         }
 
         [HttpGet]
