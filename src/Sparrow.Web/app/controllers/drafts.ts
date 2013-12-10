@@ -149,9 +149,21 @@ module sparrow.controllers {
                         });
                 });
             };
-            $scope.discardOffer = function () {
-                Drafts.delete({ draftId: $scope.draft.id }, function () {
-                    $location.path('/drafts');
+            $scope.discardDraft = function () {
+                var modalInstance = $modal.open({
+                    templateUrl: 'draftDeleteDialog',
+                    controller: ItemDeleteCtrl,
+                    windowClass: 'show', // Workaround for bootstrap 3 - dialog is not shown without this class
+                    resolve: {
+                        item: function () {
+                            return $scope.draft;
+                        }
+                    }
+                });
+                modalInstance.result.then(function () {
+                    Drafts.delete({ draftId: $scope.draft.id }, function () {
+                        $location.path('/drafts');
+                    });
                 });
             };
         }
