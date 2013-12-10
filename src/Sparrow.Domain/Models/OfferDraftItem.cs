@@ -6,7 +6,7 @@ namespace Sparrow.Domain.Models
     {
         private Product _product;
         private int _quantity;
-        private double _discount;
+        private int _discount;
         private OfferDraft _offerDraft;
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Sparrow.Domain.Models
         /// <remarks>
         /// Item discount can be applied only via <see cref="OfferDraft"/>.
         /// </remarks>
-        public virtual double Discount
+        public virtual int Discount
         {
             get { return _discount; }
             protected internal set
@@ -54,6 +54,39 @@ namespace Sparrow.Domain.Models
                 if ((value < 0) || (value > 100))
                     throw new ArgumentOutOfRangeException("value");
                 _discount = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the discount amount for this item.
+        /// </summary>
+        public virtual decimal DiscountAmount
+        {
+            get
+            {
+                return ItemSubtotal*Discount/100m;
+            }
+        }
+
+        /// <summary>
+        /// Gets total amount that should be paid for this item.
+        /// </summary>
+        public virtual decimal ItemTotal
+        {
+            get
+            {
+                return ItemSubtotal - DiscountAmount;
+            }
+        }
+
+        /// <summary>
+        /// Gets the subtotal amount for the item.
+        /// </summary>
+        public virtual decimal ItemSubtotal
+        {
+            get
+            {
+                return (Quantity*Product.Price);
             }
         }
 
