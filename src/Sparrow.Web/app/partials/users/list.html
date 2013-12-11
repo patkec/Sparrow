@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-xs-9 col-md-9 section-box">
                     <h2>
-                        <a href="/users/{{user.id}}" style="color: black;">{{user.fullName}}</a>
+                        <a ng-href="/users/{{user.id}}" style="color: black;">{{user.fullName}}</a>
                         <small class="text-muted">{{user.location}}</small>
                     </h2>
                     <table class="table table-condensed table-responsive table-user-information">
@@ -60,12 +60,12 @@
                     <hr />
                     <div class="row rating-desc">
                         <div class="col-md-12">
-                            <a href="/users/{{user.id}}" class="btn btn-sm btn-info" type="button"
+                            <a ng-href="/users/{{user.id}}" class="btn btn-sm btn-info" type="button"
                                data-toggle="tooltip" data-original-title="Additional details">
                                 <i class="glyphicon glyphicon-folder-open"></i>
                             </a>
                             <span class="pull-right">
-                                <a href="/users/edit/{{user.id}}" class="btn btn-sm btn-warning"
+                                <a ng-href="/users/edit/{{user.id}}" class="btn btn-sm btn-warning"
                                         data-toggle="tooltip"
                                         data-original-title="Additional details">
                                     <i class="glyphicon glyphicon-edit"></i>

@@ -79,7 +79,7 @@
         </tr>
         <tr ng-repeat="offer in latestOffers">
             <td>
-                <a href="/offers/{{offer.id}}">{{offer.title}}</a>
+                <a ng-href="/offers/{{offer.id}}">{{offer.title}}</a>
             </td>
             <td>{{offer.owner.fullName}}</td>
             <td>{{offer.customer.name}}</td>
@@ -103,7 +103,7 @@
         </tr>
         <tr ng-repeat="offer in offersToExpire">
             <td>
-                <a href="/offers/{{offer.id}}">{{offer.title}}</a>
+                <a ng-href="/offers/{{offer.id}}">{{offer.title}}</a>
             </td>
             <td>{{offer.ownerFullName}}</td>
             <td>{{offer.customerName}}</td>
