@@ -3,7 +3,7 @@
         <h1>Offer (draft)</h1>
         <div class="toolbar">
             <div class="btn-group">
-                <button class="btn btn-success btn-lg" title="Send offer" ng-click="sendOffer()">
+                <button class="btn btn-success btn-lg" title="Send offer" ng-click="sendOffer()" ng-disabled="draft.isDirty">
                     <i class="glyphicon glyphicon-send"></i>
                 </button>
                 <button class="btn btn-default btn-lg" title="Discard" ng-click="discardDraft()">
