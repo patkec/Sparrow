@@ -1,33 +1,115 @@
-﻿<h1>Offers</h1>
+﻿<div class="content-header">
+    <div>
+        <h1>Overview</h1>
+    </div>
+</div>
+
+<ol class="breadcrumb">
+    <li>
+        <i class="glyphicon glyphicon-home"></i>
+    </li>
+</ol>
 
 <div>
-    <h3>Latest offers</h3>
+    <h4>
+        Weekly Offer Stats
+        <small>For the week December 02 - December 08, 2013</small>
+    </h4>
+    <div class="row offer-stats">
+        <div class="col-md-3">
+            <a href="/offers" class="list-group-item new-offer">
+                <h3 class="pull-right">
+                    <i class="fa fa-file-o"></i>
+                </h3>
+                <h4 class="list-group-item-heading count">546</h4>
+                <p class="list-group-item-text">New Offers</p>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/offers/archive" class="list-group-item won-offer">
+                <h3 class="pull-right">
+                    <i class="fa fa-check"></i>
+                </h3>
+                <h4 class="list-group-item-heading count">546</h4>
+                <p class="list-group-item-text">Successful Offers</p>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/offers" class="list-group-item to-expire-offer">
+                <h3 class="pull-right">
+                    <i class="fa fa-warning"></i>
+                </h3>
+                <h4 class="list-group-item-heading count">546</h4>
+                <p class="list-group-item-text">Offers to Expire</p>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/offers/archive" class="list-group-item lost-offer">
+                <h3 class="pull-right">
+                    <i class="fa fa-exclamation"></i>
+                </h3>
+                <h4 class="list-group-item-heading count">546</h4>
+                <p class="list-group-item-text">Lost Offers</p>
+            </a>
+        </div>
+    </div>
+</div>
+
+<br />
+
+<div>
+    <h4>
+        Offers in Numbers
+    </h4>
+    <div class="row">
+        <chart value="offersChart" type="area" height="400"></chart>
+    </div>
+</div>
+
+<div>
+    <h4>5 Latest offers</h4>
     
-    <table class="table table-condensed table-striped">
+    <table class="table table-condensed table-striped table-hover">
         <tr>
             <th>Title</th>
+            <th>Owner</th>
+            <th>Customer</th>
             <th>Offered On</th>
+            <th>Price</th>
         </tr>
         <tr ng-repeat="offer in latestOffers">
-            <td>{{offer.title}}</td>
-            <td>{{offer.offeredOn}}</td>
+            <td>
+                <a href="/offers/{{offer.id}}">{{offer.title}}</a>
+            </td>
+            <td>{{offer.owner.fullName}}</td>
+            <td>{{offer.customer.name}}</td>
+            <td>{{offer.offeredOn | date:'longDate'}}</td>
+            <td>{{offer.total | currency}}</td>
         </tr>
     </table>
 </div>
 
-<div>
-    <h3>These offers will expire soon</h3>
+<div ng-show="offersToExpire">
+    <h4>These offers will expire within 3 days</h4>
     
-    <table class="table table-condensed table-striped">
+    <table class="table table-condensed table-striped table-hover">
         <tr>
             <th>Title</th>
+            <th>Owner</th>
+            <th>Customer</th>
             <th>Offered On</th>
+            <th>Price</th>
             <th>Expires On</th>
         </tr>
         <tr ng-repeat="offer in offersToExpire">
-            <td>{{offer.title}}</td>
-            <td>{{offer.offeredOn}}</td>
-            <td>{{offer.expiresOn}}</td>
+            <td>
+                <a href="/offers/{{offer.id}}">{{offer.title}}</a>
+            </td>
+            <td>{{offer.ownerFullName}}</td>
+            <td>{{offer.customerName}}</td>
+            <td>{{offer.offeredOn | date:'longDate'}}</td>
+            <td>{{offer.total | currency}}</td>
+            <td>{{offer.expiresOn | date:'longDate'}}</td>
         </tr>
     </table>
 </div>

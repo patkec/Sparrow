@@ -86,25 +86,25 @@ namespace Sparrow.Web.Controllers
         }
 
         [HttpGet]
-        [Route("api/offers/latest")]
-        public IEnumerable<OfferViewModel> GetLatest()
+        [Route("api/offers/latest/{count}")]
+        public IEnumerable<OfferViewModel> GetLatest(int? count)
         {
             var offers = Session.QueryOver<Offer>()
                 .Where(x => x.Status == OfferStatus.Offered)
                 .OrderBy(x => x.OfferedOn).Desc
-                .Take(5)
+                .Take(count ?? 5)
                 .List();
 
             return Mapper.Map<IEnumerable<OfferViewModel>>(offers);
         }
 
         [HttpGet]
-        [Route("api/offers/soonToExpire")]
-        public IEnumerable<OfferViewModel> GetSoonToExpire()
+        [Route("api/offers/soonToExpire/{days}")]
+        public IEnumerable<OfferViewModel> GetSoonToExpire(int? days)
         {
             var offers = Session.QueryOver<Offer>()
                 .Where(x => x.Status == OfferStatus.Offered)
-                .And(x => x.ExpiresOn.IsBetween(DateTime.Now).And(DateTime.Now.AddDays(2)))
+                .And(x => x.ExpiresOn.IsBetween(DateTime.Now).And(DateTime.Now.AddDays(days ?? 2)))
                 .List();
 
             return Mapper.Map<IEnumerable<OfferViewModel>>(offers);

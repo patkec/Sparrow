@@ -138,3 +138,78 @@ ul.rating {
     font-size: 20px; 
     font-weight: bold;
 }
+
+/* OVERVIEW */
+
+.list-group-item .fa {
+    font-size: 50px;
+    text-align: right;
+    position: absolute;
+    top: 7px;
+    right: 27px;
+    outline: none;
+}
+
+.offer-stats a {
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+}
+
+.offer-stats .new-offer i,
+.offer-stats .new-offer h4.list-group-item-heading
+ {
+    color: #0e76a8;
+}
+
+.offer-stats a.new-offer:hover {
+    background-color: #0e76a8;
+}
+
+.offer-stats a.new-offer:hover * {
+    color: white;
+}
+
+.offer-stats .won-offer i,
+.offer-stats .won-offer h4.list-group-item-heading
+ {
+    color: #008000;
+}
+
+.offer-stats a.won-offer:hover {
+    background-color: #008000;
+}
+
+.offer-stats a.won-offer:hover * {
+    color: white;
+}
+
+.offer-stats .lost-offer i,
+.offer-stats .lost-offer h4.list-group-item-heading
+ {
+    color: #e22a2a;
+}
+
+.offer-stats a.lost-offer:hover {
+    background-color: #e22a2a;
+}
+
+.offer-stats a.lost-offer:hover * {
+    color: white;
+}
+
+.offer-stats .to-expire-offer i,
+.offer-stats .to-expire-offer h4.list-group-item-heading
+ {
+    color: #e2952a;
+}
+
+.offer-stats a.to-expire-offer:hover {
+    background-color: #e2952a;
+}
+
+.offer-stats a.to-expire-offer:hover * {
+    color: white;
+}
