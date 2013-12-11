@@ -113,15 +113,19 @@ module sparrow.controllers {
                 var data = $.extend({}, $data, { productId: $data.product.id });
                 return $http.put('/api/drafts/' + $scope.draft.id + '/items', data)
                     .then(function (response) {
-                        item.endEdit();
-                        item.id = response.id;
-                        $scope.draft.addNewItem();
+                        item.endEdit(response.data.item);
+                        $.extend($scope.draft, response.data.draft);
+                        if (!!!item.id) {
+                            item.id = response.data.item.id;
+                            $scope.draft.addNewItem();
+                        }
                     });
             };
             $scope.deleteItem = function (index, item) {
                 $http.delete('/api/drafts/' + $scope.draft.id + '/items/' + item.id)
-                    .success(function () {
+                    .success(function (response) {
                         $scope.draft.items.splice(index, 1);
+                        $.extend($scope.draft, response.data);
                     });
             };
             $scope.saveDraftHeader = function ($data) {
@@ -129,10 +133,11 @@ module sparrow.controllers {
                 return $http.put('/api/drafts', data);
             };
             $scope.saveDraftDiscount = function ($data) {
-                var data = $.extend({}, $data, { id: $scope.draft.id, title: $scope.draft.title, customerId: $scope.customer.id })                
+                var data = $.extend({}, $data, { id: $scope.draft.id, title: $scope.draft.title, customerId: $scope.draft.customer.id })                
                 return $http.put('/api/drafts', data)
-                    .then(function () {
+                    .then(function (response) {
                         $scope.draft.endEdit();
+                        $.extend($scope.draft, response.data);
                     });
             };
             $scope.sendOffer = function () {

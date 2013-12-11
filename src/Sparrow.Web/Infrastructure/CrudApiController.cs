@@ -130,6 +130,15 @@ namespace Sparrow.Web.Infrastructure
             Session.Update(entity);
             OnEntityUpdated(entity);
 
+            return CreateUpdateResponse(entity);
+        }
+
+        /// <summary>
+        /// Creates a response after specified entity has been updated.
+        /// </summary>
+        /// <param name="entity">Updated entity.</param>
+        protected virtual HttpResponseMessage CreateUpdateResponse(TEntity entity)
+        {
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 

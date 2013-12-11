@@ -4,14 +4,17 @@ module sparrow.viewModels {
     // ViewModels which enable user to see calculated values while editing.
 
     export class DraftViewModel {
-        private _editDiscount: number;
+        private _editDiscount: number;        
         private _items: DraftItemViewModel[];
-        private _newItem: DraftItemViewModel;        
+        private _newItem: DraftItemViewModel;
 
         id: any;
         title: string;
         customer: any;
         discount: number;
+        subtotal: number;
+        total: number;
+        discountAmount: number;
 
         get isDirty(): boolean {
             return this._editDiscount || $.grep(this._items, function (el) { return el.isDirty; }).length > 0;
@@ -39,6 +42,7 @@ module sparrow.viewModels {
         }
 
         constructor(source: any) {
+            console.log(source);
             this._items = [];
             this.discount = 0;
             // Copy all the properties from source to current view model
@@ -61,25 +65,35 @@ module sparrow.viewModels {
         }
 
         calcSubtotal() {
-            var sum = 0;
-            $.each(this._items, function (i, item) {
-                sum = sum + item.calcTotal();
-            });
+            var sum = this.subtotal;
+            // Use client-side calculated subtotal only when editing.
+            if (this.isDirty) {
+                sum = 0;
+                $.each(this._items, function (i, item) {
+                    sum = sum + item.calcTotal();
+                });
+            }
             return sum;
         }
 
         calcTotal() {
-            return this.calcSubtotal() * (1 - (this._editDiscount || this.discount) / 100);
+            // Use client-side calculated total only when editing.
+            var total = !this.isDirty && this.total;
+            return total || (this.calcSubtotal() * (1 - (this._editDiscount || this.discount) / 100));
         }
 
         calcDiscountAmount() {
-            return this.calcSubtotal() * (this._editDiscount || this.discount) / 100;
+            // Use client-side calculated discount amount only when editing.
+            var discountAmount = !this.isDirty && this.discountAmount;
+            return discountAmount || (this.calcSubtotal() * (this._editDiscount || this.discount) / 100);
         }
     }
 
     export class DraftItemViewModel {
         private _isDirty: boolean;
         private _editInfo: any;
+        private _subtotal: number;
+        private _total: number;
 
         id: any;
         quantity: number;
@@ -108,9 +122,13 @@ module sparrow.viewModels {
             this._isDirty = false;
         }
 
-        endEdit() {
+        endEdit(data) {
             this._isDirty = false;
             delete this._editInfo;
+            if (data) {
+                this._total = data.total;
+                this._subtotal = data.subtotal;
+            }
         }
 
         updateEditProduct(product: any) {
@@ -151,11 +169,15 @@ module sparrow.viewModels {
         }
 
         calcSubtotal() {
-            return this.getPrice() * this.getQuantity();
+            // Use client-side calculated subtotal only when editing.
+            var subtotal = !this._isDirty && this._subtotal;
+            return subtotal || (this.getPrice() * this.getQuantity());
         }
 
         calcTotal() {
-            return this.calcSubtotal() * (1 - this.getDiscount() / 100);
+            // Use client-side calculated total only when editing.
+            var total = !this._isDirty && this._total;
+            return total || (this.calcSubtotal() * (1 - this.getDiscount() / 100));
         }
     }
 }

@@ -36,6 +36,12 @@ namespace Sparrow.Web.Controllers
             entity.Customer = Session.Load<Customer>(model.CustomerId);
         }
 
+        protected override HttpResponseMessage CreateUpdateResponse(OfferDraft entity)
+        {
+            var response = Mapper.Map<DraftTotalsResponseModel>(entity);
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
         [HttpPost]
         [Route("api/drafts/create/{offerId}")]
         public HttpResponseMessage CreateFromOffer(Guid offerId)
@@ -70,8 +76,12 @@ namespace Sparrow.Web.Controllers
             Session.Save(draftItem);
             Session.Update(draft);
 
-            var viewModel = Mapper.Map<DraftItemViewModel>(draftItem);
-            return Request.CreateResponse(HttpStatusCode.Created, viewModel);
+            var response = new DraftItemResponseModel
+            {
+                Draft = Mapper.Map<DraftTotalsResponseModel>(draft),
+                Item = Mapper.Map<DraftItemViewModel>(draftItem)
+            };
+            return Request.CreateResponse(HttpStatusCode.Created, response);
         }
 
         [HttpPut]
@@ -95,7 +105,12 @@ namespace Sparrow.Web.Controllers
             draft.ChangeItemDiscount(draftItem, model.Discount);
             Session.Update(draft);
 
-            return Request.CreateResponse(HttpStatusCode.OK);
+            var response = new DraftItemResponseModel
+            {
+                Draft = Mapper.Map<DraftTotalsResponseModel>(draft),
+                Item = Mapper.Map<DraftItemViewModel>(draftItem)
+            };
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         [HttpDelete]
@@ -113,7 +128,8 @@ namespace Sparrow.Web.Controllers
             draft.RemoveItem(draftItem);
             Session.Update(draft);
 
-            return Request.CreateResponse(HttpStatusCode.OK);
+            var response = Mapper.Map<DraftTotalsResponseModel>(draft);
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         [HttpPost]

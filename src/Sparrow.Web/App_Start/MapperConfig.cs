@@ -74,6 +74,8 @@ namespace Sparrow.Web
                 CreateMap<OfferDraft, DraftViewModel>();
                 CreateMap<OfferDraft, DraftDetailViewModel>();
                 CreateMap<OfferDraftItem, DraftItemViewModel>();
+                CreateMap<OfferDraft, DraftTotalsResponseModel>()
+                    .ForMember(x => x.Total, opts => opts.UseValue(42));
             }
         }
 
