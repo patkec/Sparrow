@@ -19,6 +19,7 @@ namespace Sparrow.Domain.Models
         private OfferStatus _status;
         private DateTime _offeredOn;
         private DateTime _expiresOn;
+        private DateTime? _completedOn;
         private IList<OfferItem> _items = new List<OfferItem>();
 
         /// <summary>
@@ -59,6 +60,14 @@ namespace Sparrow.Domain.Models
         public virtual DateTime ExpiresOn
         {
             get { return _expiresOn; }
+        }
+
+        /// <summary>
+        /// Gets the date when the offer was completed.
+        /// </summary>
+        public virtual DateTime? CompletedOn
+        {
+            get { return _completedOn; }
         }
 
         /// <summary>
@@ -167,6 +176,7 @@ namespace Sparrow.Domain.Models
             if (_status != OfferStatus.Offered)
                 throw new InvalidOperationException("Offer was already completed.");
 
+            _completedOn = DateTime.Now;
             _status = success ? OfferStatus.Won : OfferStatus.Lost;
         } 
     }
