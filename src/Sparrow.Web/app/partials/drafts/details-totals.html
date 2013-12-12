@@ -1,4 +1,4 @@
-﻿<div class="col-lg-6">
+﻿<div class="col-lg-6 col-md-6 col-sm-6">
     <form editable-form name="totalsForm" onbeforesave="saveDraftDiscount($data)">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -29,26 +29,30 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-lg-3"><b>Subtotal</b></div>
-                    <div class="col-lg-offset-3">{{draft.calcSubtotal() | currency}}</div>
+                    <div class="col-lg-3 col-md-4 col-sm-5 col-xs-4"><b>Subtotal</b></div>
+                    <div class="col-lg-offset-3 col-md-offset-4 col-sm-offset-5 col-xs-offset-4">
+                        {{draft.calcSubtotal() | currency}}
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-3"><b>Discount (%)</b></div>
-                    <div class="col-lg-offset-3">
+                    <div class="col-lg-3 col-md-4 col-sm-5 col-xs-4"><b>Discount (%)</b></div>
+                    <div class="col-lg-offset-3 col-md-offset-4 col-sm-offset-5 col-xs-offset-4">
                         <span editable-number="draft.discount" e-min="0" e-max="100" e-name="discount" e-class="form-control" e-ng-change="draft.updateEditDiscount($data)" oncancel="draft.endEdit()">
                             {{draft.discount || 0}}
                         </span>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-3"><b>Discount</b></div>
-                    <div class="col-lg-offset-3">
+                    <div class="col-lg-3 col-md-4 col-sm-5 col-xs-4"><b>Discount</b></div>
+                    <div class="col-lg-offset-3 col-md-offset-4 col-sm-offset-5 col-xs-offset-4">
                         {{draft.calcDiscountAmount() | currency}}
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-3"><b>Total</b></div>
-                    <div class="col-lg-offset-3">{{draft.calcTotal() | currency}}</div>
+                    <div class="col-lg-3 col-md-4 col-sm-5 col-xs-4"><b>Total</b></div>
+                    <div class="col-lg-offset-3 col-md-offset-4 col-sm-offset-5 col-xs-offset-4">
+                        {{draft.calcTotal() | currency}}
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-﻿<div class="col-lg-6">
+﻿<div class="col-lg-6 col-md-6 col-sm-6">
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="panel-title">
@@ -9,24 +9,28 @@
         </div>
         <div class="panel-body">
             <div class="row">
-                <div class="col-lg-3"><b>Subtotal</b></div>
-                <div class="col-lg-offset-3">{{offer.subtotal | currency}}</div>
+                <div class="col-lg-3 col-md-4 col-sm-5 col-xs-4"><b>Subtotal</b></div>
+                <div class="col-lg-offset-3 col-md-offset-4 col-sm-offset-5 col-xs-offset-4">
+                    {{offer.subtotal | currency}}
+                </div>
             </div>
             <div class="row">
-                <div class="col-lg-3"><b>Discount (%)</b></div>
-                <div class="col-lg-offset-3">
+                <div class="col-lg-3 col-md-4 col-sm-5 col-xs-4"><b>Discount (%)</b></div>
+                <div class="col-lg-offset-3 col-md-offset-4 col-sm-offset-5 col-xs-offset-4">
                     <span>{{offer.discount || 0}}</span>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-3"><b>Discount</b></div>
-                <div class="col-lg-offset-3">
+                <div class="col-lg-3 col-md-4 col-sm-5 col-xs-4"><b>Discount</b></div>
+                <div class="col-lg-offset-3 col-md-offset-4 col-sm-offset-5 col-xs-offset-4">
                     {{offer.discountAmount | currency}}
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-3"><b>Total</b></div>
-                <div class="col-lg-offset-3">{{offer.total | currency}}</div>
+                <div class="col-lg-3 col-md-4 col-sm-5 col-xs-4"><b>Total</b></div>
+                <div class="col-lg-offset-3 col-md-offset-4 col-sm-offset-5 col-xs-offset-4">
+                    {{offer.total | currency}}
+                </div>
             </div>
         </div>
     </div>

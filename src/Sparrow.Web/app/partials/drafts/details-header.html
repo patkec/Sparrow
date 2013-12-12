@@ -1,4 +1,4 @@
-﻿<div class="col-lg-6">
+﻿<div class="col-lg-6 col-md-6 col-sm-6">
     <form editable-form name="generalForm" onbeforesave="saveDraftHeader($data)">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -26,16 +26,20 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-lg-3"><b>Created By</b></div>
-                    <div class="col-lg-offset-3">{{draft.ownerFullName}}</div>
+                    <div class="col-lg-3 col-md-4 col-sm-5 col-xs-4"><b>Created By</b></div>
+                    <div class="col-lg-offset-3 col-md-offset-4 col-sm-offset-5 col-xs-offset-4">
+                        {{draft.ownerFullName}}
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-3"><b>Created On</b></div>
-                    <div class="col-lg-offset-3">{{draft.createdOn | date:'longDate'}}</div>
+                    <div class="col-lg-3 col-md-4 col-sm-5 col-xs-4"><b>Created On</b></div>
+                    <div class="col-lg-offset-3 col-md-offset-4 col-sm-offset-5 col-xs-offset-4">
+                        {{draft.createdOn | date:'longDate'}}
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-3"><b>Customer</b></div>
-                    <div class="col-lg-offset-3">
+                    <div class="col-lg-3 col-md-4 col-sm-5 col-xs-4"><b>Customer</b></div>
+                    <div class="col-lg-offset-3 col-md-offset-4 col-sm-offset-5 col-xs-offset-4">
                         <span editable-text="draft.customer" e-name="customer" e-required
                               e-typeahead="customer as customer.name for customer in getCustomers($viewValue)" e-typeahead-min-length="2" e-typeahead-wait-ms="100">
                             {{draft.customer.name || 'none'}}
