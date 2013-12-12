@@ -1,7 +1,118 @@
-﻿<h1>Administration</h1>
+﻿<div class="content-header">
+    <div>
+        <h1>Administration</h1>
+    </div>
+</div>
 
-<legend>
-    Events
-</legend>
+<ol class="breadcrumb">
+    <li>
+        <a href="/">
+            <i class="glyphicon glyphicon-home"></i>
+        </a>
+    </li>
+    <li class="active">
+        Administration
+    </li>
+</ol>
 
-<alert ng-repeat="msg in messages" type="'info'">{{msg}}</alert>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Recent Events</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+            <li class="list-group-item" ng-repeat="event in events">
+                <div class="row" ng-switch on="event.type">
+                    <div ng-switch-when="user">
+                        <div class="col-xs-2 col-md-1">
+                            <i class="fa fa-user"></i>
+                        </div>
+                        <div class="col-xs-10 col-md-11">
+                            <div>
+                                <a ng-href="/users/{{event.Id}}">
+                                    User '{{event.FullName}}'
+                                </a>
+                                <div class="mic-info">
+                                    Role: {{event.Role}}
+                                </div>
+                            </div>
+                            <div class="comment-text">
+                                {{event.action || '&nbsp;'}}
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-switch-when="customer">
+                        <div class="col-xs-2 col-md-1">
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="col-xs-10 col-md-11">
+                            <div>
+                                <a ng-href="/customers/{{event.Id}}">
+                                    Customer '{{event.Name}}'
+                                </a>
+                                <div class="mic-info">
+                                    &nbsp;
+                                </div>
+                            </div>
+                            <div class="comment-text">
+                                {{event.action || '&nbsp;'}}
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-switch-when="product">
+                        <div class="col-xs-2 col-md-1">
+                            <i class="fa fa-tag"></i>
+                        </div>
+                        <div class="col-xs-10 col-md-11">
+                            <div>
+                                <a ng-href="/products/{{event.Id}}">
+                                    Product '{{event.Title}}'
+                                </a>
+                                <div class="mic-info">
+                                    Price: {{event.Price | currency}}
+                                </div>
+                            </div>
+                            <div class="comment-text">
+                                {{event.action || '&nbsp;'}}
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-switch-when="offer">
+                        <div class="col-xs-2 col-md-1">
+                            <i class="fa fa-smile-o"></i>
+                        </div>
+                        <div class="col-xs-10 col-md-11">
+                            <div>
+                                <a ng-href="/offers/{{event.Id}}">
+                                    Offer '{{event.Title}}'
+                                </a>
+                                <div class="mic-info">
+                                    Total: {{event.Total | currency}}
+                                </div>
+                            </div>
+                            <div class="comment-text">
+                                {{event.action || '&nbsp;'}}
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-switch-default>
+                        <div class="col-xs-2 col-md-1">
+                            <i class="fa fa-question"></i>
+                        </div>
+                        <div class="col-xs-10 col-md-11">
+                            <div>
+                                Unknown event
+                                <div class="mic-info">
+                                    &nbsp;
+                                </div>
+                            </div>
+                            <div class="comment-text">
+                                {{event}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </div>
+    </div>
+</div>

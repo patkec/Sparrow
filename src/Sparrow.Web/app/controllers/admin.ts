@@ -3,44 +3,50 @@ module sparrow.controllers {
 
     interface IAdminScope extends ng.IScope {
         messages: any;
+        events: any;
     }
 
     angular.module('sparrow.controllers')
         .controller('AdminCtrl', ['$scope', '$', function ($scope: IAdminScope, $) {
-            $scope.messages = [];
+            $scope.events = [];
 
             var adminHub = $.connection.adminHub;
             adminHub.client.userCreated = function (user) {
                 $scope.$apply(function () {
-                    $scope.messages.push('User ' + user.Name + ' has been created.');
+                    var data = $.extend({}, user, { type: 'user', action: 'New User' });
+                    $scope.events.push(data);
                 });
             };
             adminHub.client.customerCreated = function (customer) {
                 $scope.$apply(function () {
-                    $scope.messages.push('Customer ' + customer.Name + ' has been created.');
+                    var data = $.extend({}, customer, { type: 'customer', action: 'New Customer' });
+                    $scope.events.push(data);
                 });
             };
             adminHub.client.productCreated = function (product) {
                 $scope.$apply(function () {
-                    $scope.messages.push('Product ' + product.Title + ' has been added to the system.');
+                    var data = $.extend({}, product, { type: 'product', action: 'New Product' });
+                    $scope.events.push(data);
                 });
             };
 
             var offersHub = $.connection.offersHub;
             offersHub.client.offerWon = function (offer) {
                 $scope.$apply(function () {
-                    $scope.messages.push('Offer ' + offer.Title + ' has been WON and an order has been created.');
+                    var data = $.extend({}, offer, { type: 'offer', action: 'Offer Accepted' });
+                    $scope.events.push(data);
                 });
             };
             offersHub.client.offerLost = function (offer) {
                 $scope.$apply(function () {
-                    $scope.messages.push('Offer ' + offer.Title + ' has been LOST. Better luck next time.');
+                    var data = $.extend({}, offer, { type: 'offer', action: 'Offer Lost' });
+                    $scope.events.push(data);
                 });
             };
             offersHub.client.offerSent = function (offer) {
                 $scope.$apply(function () {
-                    $scope.messages.push('Offer ' + offer.Title + ' has been sent to customer ' + offer.Customer.Name +
-                        '. Wait until ' + offer.ExpiresOn + ' to see the outcome.');
+                    var data = $.extend({}, offer, { type: 'offer', action: 'Offer Sent' });
+                    $scope.events.push(data);
                 });
             };
 
