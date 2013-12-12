@@ -51,10 +51,8 @@
             <td>{{offer.owner.fullName}}</td>
             <td>{{offer.customer.name}}</td>
             <td>{{offer.total | currency}}</td>
-            <td ng-switch on="offer.status">
-                <span ng-switch-when="1">Ordered</span>
-                <span ng-switch-when="2">Declined</span>
-                <span ng-switch-default>Unknown status</span>
+            <td>
+                {{offer.status | offerStatus}}
             </td>
         </tr>
     </tbody>

@@ -28,11 +28,8 @@
             </div>
             <div class="row">
                 <div class="col-lg-3 col-md-4 col-sm-5 col-xs-4"><b>Status</b></div>
-                <div class="col-lg-offset-3 col-md-offset-4 col-sm-offset-5 col-xs-offset-4" ng-switch on="offer.status">
-                    <span ng-switch-when="0">Active</span>
-                    <span ng-switch-when="1">Ordered</span>
-                    <span ng-switch-when="2">Declined</span>
-                    <span ng-switch-default>Unknown status</span>
+                <div class="col-lg-offset-3 col-md-offset-4 col-sm-offset-5 col-xs-offset-4">
+                    {{offer.status | offerStatus}}
                 </div>
             </div>
         </div>

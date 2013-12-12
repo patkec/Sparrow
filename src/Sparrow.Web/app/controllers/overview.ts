@@ -62,10 +62,10 @@ module sparrow.controllers {
                         name: 'New Offers',
                         data: [50, 63, 80, 94, 140, 363, 526]
                     }, {
-                        name: 'Successful Offers',
+                        name: 'Accepted Offers',
                         data: [10, 10, 11, 13, 22, 76, 176]
                     }, {
-                        name: 'Failed Offers',
+                        name: 'Lost Offers',
                         data: [16, 20, 27, 40, 54, 72, 62]
                     }]
             };
