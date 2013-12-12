@@ -24,7 +24,7 @@ module sparrow.controllers {
     };    
 
     // Dependencies (within []) should be defined exactly once, otherwise a new module is created each time.
-    angular.module('sparrow.controllers', ['sparrow.services', 'xeditable'])
+    angular.module('sparrow.controllers', ['sparrow.services', 'xeditable', 'notifications'])
         .controller('MenuCtrl', ['$scope', '$location', function ($scope: IMenuScope, $location: ng.ILocationService) {
             $scope.$on('$routeChangeSuccess', function () {
                 $scope.activeViewPath = $location.path();
@@ -36,5 +36,16 @@ module sparrow.controllers {
                 var activeViewPathRoot = $scope.activeViewPath.slice(0, path.length);
                 return activeViewPathRoot === path;
             };
+        }])
+        .controller('NotificationCtrl', ['$scope', '$', '$notification', function ($scope, $, $notification) {
+            var offersHub = $.connection.offersHub;
+
+            offersHub.client.offerSent = function (offer) {
+                $scope.$apply(function () {
+                    $notification.info('Offer Sent', 'Offer "' + offer.Title + '" sent to customer "' + offer.Customer.Name + '".', offer);
+                });
+            };
+
+            $.connection.hub.start();            
         }]);
 }

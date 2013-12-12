@@ -26,6 +26,7 @@ namespace Sparrow.Web
                       "~/Scripts/angular-resource.js",
                       "~/Scripts/angular-route.js",
                       "~/Scripts/xeditable.js",
+                      "~/Scripts/notifications.js",
                       "~/Scripts/ui-bootstrap-tpls-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
@@ -38,6 +39,7 @@ namespace Sparrow.Web
                       "~/Content/xeditable.css",
                       "~/Content/bootstrap.css",
                       "~/Content/font-awesome.css",
+                      "~/Content/notifications.css",
                       "~/Content/site.css"));
         }
     }
