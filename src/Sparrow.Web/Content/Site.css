@@ -146,8 +146,11 @@ ul.rating {
     text-align: right;
     position: absolute;
     top: 7px;
-    right: 27px;
     outline: none;
+}
+
+.offer-stats .list-group-item .fa {
+    right: 27px;
 }
 
 .offer-stats a {
