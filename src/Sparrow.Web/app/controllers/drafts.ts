@@ -110,7 +110,7 @@ module sparrow.controllers {
                 });
             };
             $scope.saveItem = function ($data, item) {
-                var data = $.extend({}, $data, { productId: $data.product.id });
+                var data = $.extend({}, $data, { id: item.id, productId: $data.product.id });
                 return $http.put('/api/drafts/' + $scope.draft.id + '/items', data)
                     .then(function (response) {
                         item.endEdit(response.data.item);
@@ -125,7 +125,7 @@ module sparrow.controllers {
                 $http.delete('/api/drafts/' + $scope.draft.id + '/items/' + item.id)
                     .success(function (response) {
                         $scope.draft.items.splice(index, 1);
-                        $.extend($scope.draft, response.data);
+                        $.extend($scope.draft, response);
                     });
             };
             $scope.saveDraftHeader = function ($data) {
