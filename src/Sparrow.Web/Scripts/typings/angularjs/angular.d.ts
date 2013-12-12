@@ -20,7 +20,7 @@ declare module ng {
 
     // All service providers extend this interface
     interface IServiceProvider {
-        $get(): any;
+        $get: any;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -809,6 +809,7 @@ declare module ng {
             decorator(name: string, decorator: Function): void;
             decorator(name: string, decoratorInline: any[]): void;
             factory(name: string, serviceFactoryFunction: Function): ng.IServiceProvider;
+            factory(name: string, inlineAnnotadedFunction: any[]): ng.IServiceProvider;
             provider(name: string, provider: ng.IServiceProvider): ng.IServiceProvider;
             provider(name: string, serviceProviderConstructor: Function): ng.IServiceProvider;
             service(name: string, constructor: Function): ng.IServiceProvider;
