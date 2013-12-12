@@ -17,7 +17,7 @@ module sparrow.viewModels {
         discountAmount: number;
 
         get isDirty(): boolean {
-            return this._editDiscount || $.grep(this._items, function (el) { return el.isDirty; }).length > 0;
+            return (undefined != this._editDiscount && this.discount != this._editDiscount) || $.grep(this._items, function (el) { return el.isDirty; }).length > 0;
         }
 
         get items(): DraftItemViewModel[]{
