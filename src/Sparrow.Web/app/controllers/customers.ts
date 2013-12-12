@@ -111,7 +111,7 @@ module sparrow.controllers {
             $scope.alerts = [];
             $scope.customer = Customers.get({ customerId: $routeParams.customerId });
             $scope.confirm = function () {
-                Customers.update($scope.customer,
+                $scope.customer.$update().then(
                     function () {
                         $location.path('/customers');
                     },

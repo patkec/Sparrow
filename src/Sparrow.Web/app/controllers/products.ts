@@ -126,7 +126,7 @@ module sparrow.controllers {
             $scope.alerts = [];
             $scope.product = Products.get({ productId: $routeParams.productId });
             $scope.confirm = function () {
-                Products.update($scope.product,
+                $scope.product.$update().then(
                     function () {
                         $location.path('/products');
                     },
