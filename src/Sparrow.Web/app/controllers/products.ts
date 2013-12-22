@@ -29,7 +29,7 @@ module sparrow.controllers {
         '$modal',
         'Products',
         '$routeParams',
-        function ($scope: IListScope, $location: ng.ILocationService, $modal, Products: ng.resource.IResourceClass, $routeParams) {
+        function ($scope: IListScope, $location: ng.ILocationService, $modal, Products: any, $routeParams) {
             var lastSelectedIdx;
             $scope.totalItems = 0;
             $scope.pageSize = 20;
@@ -97,7 +97,7 @@ module sparrow.controllers {
         '$scope',
         '$location',
         'Products',
-        function ($scope: IEditScope, $location, Products: sparrow.services.IUpdateResourceClass) {
+        function ($scope: IEditScope, $location, Products: any) {
             $scope.alerts = [];
             $scope.product = {};
             $scope.confirm = function () {
@@ -122,7 +122,7 @@ module sparrow.controllers {
         '$routeParams',
         '$location',
         'Products',
-        function ($scope: IEditScope, $routeParams, $location, Products: sparrow.services.IUpdateResourceClass) {
+        function ($scope: IEditScope, $routeParams, $location, Products: any) {
             $scope.alerts = [];
             $scope.product = Products.get({ productId: $routeParams.productId });
             $scope.confirm = function () {

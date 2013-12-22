@@ -179,7 +179,7 @@ module sparrow.controllers {
         '$location',
         '$http',
         'Drafts',
-        function ($scope: IEditScope, $location, $http: ng.IHttpService, Drafts: sparrow.services.IUpdateResourceClass) {
+        function ($scope: IEditScope, $location, $http: ng.IHttpService, Drafts: any) {
             $scope.alerts = [];
             $scope.draft = {};
             $scope.getCustomers = function (name) {

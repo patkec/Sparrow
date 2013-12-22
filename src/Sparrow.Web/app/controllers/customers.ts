@@ -28,7 +28,7 @@ module sparrow.controllers {
         '$modal',
         'Customers',
         '$routeParams',
-        function ($scope: IListScope, $location: ng.ILocationService, $modal, Customers: ng.resource.IResourceClass, $routeParams) {
+        function ($scope: IListScope, $location: ng.ILocationService, $modal: any, Customers: any, $routeParams: any) {
             $scope.totalItems = 0;
             $scope.pageSize = 20;
             $scope.searchText = $routeParams.search;
@@ -82,7 +82,7 @@ module sparrow.controllers {
         '$scope',
         '$location',
         'Customers',
-        function ($scope: IEditScope, $location, Customers: sparrow.services.IUpdateResourceClass) {
+        function ($scope: IEditScope, $location, Customers: any) {
             $scope.alerts = [];
             $scope.customer = {};
             $scope.confirm = function () {
@@ -107,7 +107,7 @@ module sparrow.controllers {
         '$routeParams',
         '$location',
         'Customers',
-        function ($scope: IEditScope, $routeParams, $location, Customers: sparrow.services.IUpdateResourceClass) {
+        function ($scope: IEditScope, $routeParams, $location, Customers: any) {
             $scope.alerts = [];
             $scope.customer = Customers.get({ customerId: $routeParams.customerId });
             $scope.confirm = function () {

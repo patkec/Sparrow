@@ -28,7 +28,7 @@ module sparrow.controllers {
         '$modal',
         'Users',
         '$routeParams',
-        function ($scope: IListScope, $location: ng.ILocationService, $modal, Users: ng.resource.IResourceClass, $routeParams) {
+        function ($scope: IListScope, $location: ng.ILocationService, $modal, Users: any, $routeParams) {
             $scope.totalItems = 0;
             $scope.pageSize = 10;       
             $scope.searchText = $routeParams.search;
@@ -89,7 +89,7 @@ module sparrow.controllers {
         '$scope',
         '$location',
         'Users',
-        function ($scope: IEditScope, $location, Users: sparrow.services.IUpdateResourceClass) {
+        function ($scope: IEditScope, $location, Users: any) {
             $scope.alerts = [];
             $scope.user = {};
             $scope.confirm = function () {
@@ -114,7 +114,7 @@ module sparrow.controllers {
         '$routeParams',
         '$location',
         'Users',
-        function ($scope: IEditScope, $routeParams, $location, Users: sparrow.services.IUpdateResourceClass) {
+        function ($scope: IEditScope, $routeParams, $location, Users: any) {
             $scope.alerts = [];
             $scope.user = Users.get({ userId: $routeParams.userId });
             $scope.confirm = function () {

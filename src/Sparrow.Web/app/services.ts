@@ -6,9 +6,6 @@ module sparrow.services {
         store(key: string, value: any);
         get(key: string): any;
     }
-    export interface IUpdateResourceClass extends ng.resource.IResourceClass {
-        update(item: any, success: Function, error: Function);
-    }
 
     // DEFINITIONS
     angular.module('sparrow.services', ['ngResource'])
