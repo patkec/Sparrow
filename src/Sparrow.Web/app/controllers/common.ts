@@ -37,6 +37,12 @@ module sparrow.controllers {
                 return activeViewPathRoot === path;
             };
         }])
+        .controller('LoginCtrl', ['$routeParams', 'Auth', function ($routeParams, Auth) {
+            Auth.login($routeParams.redirectUrl);
+        }])
+        .controller('LoginCallbackCtrl', ['$location', 'Auth', function ($location, Auth) {
+            Auth.loginCallback($location.hash());
+        }])
         .controller('NotificationCtrl', ['$scope', '$', '$notification', function ($scope, $, $notification) {
             var offersHub = $.connection.offersHub;
 

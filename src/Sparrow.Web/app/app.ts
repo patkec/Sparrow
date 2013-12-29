@@ -12,10 +12,13 @@ module sparrow {
     app.config([
         '$routeProvider',
         '$locationProvider',
-        function ($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider) {
+        '$httpProvider',
+        function ($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider, $httpProvider) {
             $routeProvider
                 .when('/admin', { templateUrl: 'app/partials/admin/overview.html', controller: 'AdminCtrl' })
                 .when('/overview', { templateUrl: 'app/partials/offers/overview.html', controller: 'OverviewCtrl' })
+                .when('/login', { template: ' ', controller: 'LoginCtrl' })
+                .when('/loginCallback', { template: ' ', controller: 'LoginCallbackCtrl' })
                 // Offers - Drafts
                 .when('/drafts', { templateUrl: '/app/partials/drafts/list.html', controller: 'DraftsCtrl' })
                 .when('/drafts/create', { templateUrl: '/app/partials/drafts/create.html', controller: 'DraftCreateCtrl' })
@@ -40,6 +43,8 @@ module sparrow {
                 .otherwise({ redirectTo: '/overview' });
             // Enable pretty URLs (without #)
             $locationProvider.html5Mode(true);
+
+            $httpProvider.interceptors.push('authInterceptor');
         }]);
     app.run(function (editableOptions) {
         editableOptions.theme = 'bs3';

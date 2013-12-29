@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Web.Http;
 using AutoMapper;
 using NHibernate.Criterion;
 using Sparrow.Domain.Models;
@@ -8,6 +9,7 @@ using Sparrow.Web.Models.Customers;
 
 namespace Sparrow.Web.Controllers
 {
+    [Authorize]
     public class CustomersController : CrudApiController<Customer, CustomerViewModel, CustomerViewModel, CustomerAddModel, CustomerEditModel>
     {
         protected override void OnEntityCreated(Customer entity)
