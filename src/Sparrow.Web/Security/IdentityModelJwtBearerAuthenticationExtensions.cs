@@ -24,7 +24,6 @@ namespace Sparrow.Web.Security
                 options.Provider = location;
 
             app.UseJwtBearerAuthentication(options);
-            //app.UseOAuthAuthorizationServer(new OAuthAuthorizationServerOptions(){})
 
             return app;
         }

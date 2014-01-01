@@ -14,7 +14,7 @@ namespace Sparrow.Web
             config.Filters.Add(ObjectFactory.GetInstance<NHibernateApiFilter>());
 
             // Use lowercase for JSON serialization.
-            var settings = new JsonSerializerSettings { ContractResolver = new CamelcaseContractResolver() };
+            var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings = settings;
 
             // Web API routes
@@ -25,14 +25,6 @@ namespace Sparrow.Web
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-        }
-
-        private class CamelcaseContractResolver : DefaultContractResolver
-        {
-            protected override string ResolvePropertyName(string propertyName)
-            {
-                return propertyName.Substring(0, 1).ToLower() + propertyName.Substring(1);
-            }
         }
     }
 }

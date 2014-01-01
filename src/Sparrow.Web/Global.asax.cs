@@ -1,9 +1,12 @@
-﻿using System.Web.Http;
+﻿using System.IdentityModel.Services;
+using System.IdentityModel.Services.Configuration;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Sparrow.Infrastructure.Tasks;
 using Sparrow.Web.App_Start;
+using Sparrow.Web.Security;
 
 namespace Sparrow.Web
 {
@@ -23,6 +26,13 @@ namespace Sparrow.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             MapperConfig.Configure();
             DomainEventConfig.RegisterEvents();
+
+            FederatedAuthentication.FederationConfigurationCreated += FederatedAuthentication_FederationConfigurationCreated;
+        }
+
+        private void FederatedAuthentication_FederationConfigurationCreated(object sender, FederationConfigurationCreatedEventArgs e)
+        {
+            e.FederationConfiguration.IdentityConfiguration.ClaimsAuthorizationManager = new AuthorizationManager();
         }
     }
 }

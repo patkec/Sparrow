@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IdentityModel.Tokens;
-using Owin;
+﻿using Owin;
 using Sparrow.Web.Security;
 
 namespace Sparrow.Web
@@ -15,9 +13,6 @@ namespace Sparrow.Web
 
         private static void ConfigureAuth(IAppBuilder app)
         {
-            // no mapping of incoming claims to Microsoft types
-            //JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
-
             // validate JWT tokens from AuthorizationServer
             app.UseJsonWebToken(
                 issuer: "AS",

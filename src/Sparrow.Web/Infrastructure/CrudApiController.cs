@@ -34,22 +34,22 @@ namespace Sparrow.Web.Infrastructure
         /// Gets an entity by id.
         /// </summary>
         [HttpGet]
-        public HttpResponseMessage Get(Guid id)
+        public virtual IHttpActionResult Get(Guid id)
         {
             var entity = Session.Get<TEntity>(id);
 
             if (entity == null)
-                return new HttpResponseMessage(HttpStatusCode.NotFound);
+                return NotFound();
 
             var model = Mapper.Map<TDetailViewModel>(entity);
-            return Request.CreateResponse(HttpStatusCode.OK, model);
+            return Ok(model);
         }
 
         /// <summary>
         /// Gets a paged list of customers.
         /// </summary>
         [HttpGet]
-        public PagedListModel<TViewModel> Get([FromUri] PagedListRequestModel requestModel)
+        public virtual PagedListModel<TViewModel> Get([FromUri] PagedListRequestModel requestModel)
         {
             requestModel = requestModel ?? new PagedListRequestModel
             {
@@ -86,14 +86,18 @@ namespace Sparrow.Web.Infrastructure
         /// </summary>
         [HttpPost]
         [ValidateModel]
-        public HttpResponseMessage Post(TAddModel model)
+        public virtual IHttpActionResult Post(TAddModel model)
         {
             var entity = CreateEntity(model);
             Session.Save(entity);
             OnEntityCreated(entity);
 
             var viewModel = Mapper.Map<TViewModel>(entity);
-            return Request.CreateResponse(HttpStatusCode.Created, viewModel);
+            return CreatedAtRoute("DefaultApi", new
+            {
+                id = entity.Id,
+                controller = Request.GetActionDescriptor().ControllerDescriptor.ControllerName,
+            }, viewModel);
         }
 
         /// <summary>
@@ -117,7 +121,7 @@ namespace Sparrow.Web.Infrastructure
         /// </summary>
         [HttpPut]
         [ValidateModel]
-        public HttpResponseMessage Put(TEditModel model)
+        public virtual IHttpActionResult Put(TEditModel model)
         {
             if (model.Id == Guid.Empty)
             {
@@ -137,9 +141,9 @@ namespace Sparrow.Web.Infrastructure
         /// Creates a response after specified entity has been updated.
         /// </summary>
         /// <param name="entity">Updated entity.</param>
-        protected virtual HttpResponseMessage CreateUpdateResponse(TEntity entity)
+        protected virtual IHttpActionResult CreateUpdateResponse(TEntity entity)
         {
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Ok();
         }
 
         /// <summary>
@@ -179,21 +183,21 @@ namespace Sparrow.Web.Infrastructure
         /// Deletes an entity with id.
         /// </summary>
         [HttpDelete]
-        public HttpResponseMessage Delete(Guid id)
+        public virtual IHttpActionResult Delete(Guid id)
         {
             var entityToDelete = Session.Get<TEntity>(id);
             if (entityToDelete != null)
             {
                 DeleteEntity(entityToDelete);
             }
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Ok();
         }
 
         /// <summary>
         /// Deletes multiple entities with given identifiers.
         /// </summary>
         [HttpDelete]
-        public HttpResponseMessage DeleteMany([FromUri] IEnumerable<Guid> ids)
+        public virtual IHttpActionResult DeleteMany([FromUri] IEnumerable<Guid> ids)
         {
             var idArray = (ids == null) ? new Guid[0] : ids.ToArray();
             if (idArray.Length > 0)
@@ -204,7 +208,7 @@ namespace Sparrow.Web.Infrastructure
                 foreach (var entity in entitiesToDelete)
                     DeleteEntity(entity);
             }
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Ok();
         }
 
         private void DeleteEntity(TEntity entity)

@@ -11,18 +11,22 @@ using Sparrow.Web.Commands;
 using Sparrow.Web.Infrastructure;
 using Sparrow.Web.Models;
 using Sparrow.Web.Models.Offers;
+using Sparrow.Web.Security;
+using Thinktecture.IdentityModel.Authorization.WebApi;
 
 namespace Sparrow.Web.Controllers
 {
     public class OffersController: SessionApiController
     {
         [Route("api/offers")]
+        [ClaimsAuthorize(ResourceActionName.List, "Offer")]
         public PagedListModel<OfferViewModel> Get(PagedListRequestModel requestModel)
         {
             return GetOffers(requestModel, x => x.Status == OfferStatus.Offered);
         }
 
         [Route("api/offers/archived")]
+        [ClaimsAuthorize(ResourceActionName.List, "Offer")]
         public PagedListModel<OfferViewModel> GetCompleted(PagedListRequestModel requestModel)
         {
             return GetOffers(requestModel, x => x.Status == OfferStatus.Won || x.Status == OfferStatus.Lost);
@@ -60,33 +64,8 @@ namespace Sparrow.Web.Controllers
         }
 
         [HttpGet]
-        public HttpResponseMessage Get(Guid id)
-        {
-            var entity = Session.Get<Offer>(id);
-
-            if (entity == null)
-                return new HttpResponseMessage(HttpStatusCode.NotFound);
-
-            var model = Mapper.Map<OfferDetailsViewModel>(entity);
-            return Request.CreateResponse(HttpStatusCode.OK, model);
-        }
-
-        [HttpGet]
-        [Route("api/offers/{offerId}/items")]
-        public HttpResponseMessage GetItems(Guid offerId)
-        {
-            var offer = Session.QueryOver<Offer>()
-                .Fetch(x => x.Items).Eager
-                .Where(x => x.Id == offerId)
-                .SingleOrDefault();
-            if (offer == null)
-                return new HttpResponseMessage(HttpStatusCode.NotFound);
-
-            return Request.CreateResponse(HttpStatusCode.OK, Mapper.Map<IEnumerable<OfferItemViewModel>>(offer.Items));
-        }
-
-        [HttpGet]
         [Route("api/offers/latest/{count}")]
+        [ClaimsAuthorize(ResourceActionName.List, "Offer")]
         public IEnumerable<OfferViewModel> GetLatest(int? count)
         {
             var offers = Session.QueryOver<Offer>()
@@ -100,6 +79,7 @@ namespace Sparrow.Web.Controllers
 
         [HttpGet]
         [Route("api/offers/soonToExpire/{days}")]
+        [ClaimsAuthorize(ResourceActionName.List, "Offer")]
         public IEnumerable<OfferViewModel> GetSoonToExpire(int? days)
         {
             var offers = Session.QueryOver<Offer>()
@@ -110,14 +90,43 @@ namespace Sparrow.Web.Controllers
             return Mapper.Map<IEnumerable<OfferViewModel>>(offers);
         }
 
+        [HttpGet]
+        [ClaimsAuthorize(ResourceActionName.Details, "Offer")]
+        public IHttpActionResult Get(Guid id)
+        {
+            var entity = Session.Get<Offer>(id);
+
+            if (entity == null)
+                return NotFound();
+
+            var model = Mapper.Map<OfferDetailsViewModel>(entity);
+            return Ok(model);
+        }
+
+        [HttpGet]
+        [Route("api/offers/{offerId}/items")]
+        [ClaimsAuthorize(ResourceActionName.Details, "Offer")]
+        public IHttpActionResult GetItems(Guid offerId)
+        {
+            var offer = Session.QueryOver<Offer>()
+                .Fetch(x => x.Items).Eager
+                .Where(x => x.Id == offerId)
+                .SingleOrDefault();
+            if (offer == null)
+                return NotFound();
+
+            return Ok(Mapper.Map<IEnumerable<OfferItemViewModel>>(offer.Items));
+        }
+
         [HttpPut]
         [Route("api/offers/{offerId}/won")]
-        public HttpResponseMessage CloseAsWon(Guid id)
+        [ClaimsAuthorize(ResourceActionName.Update, "Offer")]
+        public IHttpActionResult CloseAsWon(Guid id)
         {
             // Some parameter checking up-front
             var offer = Session.Get<Offer>(id);
             if (offer == null)
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Offer not found.");
+                return NotFound();
 
             var command = new CloseOfferAsWonCommand
             {
@@ -125,17 +134,18 @@ namespace Sparrow.Web.Controllers
             };
 
             CommandExecutor.ExecuteCommand(command);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Ok();
         }
 
         [HttpPut]
         [Route("api/offers/{id}/archive")]
-        public HttpResponseMessage ArchiveOffer(Guid id)
+        [ClaimsAuthorize(ResourceActionName.Update, "Offer")]
+        public IHttpActionResult ArchiveOffer(Guid id)
         {
             // Some parameter checking up-front
             var offer = Session.Get<Offer>(id);
             if (offer == null)
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Offer not found.");
+                return NotFound();
 
             var command = new CloseOfferAsLostCommand
             {
@@ -143,7 +153,7 @@ namespace Sparrow.Web.Controllers
             };
 
             CommandExecutor.ExecuteCommand(command);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Ok();
         }
     }
 }
