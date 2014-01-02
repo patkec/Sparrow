@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using AutoMapper;
 using NHibernate.Criterion;
@@ -18,15 +16,17 @@ namespace Sparrow.Web.Controllers
 {
     public class OffersController: SessionApiController
     {
+        private const string ResourceName = "Offer";
+
         [Route("api/offers")]
-        [ClaimsAuthorize(ResourceActionName.List, "Offer")]
+        [ClaimsAuthorize(ResourceActionName.List, ResourceName)]
         public PagedListModel<OfferViewModel> Get(PagedListRequestModel requestModel)
         {
             return GetOffers(requestModel, x => x.Status == OfferStatus.Offered);
         }
 
         [Route("api/offers/archived")]
-        [ClaimsAuthorize(ResourceActionName.List, "Offer")]
+        [ClaimsAuthorize(ResourceActionName.List, ResourceName)]
         public PagedListModel<OfferViewModel> GetCompleted(PagedListRequestModel requestModel)
         {
             return GetOffers(requestModel, x => x.Status == OfferStatus.Won || x.Status == OfferStatus.Lost);
@@ -65,7 +65,7 @@ namespace Sparrow.Web.Controllers
 
         [HttpGet]
         [Route("api/offers/latest/{count}")]
-        [ClaimsAuthorize(ResourceActionName.List, "Offer")]
+        [ClaimsAuthorize(ResourceActionName.List, ResourceName)]
         public IEnumerable<OfferViewModel> GetLatest(int? count)
         {
             var offers = Session.QueryOver<Offer>()
@@ -79,7 +79,7 @@ namespace Sparrow.Web.Controllers
 
         [HttpGet]
         [Route("api/offers/soonToExpire/{days}")]
-        [ClaimsAuthorize(ResourceActionName.List, "Offer")]
+        [ClaimsAuthorize(ResourceActionName.List, ResourceName)]
         public IEnumerable<OfferViewModel> GetSoonToExpire(int? days)
         {
             var offers = Session.QueryOver<Offer>()
@@ -91,7 +91,7 @@ namespace Sparrow.Web.Controllers
         }
 
         [HttpGet]
-        [ClaimsAuthorize(ResourceActionName.Details, "Offer")]
+        [ClaimsAuthorize(ResourceActionName.Details, ResourceName)]
         public IHttpActionResult Get(Guid id)
         {
             var entity = Session.Get<Offer>(id);
@@ -105,7 +105,7 @@ namespace Sparrow.Web.Controllers
 
         [HttpGet]
         [Route("api/offers/{offerId}/items")]
-        [ClaimsAuthorize(ResourceActionName.Details, "Offer")]
+        [ClaimsAuthorize(ResourceActionName.Details, ResourceName)]
         public IHttpActionResult GetItems(Guid offerId)
         {
             var offer = Session.QueryOver<Offer>()
@@ -120,7 +120,7 @@ namespace Sparrow.Web.Controllers
 
         [HttpPut]
         [Route("api/offers/{offerId}/won")]
-        [ClaimsAuthorize(ResourceActionName.Update, "Offer")]
+        [ClaimsAuthorize(ResourceActionName.Update, ResourceName)]
         public IHttpActionResult CloseAsWon(Guid id)
         {
             // Some parameter checking up-front
@@ -139,7 +139,7 @@ namespace Sparrow.Web.Controllers
 
         [HttpPut]
         [Route("api/offers/{id}/archive")]
-        [ClaimsAuthorize(ResourceActionName.Update, "Offer")]
+        [ClaimsAuthorize(ResourceActionName.Update, ResourceName)]
         public IHttpActionResult ArchiveOffer(Guid id)
         {
             // Some parameter checking up-front

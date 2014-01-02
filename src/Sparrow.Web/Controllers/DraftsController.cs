@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -10,7 +9,6 @@ using NHibernate.Criterion;
 using Sparrow.Domain.Models;
 using Sparrow.Infrastructure.Tasks;
 using Sparrow.Web.Infrastructure;
-using Sparrow.Web.Models;
 using Sparrow.Web.Models.Drafts;
 using Sparrow.Web.Security;
 using Sparrow.Web.Tasks;
@@ -20,7 +18,8 @@ namespace Sparrow.Web.Controllers
 {
     public class DraftsController: CrudApiController<OfferDraft, DraftViewModel, DraftDetailViewModel, DraftAddModel, DraftEditModel>
     {
-        private const string ResourceName = "Draft";
+        private const string ResName = "Draft";
+        protected override string ResourceName { get { return ResName; } }
 
         protected override Expression<Func<OfferDraft, bool>> CreateFilter(string filter)
         {
@@ -48,45 +47,9 @@ namespace Sparrow.Web.Controllers
             return Ok(response);
         }
 
-        [ClaimsAuthorize(ResourceActionName.Details, ResourceName)]
-        public override IHttpActionResult Get(Guid id)
-        {
-            return base.Get(id);
-        }
-
-        [ClaimsAuthorize(ResourceActionName.List, ResourceName)]
-        public override PagedListModel<DraftViewModel> Get([FromUri] PagedListRequestModel requestModel)
-        {
-            return base.Get(requestModel);
-        }
-
-        [ClaimsAuthorize(ResourceActionName.Delete, ResourceName)]
-        public override IHttpActionResult Delete(Guid id)
-        {
-            return base.Delete(id);
-        }
-
-        [ClaimsAuthorize(ResourceActionName.Delete, ResourceName)]
-        public override IHttpActionResult DeleteMany([FromUri] IEnumerable<Guid> ids)
-        {
-            return base.DeleteMany(ids);
-        }
-
-        [ClaimsAuthorize(ResourceActionName.Create, ResourceName)]
-        public override IHttpActionResult Post(DraftAddModel model)
-        {
-            return base.Post(model);
-        }
-
-        [ClaimsAuthorize(ResourceActionName.Update, ResourceName)]
-        public override IHttpActionResult Put(DraftEditModel model)
-        {
-            return base.Put(model);
-        }
-
         [HttpPost]
         [Route("api/drafts/create/{offerId}")]
-        [ClaimsAuthorize(ResourceActionName.Create, ResourceName)]
+        [ClaimsAuthorize(ResourceActionName.Create, ResName)]
         public IHttpActionResult CreateFromOffer(Guid offerId)
         {
             var offer = Session.Get<Offer>(offerId);
@@ -101,7 +64,7 @@ namespace Sparrow.Web.Controllers
 
         [HttpPost]
         [Route("api/drafts/{draftId}/items")]
-        [ClaimsAuthorize(ResourceActionName.Update, ResourceName)]
+        [ClaimsAuthorize(ResourceActionName.Update, ResName)]
         public IHttpActionResult PostItem(Guid draftId, DraftItemAddModel model)
         {
             if (model == null || !model.ProductId.HasValue)
@@ -134,7 +97,7 @@ namespace Sparrow.Web.Controllers
 
         [HttpPut]
         [Route("api/drafts/{draftId}/items")]
-        [ClaimsAuthorize(ResourceActionName.Update, ResourceName)]
+        [ClaimsAuthorize(ResourceActionName.Update, ResName)]
         public IHttpActionResult PutItem(Guid draftId, DraftItemEditModel model)
         {
             if (model == null)
@@ -164,7 +127,7 @@ namespace Sparrow.Web.Controllers
 
         [HttpDelete]
         [Route("api/drafts/{draftId}/items/{id}")]
-        [ClaimsAuthorize(ResourceActionName.Update, ResourceName)]
+        [ClaimsAuthorize(ResourceActionName.Update, ResName)]
         public IHttpActionResult DeleteItem(Guid draftId, Guid id)
         {
             var draft = Session.Get<OfferDraft>(draftId);

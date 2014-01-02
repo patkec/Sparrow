@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using AutoMapper;
@@ -11,6 +10,8 @@ using NHibernate.Criterion;
 using Sparrow.Domain.Models;
 using Sparrow.Web.Hubs;
 using Sparrow.Web.Models;
+using Sparrow.Web.Security;
+using Thinktecture.IdentityModel.Authorization;
 
 namespace Sparrow.Web.Infrastructure
 {
@@ -19,6 +20,12 @@ namespace Sparrow.Web.Infrastructure
         where TAddModel: class
         where TEditModel: class, IEditModel
     {
+
+        /// <summary>
+        /// Gets the name of the resource on which the controller operates.
+        /// </summary>
+        protected abstract string ResourceName { get; }
+
         /// <summary>
         /// Gets the administrative messaging hub.
         /// </summary>
@@ -34,8 +41,11 @@ namespace Sparrow.Web.Infrastructure
         /// Gets an entity by id.
         /// </summary>
         [HttpGet]
-        public virtual IHttpActionResult Get(Guid id)
+        public IHttpActionResult Get(Guid id)
         {
+            if (!ClaimsAuthorization.CheckAccess(ResourceActionName.Details, ResourceName))
+                return Unauthorized();
+
             var entity = Session.Get<TEntity>(id);
 
             if (entity == null)
@@ -49,8 +59,11 @@ namespace Sparrow.Web.Infrastructure
         /// Gets a paged list of customers.
         /// </summary>
         [HttpGet]
-        public virtual PagedListModel<TViewModel> Get([FromUri] PagedListRequestModel requestModel)
+        public IHttpActionResult Get([FromUri] PagedListRequestModel requestModel)
         {
+            if (!ClaimsAuthorization.CheckAccess(ResourceActionName.List, ResourceName))
+                return Unauthorized();
+
             requestModel = requestModel ?? new PagedListRequestModel
             {
                 PageSize = 20
@@ -69,7 +82,7 @@ namespace Sparrow.Web.Infrastructure
             var items = itemsQuery.Future();
             var totalItems = itemsQuery.ToRowCountQuery().FutureValue<int>();
 
-            return new PagedListModel<TViewModel>
+            var viewModel = new PagedListModel<TViewModel>
             {
                 Page = requestModel.Page,
                 PageSize = requestModel.PageSize,
@@ -77,6 +90,7 @@ namespace Sparrow.Web.Infrastructure
                 TotalPages = (int)Math.Ceiling(totalItems.Value / (double)requestModel.PageSize),
                 Items = Mapper.Map<IEnumerable<TViewModel>>(items)
             };
+            return Ok(viewModel);
         }
 
         protected abstract Expression<Func<TEntity, bool>> CreateFilter(string filter);
@@ -86,8 +100,11 @@ namespace Sparrow.Web.Infrastructure
         /// </summary>
         [HttpPost]
         [ValidateModel]
-        public virtual IHttpActionResult Post(TAddModel model)
+        public IHttpActionResult Post(TAddModel model)
         {
+            if (!ClaimsAuthorization.CheckAccess(ResourceActionName.Create, ResourceName))
+                return Unauthorized();
+
             var entity = CreateEntity(model);
             Session.Save(entity);
             OnEntityCreated(entity);
@@ -121,13 +138,16 @@ namespace Sparrow.Web.Infrastructure
         /// </summary>
         [HttpPut]
         [ValidateModel]
-        public virtual IHttpActionResult Put(TEditModel model)
+        public IHttpActionResult Put(TEditModel model)
         {
             if (model.Id == Guid.Empty)
             {
                 var addModel = ConvertToAddModel(model);
                 return Post(addModel);
             }
+
+            if (!ClaimsAuthorization.CheckAccess(ResourceActionName.Update, ResourceName))
+                return Unauthorized();
 
             var entity = Session.Load<TEntity>(model.Id);
             UpdateEntity(entity, model);
@@ -183,8 +203,11 @@ namespace Sparrow.Web.Infrastructure
         /// Deletes an entity with id.
         /// </summary>
         [HttpDelete]
-        public virtual IHttpActionResult Delete(Guid id)
+        public IHttpActionResult Delete(Guid id)
         {
+            if (!ClaimsAuthorization.CheckAccess(ResourceActionName.Delete, ResourceName))
+                return Unauthorized();
+
             var entityToDelete = Session.Get<TEntity>(id);
             if (entityToDelete != null)
             {
@@ -197,8 +220,11 @@ namespace Sparrow.Web.Infrastructure
         /// Deletes multiple entities with given identifiers.
         /// </summary>
         [HttpDelete]
-        public virtual IHttpActionResult DeleteMany([FromUri] IEnumerable<Guid> ids)
+        public IHttpActionResult DeleteMany([FromUri] IEnumerable<Guid> ids)
         {
+            if (!ClaimsAuthorization.CheckAccess(ResourceActionName.Delete, ResourceName))
+                return Unauthorized();
+
             var idArray = (ids == null) ? new Guid[0] : ids.ToArray();
             if (idArray.Length > 0)
             {
