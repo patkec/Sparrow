@@ -22,6 +22,53 @@ module sparrow.services {
                 }
             };
         })
+        .factory('Events', ['$', '$rootScope', function ($, $rootScope) {
+            var connection, adminHub, offersHub;
+
+            var initialize = function() {
+                connection = $.hubConnection();
+                adminHub = connection.createHubProxy('adminHub');
+                offersHub = connection.createHubProxy('offersHub');
+
+                adminHub.on('userCreated', function (user) {
+                    $rootScope.$apply(function() {
+                        $rootScope.$emit('sparrow.admin.userCreated', user);
+                    });
+                });
+                adminHub.on('customerCreated', function (customer) {
+                    $rootScope.$apply(function() {
+                        $rootScope.$emit('sparrow.admin.customerCreated', customer);
+                    });
+                });
+                adminHub.on('productCreated', function (product) {
+                    $rootScope.$apply(function() {
+                        $rootScope.$emit('sparrow.admin.productCreated', product);
+                    });
+                });
+
+                offersHub.on('offerSent', function (offer) {
+                    $rootScope.$apply(function() {
+                        $rootScope.$emit('sparrow.offers.offerSent', offer);
+                    });
+                });
+                offersHub.on('offerWon', function (offer) {
+                    $rootScope.$apply(function() {
+                        $rootScope.$emit('sparrow.offers.offerWon', offer);
+                    });
+                });
+                offersHub.on('offerLost', function (offer) {
+                    $rootScope.$apply(function() {
+                        $rootScope.$emit('sparrow.offers.offerLost', offer);
+                    });
+                });
+
+                connection.start();
+            };
+
+            return {
+                initialize: initialize
+            };
+        }])
         .factory('authInterceptor', ['$q', '$location', 'Auth', function($q, $location, Auth) {
             return {
                 request: function (config) {

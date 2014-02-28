@@ -25,6 +25,21 @@ module sparrow.controllers {
 
     // Dependencies (within []) should be defined exactly once, otherwise a new module is created each time.
     angular.module('sparrow.controllers', ['sparrow.services', 'xeditable', 'notifications'])
+        .config(['$provide', function ($provide) {
+            // http://stackoverflow.com/questions/11252780/whats-the-correct-way-to-communicate-between-controllers-in-angularjs/19498009#19498009
+            $provide.decorator('$rootScope', ['$delegate', function ($delegate) {
+                Object.defineProperty($delegate.constructor.prototype, '$onRootScope', {
+                    value: function (name, listener) {
+                        var unsubscribe = $delegate.$on(name, function () {
+                            listener.apply(arguments[0], [].slice.call(arguments, 1));
+                        });
+                        this.$on('$destroy', unsubscribe);
+                    },
+                    enumerable: false
+                });
+                return $delegate;
+            }]);
+        }])
         .controller('MenuCtrl', ['$scope', '$location', function ($scope: IMenuScope, $location: ng.ILocationService) {
             $scope.$on('$routeChangeSuccess', function () {
                 $scope.activeViewPath = $location.path();
@@ -43,15 +58,11 @@ module sparrow.controllers {
         .controller('LoginCallbackCtrl', ['$location', 'Auth', function ($location, Auth) {
             Auth.loginCallback($location.hash());
         }])
-        .controller('NotificationCtrl', ['$scope', '$', '$notification', function ($scope, $, $notification) {
-            var offersHub = $.connection.offersHub;
+        .controller('NotificationCtrl', ['$scope', '$notification', 'Events', function ($scope, $notification, Events) {
+            Events.initialize();
 
-            offersHub.client.offerSent = function (offer) {
-                $scope.$apply(function () {
-                    $notification.info('Offer Sent', 'Offer "' + offer.Title + '" sent to customer "' + offer.Customer.Name + '".', offer);
-                });
-            };
-
-            $.connection.hub.start();            
+            $scope.$onRootScope('sparrow.offers.offerSent', function (offer) {
+                $notification.info('Offer Sent', 'Offer "' + offer.Title + '" sent to customer "' + offer.Customer.Name + '".', offer);
+            });
         }]);
 }
