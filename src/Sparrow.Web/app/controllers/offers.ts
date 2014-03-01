@@ -92,12 +92,12 @@ module sparrow.controllers {
             $scope.offer = Offers.get({ offerId: $routeParams.offerId });
 
             $scope.archiveOffer = function () {
-                $http.put('/api/offers/' + $scope.offer.id + '/archive').then(function () {
+                $http.put('https://localhost:44304/api/offers/' + $scope.offer.id + '/archive').then(function () {
                     $scope.offer.status = 2;
                 });
             };
             $scope.cloneOffer = function () {
-                $http.post('/api/drafts/create/' + $scope.offer.id).then(function (response) {
+                $http.post('https://localhost:44304/api/drafts/create/' + $scope.offer.id).then(function (response) {
                     $location.path('/drafts/' + response.data.replace(/"/g, ''));
                 });
             };

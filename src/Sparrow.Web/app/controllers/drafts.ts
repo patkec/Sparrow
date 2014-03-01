@@ -100,18 +100,18 @@ module sparrow.controllers {
             });
 
             $scope.getProducts = function (title) {
-                return $http.get('/api/products?sort=Title&orderAscending=true&filter=' + title).then(function (response) {
+                return $http.get('https://localhost:44304/api/products?sort=Title&orderAscending=true&filter=' + title).then(function (response) {
                     return response.data.items;
                 });
             };
             $scope.getCustomers = function (name) {
-                return $http.get('/api/customers?sort=Name&orderAscending=true&filter=' + name).then(function (response) {
+                return $http.get('https://localhost:44304/api/customers?sort=Name&orderAscending=true&filter=' + name).then(function (response) {
                     return response.data.items;
                 });
             };
             $scope.saveItem = function ($data, item) {
                 var data = $.extend({}, $data, { id: item.id, productId: $data.product.id });
-                return $http.put('/api/drafts/' + $scope.draft.id + '/items', data)
+                return $http.put('https://localhost:44304/api/drafts/' + $scope.draft.id + '/items', data)
                     .then(function (response) {
                         item.endEdit(response.data.item);
                         $.extend($scope.draft, response.data.draft);
@@ -122,7 +122,7 @@ module sparrow.controllers {
                     });
             };
             $scope.deleteItem = function (index, item) {
-                $http.delete('/api/drafts/' + $scope.draft.id + '/items/' + item.id)
+                $http.delete('https://localhost:44304/api/drafts/' + $scope.draft.id + '/items/' + item.id)
                     .success(function (response) {
                         $scope.draft.items.splice(index, 1);
                         $.extend($scope.draft, response);
@@ -130,11 +130,11 @@ module sparrow.controllers {
             };
             $scope.saveDraftHeader = function ($data) {
                 var data = $.extend({}, $data, { id: $scope.draft.id, discount: $scope.draft.discount, customerId: $data.customer.id });
-                return $http.put('/api/drafts', data);
+                return $http.put('https://localhost:44304/api/drafts', data);
             };
             $scope.saveDraftDiscount = function ($data) {
                 var data = $.extend({}, $data, { id: $scope.draft.id, title: $scope.draft.title, customerId: $scope.draft.customer.id })                
-                return $http.put('/api/drafts', data)
+                return $http.put('https://localhost:44304/api/drafts', data)
                     .then(function (response) {
                         $scope.draft.endEdit();
                         $.extend($scope.draft, response.data);
@@ -147,7 +147,7 @@ module sparrow.controllers {
                     windowClass: 'show' // Workaround for bootstrap 3 - dialog is not shown without this class
                 });
                 modalInstance.result.then(function (date) {
-                    var url = '/api/drafts/' + $scope.draft.id + '/offer';
+                    var url = 'https://localhost:44304/api/drafts/' + $scope.draft.id + '/offer';
                     $http.post(url, { expiresOn: date })
                         .success(function () {
                             $location.path('/offers');
@@ -183,12 +183,12 @@ module sparrow.controllers {
             $scope.alerts = [];
             $scope.draft = {};
             $scope.getCustomers = function (name) {
-                return $http.get('/api/customers?sort=Name&orderAscending=true&filter=' + name).then(function (response) {
+                return $http.get('https://localhost:44304/api/customers?sort=Name&orderAscending=true&filter=' + name).then(function (response) {
                     return response.data.items;
                 });
             };
             $scope.getOwners = function (name) {
-                return $http.get('/api/users?sort=FirstName&orderAscending=true&filter=' + name).then(function (response) {
+                return $http.get('https://localhost:44304/api/users?sort=FirstName&orderAscending=true&filter=' + name).then(function (response) {
                     return response.data.items;
                 });
             };

@@ -47,57 +47,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper">
-      <HintPath>..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.dll</HintPath>
-    </Reference>
-    <Reference Include="AutoMapper.Net4">
-      <HintPath>..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.Net4.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentNHibernate, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\FluentNHibernate.1.4.0.0\lib\net35\FluentNHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="Iesi.Collections">
-      <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.0.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.0.1\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Owin">
-      <HintPath>..\packages\Microsoft.Owin.2.0.2\lib\net45\Microsoft.Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Host.SystemWeb">
-      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.2.0.2\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security">
-      <HintPath>..\packages\Microsoft.Owin.Security.2.0.2\lib\net45\Microsoft.Owin.Security.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.Jwt">
-      <HintPath>..\packages\Microsoft.Owin.Security.Jwt.2.0.2\lib\net45\Microsoft.Owin.Security.Jwt.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.OAuth">
-      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.2.0.2\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate">
-      <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="Owin">
-      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="StructureMap">
-      <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -106,9 +58,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.IdentityModel.Services" />
-    <Reference Include="System.IdentityModel.Tokens.Jwt">
-      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.1.0.0\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -158,13 +107,6 @@
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Thinktecture.IdentityModel, Version=3.6.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Thinktecture.IdentityModel.3.6.1\lib\net45\Thinktecture.IdentityModel.dll</HintPath>
-    </Reference>
-    <Reference Include="WebActivator">
-      <HintPath>..\packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
-    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -174,89 +116,18 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Formatting">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.0.0\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.WebHost">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.0.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\DomainEventConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\MapperConfig.cs" />
-    <Compile Include="App_Start\NHibernateConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\StructuremapMvc.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Commands\CloseOfferAsLostCommand.cs" />
-    <Compile Include="Commands\CloseOfferAsWonCommand.cs" />
-    <Compile Include="Controllers\CustomersController.cs" />
-    <Compile Include="Controllers\DraftsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\OffersController.cs" />
-    <Compile Include="Controllers\ProductsController.cs" />
-    <Compile Include="Controllers\UsersController.cs" />
-    <Compile Include="DependencyResolution\IoC.cs" />
-    <Compile Include="DependencyResolution\StructureMapDependencyResolver.cs" />
-    <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Hubs\AdminHub.cs" />
-    <Compile Include="Hubs\OffersHub.cs" />
-    <Compile Include="Infrastructure\CrudApiController.cs" />
-    <Compile Include="Infrastructure\NHibernateApiFilter.cs" />
-    <Compile Include="Infrastructure\SessionApiController.cs" />
-    <Compile Include="Infrastructure\ValidateModelAttribute.cs" />
-    <Compile Include="Models\Customers\CustomerAddModel.cs" />
-    <Compile Include="Models\Customers\CustomerEditModel.cs" />
-    <Compile Include="Models\Customers\CustomerViewModel.cs" />
-    <Compile Include="Models\Drafts\DraftAddModel.cs" />
-    <Compile Include="Models\Drafts\DraftDetailViewModel.cs" />
-    <Compile Include="Models\Drafts\DraftEditModel.cs" />
-    <Compile Include="Models\Drafts\DraftItemAddModel.cs" />
-    <Compile Include="Models\Drafts\DraftItemEditModel.cs" />
-    <Compile Include="Models\Drafts\DraftItemResponseModel.cs" />
-    <Compile Include="Models\Drafts\DraftItemViewModel.cs" />
-    <Compile Include="Models\Drafts\DraftTotalsResponseModel.cs" />
-    <Compile Include="Models\Drafts\SendOfferModel.cs" />
-    <Compile Include="Models\IEditModel.cs" />
-    <Compile Include="Models\Drafts\DraftViewModel.cs" />
-    <Compile Include="Models\Offers\OfferDetailsViewModel.cs" />
-    <Compile Include="Models\Offers\OfferItemViewModel.cs" />
-    <Compile Include="Models\Offers\OfferViewModel.cs" />
-    <Compile Include="Models\PagedListModel.cs" />
-    <Compile Include="Models\PagedListRequestModel.cs" />
-    <Compile Include="Models\Products\ProductAddModel.cs" />
-    <Compile Include="Models\Products\ProductEditModel.cs" />
-    <Compile Include="Models\Products\ProductViewModel.cs" />
-    <Compile Include="Models\Users\UserAddModel.cs" />
-    <Compile Include="Models\Users\UserDetailsViewModel.cs" />
-    <Compile Include="Models\Users\UserEditModel.cs" />
-    <Compile Include="Models\Users\UserEditModelBase.cs" />
-    <Compile Include="Models\Users\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\AuthorizationManager.cs" />
-    <Compile Include="Security\ClaimsTransformationMiddleware.cs" />
-    <Compile Include="Security\ClaimsTransformationMiddlewareExtensions.cs" />
-    <Compile Include="Security\ClaimsTransformationOptions.cs" />
-    <Compile Include="Security\ClaimsTransformer.cs" />
-    <Compile Include="Security\IdentityModelJwtBearerAuthenticationExtensions.cs" />
-    <Compile Include="Security\ResourceActionName.cs" />
-    <Compile Include="Startup.cs" />
-    <Compile Include="Tasks\CreateOfferFromDraftTask.cs" />
-    <Compile Include="Tasks\SendOfferEmailTask.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.Net4.dll">
-      <Link>AutoMapper.Net4.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="app\partials\admin\overview.html" />
     <Content Include="app\partials\customers\create.html" />
     <Content Include="app\partials\customers\edit.html" />
@@ -579,8 +450,8 @@
     <Content Include="Scripts\i18n\angular-locale_zu.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
-    <Content Include="Scripts\jquery.signalR-2.0.1.js" />
-    <Content Include="Scripts\jquery.signalR-2.0.1.min.js" />
+    <Content Include="Scripts\jquery.signalR-2.0.2.js" />
+    <Content Include="Scripts\jquery.signalR-2.0.2.min.js" />
     <Content Include="Scripts\modernizr-2.7.1.js" />
     <Content Include="Scripts\notifications.js" />
     <Content Include="Scripts\respond.js" />
@@ -609,7 +480,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -637,16 +507,6 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\highcharts.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Sparrow.Domain\Sparrow.Domain.csproj">
-      <Project>{71C5790F-9AA0-4420-8EDE-492851B6BB53}</Project>
-      <Name>Sparrow.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sparrow.Infrastructure\Sparrow.Infrastructure.csproj">
-      <Project>{15EFF5D4-5CD3-4581-8CD2-B5AFCBBADE9B}</Project>
-      <Name>Sparrow.Infrastructure</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

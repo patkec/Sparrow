@@ -26,7 +26,7 @@ module sparrow.services {
             var connection, adminHub, offersHub;
 
             var initialize = function() {
-                connection = $.hubConnection();
+                connection = $.hubConnection('https://localhost:44304/signalr');
                 adminHub = connection.createHubProxy('adminHub');
                 offersHub = connection.createHubProxy('offersHub');
 
@@ -141,29 +141,29 @@ module sparrow.services {
         }])
         // RESOURCES
         .factory('Offers', ['$resource', function ($resource: ng.resource.IResourceService) {
-            return $resource('/api/offers/:offerId', {}, {
+            return $resource('https://localhost:44304/api/offers/:offerId', {}, {
                 update: { method: 'PUT' },
-                getArchived: { method: 'GET', url: '/api/offers/archived' }
+                getArchived: { method: 'GET', url: 'https://localhost:44304/api/offers/archived' }
             });
         }])
         .factory('Drafts', ['$resource', function ($resource: ng.resource.IResourceService) {
-            return $resource('/api/drafts/:draftId', {}, {
+            return $resource('https://localhost:44304/api/drafts/:draftId', {}, {
                 update: { method: 'PUT' },
-                createOffer: { url: '/api/drafts/:draftId/offer', method: 'POST', params: {draftId:'@draftId'}}
+                createOffer: { url: 'https://localhost:44304/api/drafts/:draftId/offer', method: 'POST', params: {draftId:'@draftId'}}
             });
         }])
         .factory('Customers', ['$resource', function ($resource: ng.resource.IResourceService) {
-            return $resource('/api/customers/:customerId', {}, {
+            return $resource('https://localhost:44304/api/customers/:customerId', {}, {
                 update: { method: 'PUT' }
             });
         }])
         .factory('Products', ['$resource', function ($resource: ng.resource.IResourceService) {
-            return $resource('/api/products/:productId', {}, {
+            return $resource('https://localhost:44304/api/products/:productId', {}, {
                 update: { method: 'PUT' }
             });
         }])
         .factory('Users', ['$resource', function ($resource: ng.resource.IResourceService) {
-            return $resource('/api/users/:userId', {}, {
+            return $resource('https://localhost:44304/api/users/:userId', {}, {
                 update: {method: 'PUT'}
             });
         }]);

@@ -13,13 +13,13 @@ module sparrow.controllers {
             $scope.offersToExpire = [];
 
             $http
-                .get('/api/offers/latest/5')
+                .get('https://localhost:44304/api/offers/latest/5')
                 .success(function (data) {
                     $scope.latestOffers = data;
                 });
 
             $http
-                .get('/api/offers/soonToExpire/3')
+                .get('https://localhost:44304/api/offers/soonToExpire/3')
                 .success(function (data) {
                     $scope.offersToExpire = data;
                 });
