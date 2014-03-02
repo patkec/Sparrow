@@ -108,7 +108,7 @@ Backup*/
 UpgradeLog*.XML
 
 # Typescript generated JavaScript
-app/*.js
-app/*.js.map
-app/controllers/*.js
-app/controllers/*.js.map
+*/*/app/*.js
+*/*/app/*.js.map
+*/*/app/**/*.js
+*/*/app/**/*.js.map
