@@ -45,7 +45,7 @@
 
             var logFn = service[fnName] || service.log;
             return (message: string, data: any, showToast?: boolean)=> {
-                logFn(message, data, moduleId, (showToast === undefined) ? true : false);
+                logFn(message, data, moduleId, (showToast === undefined) ? true : showToast);
             };
         }
 
