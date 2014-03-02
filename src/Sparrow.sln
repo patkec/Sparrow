@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparrow.Infrastructure", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparrow.Api", "Sparrow.Api\Sparrow.Api.csproj", "{34947752-E94F-42F0-8AED-92740E91E554}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparrow.Client.Web", "Sparrow.Client.Web\Sparrow.Client.Web.csproj", "{F5736D35-402F-4030-B2EA-F685970F3AEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{34947752-E94F-42F0-8AED-92740E91E554}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34947752-E94F-42F0-8AED-92740E91E554}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34947752-E94F-42F0-8AED-92740E91E554}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5736D35-402F-4030-B2EA-F685970F3AEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5736D35-402F-4030-B2EA-F685970F3AEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5736D35-402F-4030-B2EA-F685970F3AEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5736D35-402F-4030-B2EA-F685970F3AEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
