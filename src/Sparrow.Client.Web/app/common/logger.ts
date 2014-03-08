@@ -19,7 +19,7 @@
     // Implementation
     angular.module('sparrow.common').factory('logger', ['$log', logger]);
 
-    function logger($log: ng.ILogService) {
+    function logger($log: ng.ILogService): ILoggerService {
 
         var service: ILoggerService = {
             getLogFn: getLogFn,

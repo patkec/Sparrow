@@ -1,22 +1,32 @@
 ﻿module sparrow {
     'use strict';
 
-    var controllerId = 'dashboard';
-    angular.module('sparrow').controller(controllerId, [dashboard]);
+    interface IDashboardCtrl {
+        news: any;
+        people: any[];
+        title: string;
+        messageCount: number;
+    }
 
-    function dashboard() {
-        var vm = this;
-        vm.news = {
-            title: 'Sparrow',
-            description: 'Sparrow is based on Hot Towel Angular.'
-        };
-        vm.messageCount = 0;
-        vm.people = [];
-        vm.title = 'Dashboard';
+    class DashboardCtrl implements IDashboardCtrl {
+        static controllerId: string = 'dashboard';
 
-        activate();
+        news = {};
+        messageCount = 0;
+        people = [];
+        title = '';
 
-        function activate() {
+        constructor() {
+            var vm = this;
+            vm.news = {
+                title: 'Sparrow',
+                description: 'Sparrow is based on Hot Towel Angular.'
+            };
+            vm.messageCount = 0;
+            vm.people = [];
+            vm.title = 'Dashboard';
         }
     }
+
+    app.controller(DashboardCtrl.controllerId, [() => new DashboardCtrl()]);
 } 

@@ -1,17 +1,31 @@
 ﻿module sparrow {
     'use strict';
 
-    var controllerId = 'shell';
-    angular.module('sparrow').controller(controllerId, ['$rootScope', 'common', 'config', shell]);
+    interface IShellCtrl {
+        isBusy: boolean;
+        busyMessage: string;
+        spinnerOptions: {
+            radius: number;
+            lines: number;
+            length: number;
+            width: number;
+            speed: number;
+            corners: number;
+            trail: number;
+            color: string;
+        };
+        toggleSpinner(on: boolean): void;
+    }
 
-    function shell($rootScope: ng.IScope, common: sparrow.common.ICommonService, config: sparrow.IConfig) {
-        var events = config.events;
-        var logSuccess = common.logger.getLogFn(controllerId, 'success');
+    class ShellCtrl implements IShellCtrl {
+        static controllerId: string = 'shell';
 
-        var vm = this;
-        vm.isBusy = true;
-        vm.busyMessage = "Please wait ...";
-        vm.spinnerOptions = {
+        private _common: sparrow.common.ICommonService;
+        private _logSuccess: sparrow.common.ISimpleLogFn;
+
+        isBusy = true;
+        busyMessage = 'Please wait ...';
+        spinnerOptions = {
             radius: 40,
             lines: 7,
             length: 0,
@@ -22,27 +36,36 @@
             color: '#F58A00'
         };
 
-        activate();
+        constructor($rootScope: ng.IScope, common: sparrow.common.ICommonService, config: sparrow.IConfig) {
+            this._common = common;
+            this._logSuccess = common.logger.getLogFn(ShellCtrl.controllerId, 'success');
 
-        function activate() {
-            logSuccess('Sparrow loaded!', null, true);
-            common.activateController([], controllerId);
+            this.activate();
+
+            var events = config.events;
+
+            $rootScope.$on('$routeChangeStart', (event, next, current) => {
+                this.toggleSpinner(true);
+            });
+
+            $rootScope.$on(events.controllerActivateSuccess, data=> {
+                this.toggleSpinner(false);
+            });
+
+            $rootScope.$on(events.spinnerToggle, (data: sparrow.common.ISpinnerEvent) => {
+                this.toggleSpinner(data.show);
+            });
         }
 
-        function toggleSpinner(on) {
-             vm.isBusy = on;
+        private activate() {
+            this._logSuccess('Sparrow loaded!', null, true);
+            this._common.activateController([], ShellCtrl.controllerId);
         }
 
-        $rootScope.$on('$routeChangeStart', (event, next, current) => {
-            toggleSpinner(true);
-        });
-
-        $rootScope.$on(events.controllerActivateSuccess, data=> {
-            toggleSpinner(false);
-        });
-
-        $rootScope.$on(events.spinnerToggle, (data: sparrow.common.ISpinnerEvent)=> {
-            toggleSpinner(data.show);
-        });
+        toggleSpinner(on: boolean) {
+            this.isBusy = on;
+        }
     }
+
+    app.controller(ShellCtrl.controllerId, ['$rootScope', 'common', 'config', ($rootScope, common, config) => new ShellCtrl($rootScope, common, config)]);
 }

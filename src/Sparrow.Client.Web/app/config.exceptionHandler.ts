@@ -3,8 +3,6 @@
 module sparrow {
     'use strict';
 
-    var app = angular.module('sparrow');
-
     // Configure by setting an optional string value for appErrorPrefix.
     // Accessible via config.appErrorPrefix (via config value).
 

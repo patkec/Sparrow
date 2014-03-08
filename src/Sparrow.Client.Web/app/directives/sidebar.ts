@@ -1,9 +1,7 @@
 ﻿module sparrow {
     'use strict';
 
-    var app = angular.module('sparrow');
-
-    app.directive('ccSidebar', ()=> {
+    function sidebarDirective(): ng.IDirective {
         // Opens and closes the sidebar menu.
         // Usage:
         //  <div data-cc-sidebar>
@@ -39,5 +37,7 @@
                 }
             }
         }
-    });
+    };
+
+    app.directive('ccSidebar', sidebarDirective);
 } 

@@ -12,7 +12,7 @@
     angular.module('sparrow.common')
         .factory('spinner', ['common', 'commonConfig', spinner]);
 
-    function spinner(common: ICommonService, commonConfig: ICommonConfigProvider) {
+    function spinner(common: ICommonService, commonConfig: ICommonConfigProvider): ISpinnerService {
         var service: ISpinnerService = {
             spinnerHide: spinnerHide,
             spinnerShow: spinnerShow

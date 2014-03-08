@@ -6,15 +6,12 @@
         nav: number;
         content: string;
     }
-    export interface IRoute extends ng.route.IRoute {
-        settings: IRouteSettings;
-    }
     export interface IRouteDef {
         url: string;
-        config: IRoute;
+        config: {
+            settings: IRouteSettings;
+        };
     }
-
-    var app = angular.module('sparrow');
 
     // Collect the routes
     app.constant('routes', getRoutes());

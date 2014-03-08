@@ -1,7 +1,7 @@
 ﻿module sparrow {
     'use strict';
 
-    var app = angular.module('sparrow', [
+    export var app = angular.module('sparrow', [
         // Angular modules
         'ngAnimate',            // animations
         'ngRoute',              // routing
@@ -10,6 +10,11 @@
         // Custom modules
         'sparrow.common',       // common functions, logger, spinner
         //'common.bootstrap'      // boostrap dialog wrapper functions
+
+        // 3rd party modules
+        'breeze.angular',
+        'breeze.directives',
+        'ui.bootstrap'
     ]);
 
     app.run(['$route', ($route: ng.route.IRoute)=> {

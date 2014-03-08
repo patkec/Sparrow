@@ -18,7 +18,7 @@
         debouncedThrottle(key: any, callback: Function, delay?: number, immediate?: boolean);
         isNumber(val: string): boolean;
         textContains(text: string, searchText: string): boolean;
-        logger: any;
+        logger: ILoggerService;
     }
 
     // Define the common module 
@@ -47,7 +47,7 @@
     commonModule.factory('common',
         ['$q', '$rootScope', '$timeout', 'commonConfig', 'logger', common]);
 
-    function common($q: ng.IQService, $rootScope: ng.IScope, $timeout: ng.ITimeoutService, commonConfig: ICommonConfigProvider, logger: ILoggerService) {
+    function common($q: ng.IQService, $rootScope: ng.IScope, $timeout: ng.ITimeoutService, commonConfig: ICommonConfigProvider, logger: ILoggerService): ICommonService {
         var throttles = {};
 
         var service: ICommonService = {
