@@ -7,6 +7,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Sparrow.Api.Security;
 using Sparrow.Infrastructure.Tasks;
+using StructureMap;
 
 namespace Sparrow.Api
 {
@@ -27,6 +28,8 @@ namespace Sparrow.Api
 
         protected void Application_EndRequest(object sender, EventArgs args)
         {
+            ObjectFactory.ReleaseAndDisposeAllHttpScopedObjects();
+
             TaskExecutor.StartExecuting();
         }
 

@@ -32,8 +32,12 @@ namespace Sparrow.Api.DependencyResolution
                     scan.TheCallingAssembly();
                     scan.WithDefaultConventions();
                 });
-                x.For<ISessionFactory>()
+                x.ForSingletonOf<ISessionFactory>()
                     .Use(NHibernateConfig.BuildSessionFactory);
+                x.For<ISession>()
+                    // Session must be HttpContext scoped because it should be available for OData formatter.
+                    .HttpContextScoped()
+                    .Use(ctx => ctx.GetInstance<ISessionFactory>().OpenSession());
             });
             TaskExecutor.SessionFactory = ObjectFactory.GetInstance<ISessionFactory>();
 

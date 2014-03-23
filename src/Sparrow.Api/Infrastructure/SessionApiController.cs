@@ -4,14 +4,18 @@ using Sparrow.Infrastructure.Commands;
 
 namespace Sparrow.Api.Infrastructure
 {
-    public class SessionApiController: ApiController
+    public class SessionApiController: ApiController, ISessionController
     {
         private CommandExecutor _commandExecutor;
 
         /// <summary>
         /// Gets the NHibernate session for current request.
         /// </summary>
-        protected internal ISession Session { get; internal set; }
+        protected ISession Session {
+            get { return ((ISessionController) this).Session; }
+        }
+
+        ISession ISessionController.Session { get; set; }
 
         protected ICommandExecutor CommandExecutor
         {
